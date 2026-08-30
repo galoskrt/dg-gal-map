@@ -1,0 +1,57 @@
+<!doctype html>
+<html dir="rtl" lang="he">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>בקרוב · דיוק דיגיטלי</title>
+<style>
+  :root{
+    --pink:#FF7EE2; --orange:#FF9000; --green:#80FF00;
+    --black:#010101; --white:#FFFFFF; --muted:#9aa3ad;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;}
+  body{
+    background:var(--black); color:var(--white);
+    font-family:"Segoe UI",system-ui,-apple-system,Arial,sans-serif;
+    display:grid; place-items:center; padding:28px; overflow:hidden;
+  }
+  .glow{position:fixed;inset:0;pointer-events:none;z-index:0;
+    background:
+      radial-gradient(52vmax 52vmax at 78% 12%, rgba(255,126,226,.20), transparent 62%),
+      radial-gradient(46vmax 46vmax at 14% 84%, rgba(255,144,0,.16), transparent 64%);
+  }
+  main{position:relative;z-index:1;text-align:center;max-width:620px;}
+  .tag{
+    display:inline-block;font-size:12px;font-weight:700;letter-spacing:.04em;
+    color:var(--white);background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:7px 16px;margin-bottom:26px;
+  }
+  h1{
+    font-size:clamp(30px,7vw,52px);line-height:1.18;font-weight:800;
+    text-wrap:balance;margin-bottom:18px;
+  }
+  h1 .g{
+    background:linear-gradient(90deg,var(--pink),var(--orange));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  p{color:var(--muted);font-size:clamp(15px,3.6vw,18px);line-height:1.7;text-wrap:pretty;}
+  .dot{display:inline-block;width:7px;height:7px;border-radius:50%;
+    background:var(--green);margin-inline-end:8px;vertical-align:1px;}
+  footer{
+    position:fixed;bottom:22px;left:0;right:0;z-index:1;text-align:center;
+    color:rgba(255,255,255,.34);font-size:12px;letter-spacing:.03em;
+  }
+</style>
+</head>
+<body>
+  <div class="glow" aria-hidden="true"></div>
+  <main>
+    <span class="tag"><span class="dot"></span>בבנייה</span>
+    <h1>כאן תדע כמה כסף מתפוגג <span class="g">בין הקליק לעסקה</span></h1>
+    <p>העמוד הזה עדיין נבנה. בקרוב תוכל לעשות כאן אבחון קצר ולקבל את המספר שלך.</p>
+  </main>
+  <footer>גל הרוש · דיוק דיגיטלי</footer>
+</body>
+</html>
