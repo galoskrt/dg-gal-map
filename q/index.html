@@ -23,6 +23,11 @@
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{overflow-x:clip}
+/* כלל ברזל של גל: אין מילים יתומות. text-wrap:pretty נועד בדיוק לזה,
+   והדפדפנים שלא תומכים בו פשוט שוברים כרגיל, אז אין מה להפסיד. */
+h1,h2,h3,h4,p,li,.res,.pun,.mirror,.sub,.rel,.fine,.qh,.gnote{
+  text-wrap:pretty;-webkit-text-wrap:pretty}
+
 body{margin:0;background:var(--bg);color:var(--txt);
   font-family:"TelAviv",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
   font-size:16px;line-height:1.65;overflow-x:clip;-webkit-font-smoothing:antialiased;
