@@ -441,6 +441,18 @@ function compute(){
     if(a.tried && (a.tried.i === 1 || a.tried.i === 2)) burn = true;
   }
 
+  /* כמה פעמים באמת נבחרה תשובה שאומרת "לא יודע", להבדיל מתשובה שרק מלמדת על עיוורון */
+  var unknown = 0;
+  if(S.track === 'a'){
+    if(a.reach && a.reach.i === 3) unknown++;   /* לא ידוע לי */
+    if(a.close && a.close.i === 3) unknown++;   /* לא ידוע לי */
+    if(a.cac   && a.cac.i   === 3) unknown++;   /* לא */
+  } else {
+    if(a.cac && a.cac.i === 2) unknown++;       /* לא חשבנו על זה ככה */
+  }
+  var approx = 0;
+  if(S.track === 'a' && a.cac && (a.cac.i === 1 || a.cac.i === 2)) approx++;  /* בערך / רק פנייה */
+
   var aware = burn ? 'burned' : (blind >= 3 ? 'blind' : 'sees');
   var temp  = score >= 15 ? 'hot' : (score >= 9 ? 'warm' : 'ok');
 
@@ -469,7 +481,7 @@ function compute(){
       ['הצעה מנוסחת וקבועה', a.offer.label]
     ];
   }
-  return { track:S.track, source:S.source, score:score, temp:temp, aware:aware, blind:blind, burn:burn,
+  return { track:S.track, source:S.source, score:score, temp:temp, aware:aware, blind:blind, burn:burn, unknown:unknown, approx:approx,
            main:main, extra:extra, rows:rows, answers:a };
 }
 
