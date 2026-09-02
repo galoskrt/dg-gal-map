@@ -129,6 +129,15 @@ footer a{color:var(--mut2)}
 .gate small{display:block;margin-top:7px;color:rgba(255,255,255,.7);
   font-size:13.5px;font-weight:700}
 
+
+/* כרטיסיית סיפור לקוח. משותפת לדף הבית ולדף התוצאה, כי זו אותה
+   הוכחה ואסור שהיא תיראה אחרת בשני מקומות. */
+.cases{position:relative}
+.case{position:sticky;background:#fff;border:1px solid var(--line2);min-height:330px;
+  border-radius:26px 26px 26px 8px;padding:24px 20px 20px;box-shadow:var(--sh2);
+  margin-bottom:18px;overflow:hidden}
+.case::before{content:"";position:absolute;inset:7px;border:1px solid var(--line);
+  border-radius:20px 20px 20px 5px;pointer-events:none}
 .case .tick{position:absolute}
 .case .tick.t1{top:14px;right:14px}
 .case .tick.t2{top:14px;left:14px}
@@ -136,6 +145,34 @@ footer a{color:var(--mut2)}
 .case .tick.t4{bottom:14px;left:14px}
 .case .tick.t2::before,.case .tick.t4::before{right:0}
 .case .tick.t3::after,.case .tick.t4::after{bottom:0}
+.case .tick{position:absolute;width:13px;height:13px;pointer-events:none}
+.case .tick::before,.case .tick::after{content:"";position:absolute;background:var(--pink);opacity:.45;border-radius:2px}
+.case .tick::before{width:13px;height:2px}
+.case .tick::after{width:2px;height:13px}
+.case:nth-of-type(1){top:80px;z-index:1}
+.case:nth-of-type(2){top:88px;z-index:2}
+.case:nth-of-type(3){top:96px;z-index:3}
+.case:nth-of-type(4){top:104px;z-index:4}
+.case:nth-of-type(5){top:112px;z-index:5;margin-bottom:0}
+.case .hd2{position:relative;z-index:2;display:flex;gap:12px;align-items:center;margin-bottom:12px}
+.case .ph{flex:0 0 auto;width:48px;height:48px;border-radius:50%;overflow:hidden;display:grid;place-items:center;
+  background:linear-gradient(158deg,#fff,var(--pinkL));border:1px solid #ffc9de;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 2px 6px rgba(20,18,28,.08);
+  font-size:15px;font-weight:800;color:var(--pinkS);letter-spacing:-.02em}
+.case .ph img{width:100%;height:100%;object-fit:cover;display:block}
+.case .who2 b{display:block;font-size:15.5px;font-weight:800;color:var(--txt);line-height:1.3}
+.case .who2 span{display:block;font-size:12.5px;font-weight:700;color:var(--mut2);line-height:1.4;margin-top:2px}
+.case .res{position:relative;z-index:2;font-size:17px;font-weight:800;line-height:1.45;margin:0 0 10px;color:var(--txt)}
+.case p{position:relative;z-index:2;margin:0 0 8px;font-size:14.5px}
+.case .pun{position:relative;z-index:2;margin:0;font-size:14.5px;font-weight:800;color:var(--greenS)}
+
+
+
+
+
+
+
+
 
 /* הפרצופים קטנים יותר עכשיו, כי הם שתים עשרה ולא שבע */
 .faces img{width:30px;height:30px;margin-left:-9px}
@@ -211,32 +248,26 @@ footer a{color:var(--mut2)}
 .pf .nm{font-size:12.5px;font-weight:800;color:var(--pinkS);margin:0 0 7px}
 .pf p{margin:0;font-size:14.5px}
 
-.cases{position:relative}
-.case{position:sticky;background:#fff;border:1px solid var(--line2);min-height:330px;
-  border-radius:26px 26px 26px 8px;padding:24px 20px 20px;box-shadow:var(--sh2);
-  margin-bottom:18px;overflow:hidden}
-.case::before{content:"";position:absolute;inset:7px;border:1px solid var(--line);
-  border-radius:20px 20px 20px 5px;pointer-events:none}
-.case .tick{position:absolute;width:13px;height:13px;pointer-events:none}
-.case .tick::before,.case .tick::after{content:"";position:absolute;background:var(--pink);opacity:.45;border-radius:2px}
-.case .tick::before{width:13px;height:2px}
-.case .tick::after{width:2px;height:13px}
-.case:nth-of-type(1){top:80px;z-index:1}
-.case:nth-of-type(2){top:88px;z-index:2}
-.case:nth-of-type(3){top:96px;z-index:3}
-.case:nth-of-type(4){top:104px;z-index:4}
-.case:nth-of-type(5){top:112px;z-index:5;margin-bottom:0}
-.case .hd2{position:relative;z-index:2;display:flex;gap:12px;align-items:center;margin-bottom:12px}
-.case .ph{flex:0 0 auto;width:48px;height:48px;border-radius:50%;overflow:hidden;display:grid;place-items:center;
-  background:linear-gradient(158deg,#fff,var(--pinkL));border:1px solid #ffc9de;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 2px 6px rgba(20,18,28,.08);
-  font-size:15px;font-weight:800;color:var(--pinkS);letter-spacing:-.02em}
-.case .ph img{width:100%;height:100%;object-fit:cover;display:block}
-.case .who2 b{display:block;font-size:15.5px;font-weight:800;color:var(--txt);line-height:1.3}
-.case .who2 span{display:block;font-size:12.5px;font-weight:700;color:var(--mut2);line-height:1.4;margin-top:2px}
-.case .res{position:relative;z-index:2;font-size:17px;font-weight:800;line-height:1.45;margin:0 0 10px;color:var(--txt)}
-.case p{position:relative;z-index:2;margin:0 0 8px;font-size:14.5px}
-.case .pun{position:relative;z-index:2;margin:0;font-size:14.5px;font-weight:800;color:var(--greenS)}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .fit{display:flex;gap:12px;align-items:flex-start;margin-bottom:11px;font-size:15px;color:var(--mut);line-height:1.55}
 .fit i{flex:0 0 auto;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;margin-top:2px}
 .fit svg{width:12px;height:12px;stroke-width:3.2}
@@ -331,42 +362,42 @@ src="https://www.facebook.com/tr?id=3520763671432860&ev=PageView&noscript=1" alt
   <div class="sec">
     <h2 class="sh">מי כבר <span class="boxg">עשה את זה</span></h2>
     <div class="cases">
-      <div class="case"><i class="tick t1"></i><i class="tick t2"></i><i class="tick t3"></i><i class="tick t4"></i>
-            <div class="hd2"><div class="ph"><img src="data:image/webp;base64,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" alt=""></div>
+    <div class="case"><i class="tick t1"></i><i class="tick t2"></i><i class="tick t3"></i><i class="tick t4"></i>
+      <div class="hd2"><div class="ph"><img src="data:image/webp;base64,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" alt=""></div>
         <div class="who2"><b>יוסי ונגר</b><span>בעלים של חברה לליווי אישי לטיפולים אורתופדיים בחוץ לארץ</span></div></div>
       <p class="res">מסגירה של <span class="box">אחת מתוך חמישים</span> לאחת מתוך עשר, עם חצי מהפניות</p>
       <p>הגיע אליי עם שניים עד ארבעה מטופלים במחזור, ופניות שלא הבינו את הערך. <b>תוך פחות מחודש חתכנו בחצי את כמות הפניות והעלינו פי חמישה את אחוז הסגירה</b>, ובנינו סיסטם שכל מחזור בו נפתח עם עשרה מטופלים לפחות.</p>
       <p class="pun">פחות שיחות, יותר התאמה, הרבה פחות שחיקה, ובאותו תקציב פרסום בדיוק.</p>
-      </div>
-      <div class="case"><i class="tick t1"></i><i class="tick t2"></i><i class="tick t3"></i><i class="tick t4"></i>
+    </div>
+    <div class="case"><i class="tick t1"></i><i class="tick t2"></i><i class="tick t3"></i><i class="tick t4"></i>
       <div class="hd2"><div class="ph"><img src="data:image/webp;base64,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" alt=""></div>
         <div class="who2"><b>שירן חדד</b><span>עובדת סוציאלית קלינית, בעלת קליניקה לטיפול רגשי</span></div></div>
       <p class="res">מ-5 עד 7 אלף בחודש <span class="boxg">ל-18 עד 20 אלף</span>, תוך 45 יום</p>
       <p>עבדה שנים אך ורק על פה לאוזן. <b>פיצחתי לה הצעה שיווקית שאפשרה לה למכור תהליכים מתמשכים במקום טיפול בודד</b>, והמחזור החדש החזיק יציב לאורך כל הליווי.</p>
       <p class="pun">וכשסיימנו, היא המשיכה לצמוח לבד.</p>
     </div>
-      <div class="case"><i class="tick t1"></i><i class="tick t2"></i><i class="tick t3"></i><i class="tick t4"></i>
+    <div class="case"><i class="tick t1"></i><i class="tick t2"></i><i class="tick t3"></i><i class="tick t4"></i>
       <div class="hd2"><div class="ph"><img src="data:image/webp;base64,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" alt=""></div>
         <div class="who2"><b>אייל תורג'מן</b><span>משווק ויועץ נדל"ן</span></div></div>
       <p class="res">שלוש דירות בבלעדיות ומשקיע אחד, <span class="box">בלי שקל פרסום</span></p>
       <p>יצא לדרך עצמאית אחרי שש שנים במשרד, עם חזון גדול לצמיחה. <b>מהפניות שהגיעו דרך הנכסים שבנינו לו, השיג בלעדיות על שלוש דירות בגבעתיים ומכר אותן.</b></p>
       <p class="pun">ובמקביל גייס משקיע לליווי המשקיעים שהוא מספק.</p>
     </div>
-      <div class="case"><i class="tick t1"></i><i class="tick t2"></i><i class="tick t3"></i><i class="tick t4"></i>
+    <div class="case"><i class="tick t1"></i><i class="tick t2"></i><i class="tick t3"></i><i class="tick t4"></i>
       <div class="hd2"><div class="ph"><img src="data:image/webp;base64,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" alt=""></div>
         <div class="who2"><b>אליטה וואן נדל"ן</b><span>שיווק עסקת קרקע במרכז הארץ</span></div></div>
       <p class="res"><span class="box">שלוש עסקאות בחודשיים</span>, אחרי 35 יום של בנייה</p>
       <p>הגיעו עם המון פניות לא רלוונטיות, אחוזי ביטול פגישות גבוהים, ואנשים שלא הבינו את הערך של הליווי. <b>בנינו הצעת ערך ומערכת קליטה וניהול פניות שמייצרת פגישות לבד, רק ממי שבאמת מוכן להתקדם.</b></p>
       <p class="pun">כשכל עסקה שווה מאות אלפי שקלים, את החשבון תעשה לבד.</p>
     </div>
-      <div class="case"><i class="tick t1"></i><i class="tick t2"></i><i class="tick t3"></i><i class="tick t4"></i>
+    <div class="case"><i class="tick t1"></i><i class="tick t2"></i><i class="tick t3"></i><i class="tick t4"></i>
       <div class="hd2"><div class="ph"><img src="data:image/webp;base64,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" alt=""></div>
         <div class="who2"><b>ציון איטום ובינוי</b><span>בנייה ואיטום בטכנולוגיה מתקדמת</span></div></div>
       <p class="res">עסקה ראשונה <span class="boxg">תוך עשרה ימים</span>, באפס תקציב פרסום</p>
       <p>שלושים ושמונה שנות מוניטין מפה לאוזן, ואקסל מלא בפולואפים של פניות שלא הבשילו, מדפי זהב ומערוצים נוספים. <b>לקחנו את הפניות שכבר היו אצלם והעברנו אותן מסע לקוח חדש.</b></p>
       <p class="pun">והליווי עוד ממשיך.</p>
     </div>
-    </div>
+  </div>
   </div>
 
 <div class="sec card lift">

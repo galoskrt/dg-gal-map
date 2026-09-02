@@ -126,6 +126,43 @@ footer a{color:var(--mut2)}
 .gate small{display:block;margin-top:7px;color:rgba(255,255,255,.7);
   font-size:13.5px;font-weight:700}
 
+
+/* כרטיסיית סיפור לקוח. משותפת לדף הבית ולדף התוצאה, כי זו אותה
+   הוכחה ואסור שהיא תיראה אחרת בשני מקומות. */
+.cases{position:relative}
+.case{position:sticky;background:#fff;border:1px solid var(--line2);min-height:330px;
+  border-radius:26px 26px 26px 8px;padding:24px 20px 20px;box-shadow:var(--sh2);
+  margin-bottom:18px;overflow:hidden}
+.case::before{content:"";position:absolute;inset:7px;border:1px solid var(--line);
+  border-radius:20px 20px 20px 5px;pointer-events:none}
+.case .tick{position:absolute}
+.case .tick.t1{top:14px;right:14px}
+.case .tick.t2{top:14px;left:14px}
+.case .tick.t3{bottom:14px;right:14px}
+.case .tick.t4{bottom:14px;left:14px}
+.case .tick.t2::before,.case .tick.t4::before{right:0}
+.case .tick.t3::after,.case .tick.t4::after{bottom:0}
+.case .tick{position:absolute;width:13px;height:13px;pointer-events:none}
+.case .tick::before,.case .tick::after{content:"";position:absolute;background:var(--pink);opacity:.45;border-radius:2px}
+.case .tick::before{width:13px;height:2px}
+.case .tick::after{width:2px;height:13px}
+.case:nth-of-type(1){top:80px;z-index:1}
+.case:nth-of-type(2){top:88px;z-index:2}
+.case:nth-of-type(3){top:96px;z-index:3}
+.case:nth-of-type(4){top:104px;z-index:4}
+.case:nth-of-type(5){top:112px;z-index:5;margin-bottom:0}
+.case .hd2{position:relative;z-index:2;display:flex;gap:12px;align-items:center;margin-bottom:12px}
+.case .ph{flex:0 0 auto;width:48px;height:48px;border-radius:50%;overflow:hidden;display:grid;place-items:center;
+  background:linear-gradient(158deg,#fff,var(--pinkL));border:1px solid #ffc9de;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 2px 6px rgba(20,18,28,.08);
+  font-size:15px;font-weight:800;color:var(--pinkS);letter-spacing:-.02em}
+.case .ph img{width:100%;height:100%;object-fit:cover;display:block}
+.case .who2 b{display:block;font-size:15.5px;font-weight:800;color:var(--txt);line-height:1.3}
+.case .who2 span{display:block;font-size:12.5px;font-weight:700;color:var(--mut2);line-height:1.4;margin-top:2px}
+.case .res{position:relative;z-index:2;font-size:17px;font-weight:800;line-height:1.45;margin:0 0 10px;color:var(--txt)}
+.case p{position:relative;z-index:2;margin:0 0 8px;font-size:14.5px}
+.case .pun{position:relative;z-index:2;margin:0;font-size:14.5px;font-weight:800;color:var(--greenS)}
+
 .cr{margin-top:10px!important;font-size:11.5px;color:var(--mut2);opacity:.85}
 
 .hero{padding:28px 0 2px;text-align:center}
