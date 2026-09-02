@@ -591,8 +591,17 @@ function submit(){
     var ans = r.answers[qlist[qi].k];
     if(ans) pairs.push({ q: qlist[qi].q, a: ans.label });
   }
+  /* מזהה אחד לשני הצדדים. הדפדפן והשרת שולחים את אותה המרה, ופייסבוק מאחד
+     אותן לפי המזהה הזה במקום לספור את אותו אדם פעמיים. */
+  var evId = (window.crypto && crypto.randomUUID) ? crypto.randomUUID()
+             : String(Date.now()) + Math.random().toString(16).slice(2);
+  function cookie(n){
+    var m = document.cookie.match('(^|;)\s*' + n + '\s*=\s*([^;]+)');
+    return m ? m.pop() : '';
+  }
   var payload = {
     name: name, phone: r.phone, email: mail, business: biz,
+    event_id: evId, fbp: cookie('_fbp'), fbc: cookie('_fbc'),
     ref_url: location.href,
     utm: { campaign: r.utm.utm_campaign || '', adset: r.utm.utm_content || '', ad: r.utm.utm_term || '' },
     map: { main: head, source: r.source, awareness: r.aware, temp: r.temp, score: r.score,
@@ -615,7 +624,11 @@ function submit(){
         .catch(function(){});
     } catch(e){}
   }
-  if(window.fbq){ fbq('trackCustom','CompleteDiagnostic',{ temperature:r.temp, score:r.score }); }
+  if(window.fbq){
+    fbq('trackCustom','CompleteDiagnostic',
+        { temperature:r.temp, score:r.score, value:head, currency:'ILS' },
+        { eventID: evId });
+  }
 
   runLoad(function(){ location.href = '/map/'; });
 }
