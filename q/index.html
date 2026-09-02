@@ -177,6 +177,16 @@ footer a{color:var(--mut2)}
 .load li.ok .mk{border-color:#34d399;background:#34d399;box-shadow:none}
 .load li.ok .mk svg{opacity:1}
 </style>
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','3520763671432860');fbq('track','PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=3520763671432860&ev=PageView&noscript=1" alt=""></noscript>
 </head>
 <body>
 
@@ -394,6 +404,10 @@ el('body').addEventListener('click', function(e){
   var q = current(); if(!q) return;
   var i = +o.dataset.i;
   S.a[q.k] = { i:i, label:q.o[i][2], score:q.o[i][4], val:q.o[i][5] };
+  /* אירוע ההתחלה שהקמפיין מיועל אליו. יורה פעם אחת, ורק כשבאמת נענתה שאלה.
+     קודם הוא ירה על כל נגיעה במסך, וגם דף הנחיתה ירה אותו, אז כל אדם נספר
+     פעמיים ופייסבוק היה לומד לחפש אנשים שנוגעים ובורחים. */
+  if(!S.started){ S.started = true; if(window.fbq) fbq('trackCustom','StartDiagnostic'); }
   this.querySelectorAll('.opt').forEach(function(x){ x.classList.remove('sel'); });
   o.classList.add('sel');
   el('next').disabled = false;
@@ -594,12 +608,6 @@ function submit(){
   runLoad(function(){ location.href = '/map/'; });
 }
 
-/* אירוע התחלה, זה האירוע שאליו הקמפיין מיועל */
-var started = false;
-document.addEventListener('click', function(){
-  if(started) return; started = true;
-  if(window.fbq) fbq('trackCustom','StartDiagnostic');
-}, { once:false });
 
 render();
 </script>
