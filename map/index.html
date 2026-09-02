@@ -502,6 +502,7 @@ var WORKER_URL = 'https://dg-gal-funnel.tom-harush.workers.dev';
 /* מעבר ליומן. המסך נשאר על הדף הזה עד שהיומן מצייר, כי שם הייתה השתיקה
    הארוכה ביותר: גם הדף וגם ה-embed של קאל צריכים להיטען. */
 function goCall(){
+  if(window.__mark) window.__mark('booking');
   if(window.fbq) fbq('trackCustom','ClickBooking');
   var g = document.getElementById('gate');
   if(g) g.classList.add('on');
@@ -530,6 +531,7 @@ function sendQuestion(){
   var v = document.getElementById('q').value.trim();
   if(v.length < 3) return;
   var b = document.getElementById('qsend');
+  if(window.__mark) window.__mark('question');
   b.disabled = true;
   var lid = ''; try { lid = sessionStorage.getItem('dg_lead_id') || ''; } catch(e){}
   /* הכפתור לא מבטיח שנשלח לפני שבאמת נשלח. הבטחה שקרית כאן שורפת את כל האמון שהדף בנה. */
@@ -547,6 +549,55 @@ window.addEventListener('scroll', function(){
   var r = inv.getBoundingClientRect();
   fl.classList.toggle('on', window.scrollY > 420 && r.top > window.innerHeight);
 }, { passive:true });
+
+
+/* ── מה קרה בדף ──────────────────────────────────────────────────────
+   שתי אוטומציות תלויות בזה: מי צפה בסרטון ולא קבע, ומי נטש תוך פחות מדקה
+   בלי לצפות בכלל. הדיווח נשלח פעם אחת ביציאה, ב-sendBeacon כדי שהוא ישרוד
+   גם סגירת לשונית, ובלי לעכב את המשתמש בכלום.                            */
+document.addEventListener('click', function(e){
+  /* עד שייכנס הסרטון האמיתי, לחיצה על ההפעלה היא הסימן שנצפה. אחר כך
+     נחליף את זה במדידת שניות צפייה מתוך אלמנט הווידאו עצמו. */
+  if(e.target.closest && e.target.closest('.play') && window.__mark) window.__mark('video');
+});
+
+(function telemetry(){
+  var t0 = Date.now(), sent = false;
+  var seen = { video: false, videoSecs: 0, booking: false, question: false, scroll: 0 };
+
+  function mark(k, v){ seen[k] = (v === undefined) ? true : v; }
+  window.__mark = mark;
+
+  var maxScroll = 0;
+  addEventListener('scroll', function(){
+    var h = document.documentElement.scrollHeight - innerHeight;
+    if(h > 0) maxScroll = Math.max(maxScroll, Math.round(scrollY / h * 100));
+  }, { passive:true });
+
+  function report(reason){
+    if(sent) return; sent = true;
+    var id = '';
+    try { id = sessionStorage.getItem('dg_lead_id') || mapId() || ''; } catch(e){}
+    if(!id) return;
+    var body = JSON.stringify({
+      lead_id: id, reason: reason,
+      seconds: Math.round((Date.now() - t0) / 1000),
+      video: seen.video, video_secs: Math.round(seen.videoSecs),
+      booking_click: seen.booking, asked: seen.question,
+      scroll: Math.max(maxScroll, seen.scroll)
+    });
+    try {
+      if(navigator.sendBeacon) navigator.sendBeacon(WORKER_URL + '/event', new Blob([body], { type:'application/json' }));
+      else fetch(WORKER_URL + '/event', { method:'POST', body: body, keepalive:true });
+    } catch(e){}
+  }
+  addEventListener('pagehide', function(){ report('leave'); });
+  addEventListener('visibilitychange', function(){
+    if(document.visibilityState === 'hidden') report('hidden');
+  });
+  /* רשת ביטחון למי שנשאר פתוח הרבה זמן ואז נסגר בלי אירוע */
+  setTimeout(function(){ report('dwell'); }, 90000);
+})();
 
 /* מנסים קודם את הלשונית, ואם אין, מושכים את המפה לפי המזהה שבקישור */
 (function start(){
