@@ -215,7 +215,8 @@ function blindOpener(d){
 function fmt(n){ return n.toLocaleString('en-US'); }
 function money(n){ return n < 1000 ? 'פחות מ-1,000 ₪' : 'בערך ' + fmt(n) + ' ₪'; }
 
-/* ---------- ספריית הדליפות ---------- */
+/* ספריית הדליפות. מקור אחד, נשתל גם בשאלון וגם בדף התוצאה בזמן הבנייה,
+   כי שני עותקים היו נפרדים עם הזמן והמייל היה מדבר על דליפות אחרות מהדף. */
 function leaksFor(d){
   var a = d.answers, out = [];
   if(d.track === 'a'){
@@ -245,6 +246,7 @@ function leaksFor(d){
   }
   return out.sort(function(x,y){ return y.w - x.w; }).slice(0,3);
 }
+
 
 /* ---------- למה זה קורה דווקא אצלך ---------- */
 var WHY = {
@@ -378,15 +380,20 @@ function numeral(n,k){
 function esc(s){ return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){
   return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]; }); }
 
+var WORKER_URL = 'https://dg-gal-funnel.tom-harush.workers.dev';
+
 function sendQuestion(){
   var v = document.getElementById('q').value.trim();
   if(v.length < 3) return;
   var b = document.getElementById('qsend');
-  b.textContent = 'נשלח. אחזור אליך היום'; b.disabled = true;
-  if(window.WORKER_URL){
-    fetch(window.WORKER_URL + '/question', { method:'POST', headers:{ 'Content-Type':'application/json' },
-      body: JSON.stringify({ q:v, name:D.name, phone:D.phone, email:D.email }), keepalive:true }).catch(function(){});
-  }
+  b.disabled = true;
+  var lid = ''; try { lid = sessionStorage.getItem('dg_lead_id') || ''; } catch(e){}
+  /* הכפתור לא מבטיח שנשלח לפני שבאמת נשלח. הבטחה שקרית כאן שורפת את כל האמון שהדף בנה. */
+  fetch(WORKER_URL + '/question', { method:'POST', headers:{ 'Content-Type':'application/json' },
+    body: JSON.stringify({ lead_id:lid, question:v, name:D.name, phone:D.phone, email:D.email }) })
+    .then(function(res){ b.textContent = res.ok ? 'נשלח. אחזור אליך היום' : 'לא נשלח. אפשר לנסות שוב'; 
+                         if(!res.ok) b.disabled = false; })
+    .catch(function(){ b.textContent = 'לא נשלח. אפשר לנסות שוב'; b.disabled = false; });
 }
 
 var fl = document.getElementById('float');

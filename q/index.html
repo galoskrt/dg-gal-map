@@ -513,7 +513,40 @@ function runLoad(done){
 }
 
 /* ============ שליחה ============ */
-var WORKER_URL = '';   /* מתמלא כשהוורקר עולה. ריק = הדף עובד לבד */
+var WORKER_URL = 'https://dg-gal-funnel.tom-harush.workers.dev';
+
+/* ספריית הדליפות. מקור אחד, נשתל גם בשאלון וגם בדף התוצאה בזמן הבנייה,
+   כי שני עותקים היו נפרדים עם הזמן והמייל היה מדבר על דליפות אחרות מהדף. */
+function leaksFor(d){
+  var a = d.answers, out = [];
+  if(d.track === 'a'){
+    if(a.speed && (a.speed.i === 2 || a.speed.i === 3))
+      out.push({k:'p',w:5,h:'זמן תגובה',t:'פנייה שמחכה יום מאבדת את רוב הערך שלה. מי שענה ראשון כבר דיבר איתה.'});
+    if(a.followup && a.followup.i === 2)
+      out.push({k:'o',w:4,h:'אין מגע שני',t:'רוב העסקאות נסגרות במגע השני או השלישי. מי שלא ענה בפעם הראשונה פשוט נעלם.'});
+    if(a.reach && (a.reach.i === 2 || a.reach.i === 3))
+      out.push({k:'p',w:5,h:'פנייה שלא מגיעה לשיחה',t:'שולם על הפנייה הזאת במלואה. היא נעצרת עוד לפני שהיה סיכוי.'});
+    if(a.close && (a.close.i === 2 || a.close.i === 3))
+      out.push({k:'o',w:3,h:'סגירה בשיחה',t:'הפניות מגיעות ולא נסגרות. זו לא בעיית שיווק, וכדאי לדעת את זה לפני שמגדילים תקציב.'});
+    if(a.cac && a.cac.i !== 0)
+      out.push({k:'g',w:2,h:'המדידה נגמרת בפנייה',t:'יש מספר לפנייה. אין מספר לעסקה. וכשזה המצב, חצי מהשיווק מתנהל בחושך.'});
+    if(a.followup && a.followup.i === 1)
+      out.push({k:'o',w:1,h:'מעקב שתלוי בזיכרון',t:'חזרה ידנית עובדת בימים רגועים, ונשברת בדיוק בימים שבהם נכנסות הכי הרבה פניות.'});
+  } else {
+    if(a.refer && (a.refer.i === 0 || a.refer.i === 1))
+      out.push({k:'p',w:5,h:'תלות בהפניות',t:'ההכנסה של החודש תלויה במי שיזכור להמליץ. אי אפשר לתכנן לפי זה.'});
+    if(a.capacity && (a.capacity.i === 2 || a.capacity.i === 3))
+      out.push({k:'o',w:4,h:'קיבולת שיושבת ריקה',t:'העסק כבר בנוי לקלוט יותר ממה שהוא מקבל. הפער הזה הוא רווח שיושב ולא זז.'});
+    if(a.offer && a.offer.i !== 0)
+      out.push({k:'g',w:3,h:'הצעה לא מנוסחת',t:'כשכל שיחה יוצאת אחרת, אי אפשר לשכפל הצלחה. וגם מבחינתך, כל שיחה מתחילה מאפס.'});
+    if(a.dry && a.dry.i === 2)
+      out.push({k:'p',w:4,h:'אין ערוץ גיבוי',t:'בחודש שההפניות מתייבשות אין ברז שאפשר לפתוח, וזה בדיוק החודש שהכי קשה לתכנן אחריו.'});
+    if(a.cac && a.cac.i !== 0)
+      out.push({k:'g',w:2,h:'עלות לקוח לא ידועה',t:'גם לקוח שהגיע מהמלצה עלה משהו, בזמן ובמקום ביומן. בלי המספר הזה אין למה להשוות.'});
+  }
+  return out.sort(function(x,y){ return y.w - x.w; }).slice(0,3);
+}
+
 
 function submit(){
   var name = el('i-name').value.trim(), biz = el('i-biz').value.trim();
@@ -533,10 +566,27 @@ function submit(){
   new URLSearchParams(location.search).forEach(function(v,k){ if(/^utm_|^fbclid$|^ad_id$/.test(k)) r.utm[k] = v; });
   try { sessionStorage.setItem('dg_map', JSON.stringify(r)); } catch(e){}
 
+  /* מבנה המטען הוא חוזה עם הוורקר. שינוי כאן בלי שינוי שם שובר את המייל בשקט. */
+  var head = (r.track === 'b') ? (r.extra || r.main) : r.main;
+  var qlist = qs(), pairs = [];
+  for(var qi = 0; qi < qlist.length; qi++){
+    var ans = r.answers[qlist[qi].k];
+    if(ans) pairs.push({ q: qlist[qi].q, a: ans.label });
+  }
+  var payload = {
+    name: name, phone: r.phone, email: mail, business: biz,
+    ref_url: location.href,
+    utm: { campaign: r.utm.utm_campaign || '', adset: r.utm.utm_content || '', ad: r.utm.utm_term || '' },
+    map: { main: head, source: r.source, awareness: r.aware, temp: r.temp, score: r.score,
+           leaks: leaksFor(r).map(function(l){ return { h:l.h, t:l.t }; }), answers: pairs }
+  };
   if(WORKER_URL){
     try {
       fetch(WORKER_URL + '/lead', { method:'POST', headers:{ 'Content-Type':'application/json' },
-        body: JSON.stringify(r), keepalive:true }).catch(function(){});
+        body: JSON.stringify(payload) })
+        .then(function(res){ return res.json(); })
+        .then(function(j){ if(j && j.id) try { sessionStorage.setItem('dg_lead_id', j.id); } catch(e){} })
+        .catch(function(){});
     } catch(e){}
   }
   if(window.fbq){ fbq('trackCustom','CompleteDiagnostic',{ temperature:r.temp, score:r.score }); }
