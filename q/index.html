@@ -125,7 +125,8 @@ footer a{color:var(--mut2)}
 .qnav{display:flex;gap:10px;margin-top:20px}
 .qnav .back{cursor:pointer;font-size:15px;font-weight:800;color:var(--mut);padding:15px 20px;
   border-radius:999px;background:#fff;border:1px solid var(--line2)}
-.qnav .cta{flex:1;margin:0}
+.qnav .cta{flex:1;margin:0;min-width:0;animation:none;transform:translateZ(0);
+  white-space:nowrap;font-size:clamp(15px,4.2vw,17px)}
 .qfoot{margin-top:16px;font-size:12px;color:var(--mut2);text-align:center;font-weight:700}
 .fld{margin-bottom:13px}
 .fld label{display:block;font-size:13px;font-weight:800;color:var(--txt);margin-bottom:5px}
@@ -246,11 +247,12 @@ var CH_A = ['מאיפה מגיעים הלקוחות','מה קורה לפניות
 var CH_B = ['מאיפה מגיעים הלקוחות','הקצב והתקרה','כשהברז נסגר'];
 
 var Q1 = { ch:0, q:'היום, מאיפה מגיעים רוב הלקוחות החדשים שלך?', k:'source', o:[
-  [0.95,'g','מפרסום ממומן','יש לך ברז. השאלה היא מה קורה אחריו.',3,'a'],
-  [0.6,'o','משילוב של פרסום והמלצות','המצב הנפוץ ביותר, וגם הקשה ביותר למדידה.',3,'a'],
-  [0.35,'p','מהמלצות ופה לאוזן בלבד','צמחת בלי לשלם על תנועה. לא מובן מאליו.',2,'b'],
-  [0.5,'p','מתוכן אורגני ורשתות','הם מכירים אותך עוד לפני שהם פונים.',2,'b']
+  [0.95,'g','מפרסום ממומן','יש לך ברז. השאלה היא מה קורה אחריו.',3,'paid'],
+  [0.6,'o','משילוב של פרסום והמלצות','המצב הנפוץ ביותר, וגם הקשה ביותר למדידה.',3,'mix'],
+  [0.35,'p','מהמלצות ופה לאוזן בלבד','צמחת בלי לשלם על תנועה. לא מובן מאליו.',2,'ref'],
+  [0.5,'p','מתוכן אורגני ורשתות','הם מכירים אותך עוד לפני שהם פונים.',2,'org']
 ]};
+var SRC2TRACK = { paid:'a', mix:'a', ref:'b', org:'b' };
 
 var QA = [
  { ch:0, q:'מה גובה ההשקעה החודשית בפרסום?', k:'budget', o:[
@@ -335,7 +337,7 @@ var QB = [
 ];
 
 /* ============ מצב ============ */
-var S = { track:null, i:0, a:{}, sel:null };
+var S = { track:null, source:null, i:0, a:{}, sel:null };
 var el = function(id){ return document.getElementById(id); };
 function qs(){ return S.track === 'a' ? QA : QB; }
 function chapters(){ return S.track === 'b' ? CH_B : CH_A; }
@@ -371,7 +373,7 @@ function renderContact(){
   el('qn').textContent = 'שאלה 10 מתוך 10';
   el('qh').textContent = 'לאן לשלוח את המפה?';
   el('qfoot').textContent = 'המפה נשארת שלך גם אם לא נעבוד יחד.';
-  el('next').textContent = 'להצגת המפה';
+  el('next').textContent = 'להצגת המפה שלי';
   el('body').innerHTML =
     '<div class="fld" id="f-name"><label for="i-name">שם</label>'+
       '<input id="i-name" type="text" autocomplete="name" placeholder="השם שלך"><div class="err">צריך שם כדי לפנות אליך</div></div>'+
@@ -395,7 +397,7 @@ el('body').addEventListener('click', function(e){
   this.querySelectorAll('.opt').forEach(function(x){ x.classList.remove('sel'); });
   o.classList.add('sel');
   el('next').disabled = false;
-  if(S.i === 0){ S.track = q.o[i][5]; }
+  if(S.i === 0){ S.source = q.o[i][5]; S.track = SRC2TRACK[S.source]; }
   setTimeout(function(){ if(S.i < 9) { S.i++; render(); } }, 260);
 });
 
@@ -467,7 +469,7 @@ function compute(){
       ['הצעה מנוסחת וקבועה', a.offer.label]
     ];
   }
-  return { track:S.track, score:score, temp:temp, aware:aware, blind:blind, burn:burn,
+  return { track:S.track, source:S.source, score:score, temp:temp, aware:aware, blind:blind, burn:burn,
            main:main, extra:extra, rows:rows, answers:a };
 }
 
