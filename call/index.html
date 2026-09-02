@@ -111,7 +111,7 @@ footer a{color:var(--mut2)}
 .pt i{flex:0 0 auto;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;margin-top:2px;
   background:var(--greenT);border:1px solid var(--greenL);color:var(--greenS)}
 .pt svg{width:12px;height:12px;stroke-width:3.2}
-#cal{min-height:640px;border-radius:var(--rC);overflow:hidden;border:1px solid var(--line);
+#cal{min-height:660px;width:100%;overflow:auto;border-radius:var(--rC);overflow:hidden;border:1px solid var(--line);
   box-shadow:var(--sh2);background:#fff}
 .calfall{padding:34px 20px;text-align:center}
 .me{position:relative;overflow:hidden;padding-bottom:0}
@@ -169,47 +169,63 @@ footer a{color:var(--mut2)}
 </div>
 
 <script>
-/* ==== הקישור ליומן. שורה אחת להחלפה כשגל ימסור את הכתובת שלו ==== */
-var CAL_LINK = 'galharush/diagnosis';           /* user/event-type בלבד */
+/* ==== היומן של גל. calLink הוא user/event-type בלבד ==== */
+var CAL_LINK = 'dg-gal.online/map';
 var CAL_URL  = 'https://cal.com/' + CAL_LINK;
 
 (function (C, A, L) { var p = function (a, ar) { a.q.push(ar); };
   var d = C.document; C.Cal = C.Cal || function () { var cal = C.Cal, ar = arguments;
     if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || [];
       d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; }
-    if (ar[0] === L) { const api = function () { p(api, arguments); };
-      const namespace = ar[1]; api.q = api.q || [];
+    if (ar[0] === L) { var api = function () { p(api, arguments); };
+      var namespace = ar[1]; api.q = api.q || [];
       if (typeof namespace === "string") { cal.ns[namespace] = cal.ns[namespace] || api; p(cal.ns[namespace], ar); p(cal, ["initNamespace", namespace]); }
       else p(cal, ar); return; }
     p(cal, ar); };
 })(window, "https://app.cal.com/embed/embed.js", "init");
 
 try {
-  Cal("init", "dg", { origin: "https://app.cal.com" });
-  /* ui לפני inline. הפוך מזה, והיומן נטען לבן */
-  Cal.ns.dg("ui", {
+  Cal("init", "map", { origin: "https://app.cal.com" });
+  Cal.config = Cal.config || {};
+  Cal.config.forwardQueryParams = true;
+
+  /* ui לפני inline. בסדר ההפוך היומן נטען לבן, וזה תועד אצלנו בעבר */
+  Cal.ns.map("ui", {
     theme: "light",
     hideEventTypeDetails: false,
     layout: "month_view",
     cssVarsPerTheme: { light: {
       "cal-brand": "#ff2d8e",
+      "cal-brand-emphasis": "#d81b73",
+      "cal-brand-text": "#ffffff",
       "cal-text": "#14121c",
       "cal-text-emphasis": "#14121c",
-      "cal-border-booker": "#ece9f2",
-      "cal-bg": "#ffffff"
+      "cal-text-subtle": "#4f4d5e",
+      "cal-text-muted": "#8b8899",
+      "cal-text-inverted": "#ffffff",
+      "cal-bg": "#ffffff",
+      "cal-bg-emphasis": "#f8f7fb",
+      "cal-bg-subtle": "#f8f7fb",
+      "cal-bg-muted": "#fcfbfe",
+      "cal-bg-inverted": "#14121c",
+      "cal-border": "#ece9f2",
+      "cal-border-default": "#ece9f2",
+      "cal-border-emphasis": "#dfdbe9",
+      "cal-border-subtle": "#ece9f2",
+      "cal-border-booker": "#ece9f2"
     }}
   });
-  Cal.ns.dg("inline", {
+  Cal.ns.map("inline", {
     elementOrSelector: "#cal",
     calLink: CAL_LINK,
-    config: { layout: "month_view" }
+    config: { layout: "month_view", useSlotsViewOnSmallScreen: "true" }
   });
   setTimeout(function(){
     var c = document.getElementById('cal');
     if(c && c.querySelector('.calfall') && !c.querySelector('iframe')){
       document.getElementById('fallback').style.display = 'block';
     }
-  }, 4500);
+  }, 5000);
 } catch(e){
   var f = document.getElementById('fallback'); if(f) f.style.display = 'block';
 }
