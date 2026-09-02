@@ -392,6 +392,24 @@ function esc(s){ return String(s == null ? '' : s).replace(/[&<>"]/g, function(c
 
 var WORKER_URL = 'https://dg-gal-funnel.tom-harush.workers.dev';
 
+/* ניסיון חוזר לליד שלא הצליח להישלח בהגשה. רץ בשקט, ולא מציג כלום לאדם
+   שקורא את המפה שלו: הכישלון הוא שלנו, לא שלו. */
+(function retryPending(){
+  var raw = null;
+  try { raw = localStorage.getItem('dg_pending_lead'); } catch(e){ return; }
+  if(!raw) return;
+  fetch(WORKER_URL + '/lead', { method:'POST', headers:{ 'Content-Type':'application/json' },
+    body: raw })
+    .then(function(res){ return res.ok ? res.json() : null; })
+    .then(function(j){
+      if(j && j.id){
+        try { sessionStorage.setItem('dg_lead_id', j.id);
+              localStorage.removeItem('dg_pending_lead'); } catch(e){}
+      }
+    })
+    .catch(function(){});
+})();
+
 function sendQuestion(){
   var v = document.getElementById('q').value.trim();
   if(v.length < 3) return;

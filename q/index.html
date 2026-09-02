@@ -594,12 +594,20 @@ function submit(){
     map: { main: head, source: r.source, awareness: r.aware, temp: r.temp, score: r.score,
            leaks: leaksFor(r).map(function(l){ return { h:l.h, t:l.t }; }), answers: pairs }
   };
+  /* נכשלה שליחה, נשמר לניסיון חוזר מדף התוצאה. בלי זה אדם שהרשת שלו נפלה
+     לשנייה רואה את המפה שלו ומאמין שהוא במערכת, וגל לא יודע שהוא קיים. */
   if(WORKER_URL){
+    try { localStorage.setItem('dg_pending_lead', JSON.stringify(payload)); } catch(e){}
     try {
       fetch(WORKER_URL + '/lead', { method:'POST', headers:{ 'Content-Type':'application/json' },
         body: JSON.stringify(payload) })
-        .then(function(res){ return res.json(); })
-        .then(function(j){ if(j && j.id) try { sessionStorage.setItem('dg_lead_id', j.id); } catch(e){} })
+        .then(function(res){ return res.ok ? res.json() : null; })
+        .then(function(j){
+          if(j && j.id){
+            try { sessionStorage.setItem('dg_lead_id', j.id);
+                  localStorage.removeItem('dg_pending_lead'); } catch(e){}
+          }
+        })
         .catch(function(){});
     } catch(e){}
   }
