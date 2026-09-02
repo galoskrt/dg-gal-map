@@ -95,14 +95,31 @@ b,strong{color:var(--txt);font-weight:800}
 
 .cta{display:block;width:100%;border:0;cursor:pointer;color:#fff;font-size:17px;font-weight:800;
   padding:16px 18px;border-radius:999px;background:linear-gradient(96deg,var(--pink),var(--orange));
-  box-shadow:var(--shC);animation:bob 3.4s ease-in-out infinite}
-@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
-.cta:disabled{background:#efedf4;color:#a9a5b6;box-shadow:none;animation:none;cursor:default}
-.cta.quiet{background:#fff;border:1px solid var(--line2);color:var(--mut);box-shadow:var(--sh1);animation:none;font-size:15px}
+  box-shadow:var(--shC);
+  /* בלי אנימציית transform. כפתור מדורג שמצויר מחדש בכל פריים גורם לספארי
+     לרסק את הטקסט שעליו, וזה נראה כאילו הקופי נעלם. */
+  transform:translateZ(0);white-space:nowrap}
+.cta:disabled{background:#efedf4;color:#a9a5b6;box-shadow:none;cursor:default}
+.cta.quiet{background:#fff;border:1px solid var(--line2);color:var(--mut);box-shadow:var(--sh1);font-size:15px}
 .fine{font-size:12.5px;color:var(--mut2);margin:12px 0 0}
 
 footer{border-top:1px solid var(--line);margin-top:36px;padding:19px 0 22px;text-align:center;font-size:12.5px;color:var(--mut2)}
 footer a{color:var(--mut2)}
+
+/* מסך מעבר. שתיים שלוש שניות של שקט אחרי לחיצה הן המקום שבו אנשים עוזבים,
+   אז אומרים להם מה קורה במקום להשאיר מסך ריק. */
+.gate{position:fixed;inset:0;z-index:120;display:none;place-content:center;
+  background:rgba(20,18,28,.62);backdrop-filter:blur(3px);
+  -webkit-backdrop-filter:blur(3px);opacity:0;transition:opacity .22s ease}
+.gate.on{display:grid;opacity:1}
+.gate .g{text-align:center;padding:0 30px}
+.gate .ring{width:46px;height:46px;margin:0 auto 16px;border-radius:50%;
+  border:3px solid rgba(255,255,255,.22);border-top-color:#fff;
+  animation:gspin .8s linear infinite}
+@keyframes gspin{to{transform:rotate(360deg)}}
+.gate p{margin:0;color:#fff;font-size:16.5px;font-weight:800;line-height:1.5}
+.gate small{display:block;margin-top:7px;color:rgba(255,255,255,.7);
+  font-size:13.5px;font-weight:700}
 
 .cr{margin-top:10px!important;font-size:11.5px;color:var(--mut2);opacity:.85}
 
@@ -175,6 +192,7 @@ footer a{color:var(--mut2)}
   border-radius:999px;background:linear-gradient(96deg,var(--pink),var(--orange));box-shadow:var(--shC)}
 .empty{text-align:center;padding:60px 0}
 </style>
+<link rel="prefetch" href="/call/" as="document">
 <script>
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
 n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
@@ -198,7 +216,8 @@ src="https://www.facebook.com/tr?id=3520763671432860&ev=PageView&noscript=1" alt
 
 <div class="wrap" id="wrap"></div>
 
-<div class="float" id="float"><div class="in"><button onclick="location.href='/call/'">לבחירת מועד לשיחת אבחון</button></div></div>
+<div class="gate" id="gate"><div class="g"><div class="ring"></div><p>פותחים את היומן</p><small>עוד רגע תוכל לבחור מועד שנוח לך</small></div></div>
+<div class="float" id="float"><div class="in"><button onclick="goCall()">לבחירת מועד לשיחת אבחון</button></div></div>
 
 <script>
 var D = null;
@@ -374,9 +393,9 @@ function render(){
     '<button class="send" id="qsend">לשליחת השאלה</button></div>'+
 
   '<footer><p><b>גל הרוש</b> · דיוק דיגיטלי<br>DG-GAL.ONLINE</p>'+
-    '<p><a href="/privacy/">מדיניות הפרטיות</a></p>
-  <p class="cr">© כל הזכויות שמורות · דיוק דיגיטלי · גל הרוש 2026</p>
-</footer>';
+    '<p><a href="/privacy/">מדיניות הפרטיות</a></p>'+
+    '<p class="cr">© כל הזכויות שמורות · דיוק דיגיטלי · גל הרוש 2026</p>'+
+  '</footer>';
 
   document.getElementById('float').dataset.allow = t.f ? '1' : '0';
   document.getElementById('qsend').addEventListener('click', sendQuestion);
@@ -395,6 +414,15 @@ function esc(s){ return String(s == null ? '' : s).replace(/[&<>"]/g, function(c
   return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]; }); }
 
 var WORKER_URL = 'https://dg-gal-funnel.tom-harush.workers.dev';
+
+/* מעבר ליומן. המסך נשאר על הדף הזה עד שהיומן מצייר, כי שם הייתה השתיקה
+   הארוכה ביותר: גם הדף וגם ה-embed של קאל צריכים להיטען. */
+function goCall(){
+  if(window.fbq) fbq('trackCustom','ClickBooking');
+  var g = document.getElementById('gate');
+  if(g) g.classList.add('on');
+  setTimeout(function(){ location.href = '/call/' + location.search; }, 120);
+}
 
 /* ניסיון חוזר לליד שלא הצליח להישלח בהגשה. רץ בשקט, ולא מציג כלום לאדם
    שקורא את המפה שלו: הכישלון הוא שלנו, לא שלו. */
