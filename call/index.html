@@ -111,9 +111,11 @@ footer a{color:var(--mut2)}
 .pt i{flex:0 0 auto;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;margin-top:2px;
   background:var(--greenT);border:1px solid var(--greenL);color:var(--greenS)}
 .pt svg{width:12px;height:12px;stroke-width:3.2}
-#cal{min-height:660px;width:100%;overflow:auto;border-radius:var(--rC);overflow:hidden;border:1px solid var(--line);
+#cal{position:relative;min-height:520px;width:100%;overflow:hidden;border-radius:var(--rC);overflow:hidden;border:1px solid var(--line);
   box-shadow:var(--sh2);background:#fff}
-.calfall{padding:34px 20px;text-align:center}
+.calfall{position:absolute;inset:0;display:grid;place-content:center;padding:30px 20px;text-align:center}
+#cal.ready{min-height:0}
+#cal.ready .calfall{display:none}
 .me{position:relative;overflow:hidden;padding-bottom:0}
 .me .in{padding-bottom:6px}
 .me .av{display:block;width:130px;margin:8px 0 -1px auto}
@@ -220,12 +222,17 @@ try {
     calLink: CAL_LINK,
     config: { layout: "month_view", useSlotsViewOnSmallScreen: "true" }
   });
+  /* ברגע שקאל מזריק את המסגרת שלו, מסירים את הודעת הטעינה */
+  var box = document.getElementById('cal');
+  var mo = new MutationObserver(function(){
+    if(box.querySelector('iframe')){ box.classList.add('ready'); mo.disconnect(); }
+  });
+  mo.observe(box, { childList:true, subtree:true });
   setTimeout(function(){
-    var c = document.getElementById('cal');
-    if(c && c.querySelector('.calfall') && !c.querySelector('iframe')){
+    if(!box.querySelector('iframe')){
       document.getElementById('fallback').style.display = 'block';
     }
-  }, 5000);
+  }, 6000);
 } catch(e){
   var f = document.getElementById('fallback'); if(f) f.style.display = 'block';
 }
