@@ -104,6 +104,8 @@ b,strong{color:var(--txt);font-weight:800}
 footer{border-top:1px solid var(--line);margin-top:36px;padding:19px 0 22px;text-align:center;font-size:12.5px;color:var(--mut2)}
 footer a{color:var(--mut2)}
 
+.cr{margin-top:10px!important;font-size:11.5px;color:var(--mut2);opacity:.85}
+
 .top{padding:24px 0 0}
 .kicker{font-size:12.5px;color:var(--mut2);font-weight:700;margin:0 0 10px;text-align:center}
 .big{font-size:clamp(30px,8.6vw,46px);line-height:1.1;font-weight:800;margin:0;letter-spacing:-.025em;white-space:nowrap;
@@ -372,7 +374,9 @@ function render(){
     '<button class="send" id="qsend">לשליחת השאלה</button></div>'+
 
   '<footer><p><b>גל הרוש</b> · דיוק דיגיטלי<br>DG-GAL.ONLINE</p>'+
-    '<p><a href="/privacy/">מדיניות הפרטיות</a></p></footer>';
+    '<p><a href="/privacy/">מדיניות הפרטיות</a></p>
+  <p class="cr">© כל הזכויות שמורות · דיוק דיגיטלי · גל הרוש 2026</p>
+</footer>';
 
   document.getElementById('float').dataset.allow = t.f ? '1' : '0';
   document.getElementById('qsend').addEventListener('click', sendQuestion);
