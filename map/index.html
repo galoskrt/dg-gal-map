@@ -223,6 +223,13 @@ src="https://www.facebook.com/tr?id=3520763671432860&ev=PageView&noscript=1" alt
 var D = null;
 try { D = JSON.parse(sessionStorage.getItem('dg_map') || 'null'); } catch(e){}
 
+/* מפה נפתחת מקישור, גם ממכשיר אחר וגם בעוד שנה. זה מה שהופך אותה למשהו
+   ששייך לאדם ולא לרגע. הזיכרון של הלשונית הוא רק קיצור דרך. */
+function mapId(){
+  var m = location.search.match(/[?&]id=([\w-]{8,64})/);
+  return m ? m[1] : '';
+}
+
 function boot(){
   if(!D){
   document.getElementById('wrap').innerHTML =
@@ -464,7 +471,24 @@ window.addEventListener('scroll', function(){
   fl.classList.toggle('on', window.scrollY > 420 && r.top > window.innerHeight);
 }, { passive:true });
 
-boot();   /* אחרי שכל הקבועים הוגדרו, לא לפני */
+/* מנסים קודם את הלשונית, ואם אין, מושכים את המפה לפי המזהה שבקישור */
+(function start(){
+  if(D){ boot(); return; }
+  var id = mapId();
+  if(!id){ boot(); return; }
+  var w = document.getElementById('wrap');
+  if(w) w.innerHTML = '<div class="empty"><p>טוענים את המפה שלך.</p></div>';
+  fetch(WORKER_URL + '/m/' + id)
+    .then(function(res){ return res.ok ? res.json() : null; })
+    .then(function(j){
+      if(j && j.map){
+        D = j.map;
+        try { sessionStorage.setItem('dg_map', JSON.stringify(D)); } catch(e){}
+      }
+      boot();
+    })
+    .catch(function(){ boot(); });
+})();   /* אחרי שכל הקבועים הוגדרו, לא לפני */
 </script>
 </body>
 </html>
