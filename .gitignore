@@ -10,3 +10,5 @@ _*.js
 # מטמון של wrangler. אין בו סוד, אבל גם אין סיבה שיהיה במאגר ציבורי
 .wrangler/
 worker/
+tools/out/
+tools/img/
