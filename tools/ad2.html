@@ -30,7 +30,13 @@ body{font-family:'TelAviv','Segoe UI',Arial,sans-serif;-webkit-font-smoothing:an
 .tick::after{width:var(--tickW);height:var(--tick)}
 .t1{top:var(--tickO);right:var(--tickO)} .t2{top:var(--tickO);left:var(--tickO)}
 .t3{bottom:var(--tickO);right:var(--tickO)} .t4{bottom:var(--tickO);left:var(--tickO)}
-.t2::before,.t4::before{right:0} .t3::after,.t4::after{bottom:0}
+/* כל סימן מתמסר לפינה שלו. הגרסה הראשונה נשענה על המיקום הסטטי של
+   האלמנט, וב-RTL הוא נופל תמיד לאותה פינה, אז כל ארבעת הסימנים יצאו
+   זהים. כאן כל צד מוגדר במפורש ואין על מה להישען. */
+.t1::before{top:0;right:0}    .t1::after{top:0;right:0}
+.t2::before{top:0;left:0}     .t2::after{top:0;left:0}
+.t3::before{bottom:0;right:0} .t3::after{bottom:0;right:0}
+.t4::before{bottom:0;left:0}  .t4::after{bottom:0;left:0}
 
 /* רשת רקע כמעט בלתי נראית, כמו במקור. שתי אחוזי אטימות בכוונה:
    היא נועדה לתת מרקם, לא להיראות. */
