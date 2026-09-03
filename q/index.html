@@ -288,7 +288,7 @@ src="https://www.facebook.com/tr?id=3520763671432860&ev=PageView&noscript=1" alt
 
   <footer>
     <p><b>גל הרוש</b> · דיוק דיגיטלי<br>DG-GAL.ONLINE</p>
-    <p><a href="/privacy/">מדיניות הפרטיות</a></p>
+    <p><a href="/privacy/" target="_blank" rel="noopener">מדיניות הפרטיות</a></p>
   
   <p class="cr">© כל הזכויות שמורות · דיוק דיגיטלי · גל הרוש 2026</p>
 </footer>
@@ -481,6 +481,29 @@ function renderContact(){
   window.scrollTo({ top:0, behavior:'smooth' });
 }
 
+/* המצב נשמר אחרי כל תשובה ומשוחזר בכניסה. אדם שיצא לרגע, לקרוא מדיניות
+   או לענות לטלפון, חוזר בדיוק לאן שהיה. בלי זה עשר תשובות נמחקות. */
+var STATE_KEY = 'dg_survey_state';
+function saveState(){
+  try { sessionStorage.setItem(STATE_KEY, JSON.stringify({
+    i: S.i, a: S.a, source: S.source, track: S.track, at: Date.now(),
+    f: { name: (el('i-name')||{}).value || '', biz: (el('i-biz')||{}).value || '',
+         phone: (el('i-phone')||{}).value || '', mail: (el('i-mail')||{}).value || '' }
+  })); } catch(e){}
+}
+function restoreState(){
+  var raw = null;
+  try { raw = sessionStorage.getItem(STATE_KEY); } catch(e){ return false; }
+  if(!raw) return false;
+  var v;
+  try { v = JSON.parse(raw); } catch(e){ return false; }
+  /* אחרי שעתיים זו כבר לא אותה ישיבה */
+  if(!v || !v.a || (Date.now() - (v.at || 0)) > 7200000) return false;
+  S.i = v.i || 0; S.a = v.a || {}; S.source = v.source; S.track = v.track;
+  S._restore = v.f || null;
+  return true;
+}
+
 el('body').addEventListener('click', function(e){
   var o = e.target.closest('.opt'); if(!o) return;
   var q = current(); if(!q) return;
@@ -494,13 +517,13 @@ el('body').addEventListener('click', function(e){
   o.classList.add('sel');
   el('next').disabled = false;
   if(S.i === 0){ S.source = q.o[i][5]; S.track = SRC2TRACK[S.source]; }
-  setTimeout(function(){ if(S.i < 9) { S.i++; render(); } }, 260);
+  setTimeout(function(){ if(S.i < 9) { S.i++; render(); } saveState(); }, 260);
 });
 
-el('back').addEventListener('click', function(){ if(S.i > 0){ S.i--; render(); } });
+el('back').addEventListener('click', function(){ if(S.i > 0){ S.i--; saveState(); render(); } });
 
 el('next').addEventListener('click', function(){
-  if(S.i < 9){ if(!el('next').disabled){ S.i++; render(); } return; }
+  if(S.i < 9){ if(!el('next').disabled){ S.i++; saveState(); render(); } return; }
   submit();
 });
 
@@ -667,7 +690,8 @@ function submit(){
   r.ts = new Date().toISOString();
   r.utm = {};
   new URLSearchParams(location.search).forEach(function(v,k){ if(/^utm_|^fbclid$|^ad_id$/.test(k)) r.utm[k] = v; });
-  try { sessionStorage.setItem('dg_map', JSON.stringify(r)); } catch(e){}
+  try { sessionStorage.setItem('dg_map', JSON.stringify(r));
+        sessionStorage.removeItem(STATE_KEY); } catch(e){}
 
   /* מבנה המטען הוא חוזה עם הוורקר. שינוי כאן בלי שינוי שם שובר את המייל בשקט. */
   var head = (r.track === 'b') ? (r.extra || r.main) : r.main;
@@ -725,6 +749,7 @@ function submit(){
 }
 
 
+restoreState();
 render();
 </script>
 </body>

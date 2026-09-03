@@ -247,12 +247,18 @@ src="https://www.facebook.com/tr?id=3520763671432860&ev=PageView&noscript=1" alt
   <div class="sec" style="text-align:center">
     <button class="cta quiet" onclick="goBack()">חזרה לעמוד הקודם</button>
   </div>
+<div class="gate" id="gate"><div class="g"><div class="ring"></div>
+  <p>חוזרים לאבחון</p><small>התשובות שלך נשמרו</small></div></div>
 <script>
 /* מי שהגיע לכאן מהאבחון חוזר בדיוק לאן שהיה, ואם הוא הגיע ישירות
    הוא לפחות מגיע לדף הבית ולא נתקע. */
 function goBack(){
-  if(document.referrer && document.referrer.indexOf(location.host) > -1) history.back();
-  else location.href = "/";
+  var g = document.getElementById('gate');
+  if(g) g.classList.add('on');
+  setTimeout(function(){
+    if(document.referrer && document.referrer.indexOf(location.host) > -1) history.back();
+    else location.href = "/";
+  }, 120);
 }
 </script>
 

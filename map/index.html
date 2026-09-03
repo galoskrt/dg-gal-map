@@ -163,6 +163,13 @@ footer a{color:var(--mut2)}
 .case p{position:relative;z-index:2;margin:0 0 8px;font-size:14.5px}
 .case .pun{position:relative;z-index:2;margin:0;font-size:14.5px;font-weight:800;color:var(--greenS)}
 
+/* אישור קצר במקום התיבה, כדי שיהיה ברור לגמרי שההודעה יצאה */
+.qok{display:flex;align-items:center;gap:11px;background:var(--greenT);
+  border:1px solid var(--greenL);border-radius:14px;padding:13px 15px}
+.qok svg{flex:0 0 auto;width:22px;height:22px;color:var(--greenS)}
+.qok b{display:block;font-size:15px;font-weight:800;color:var(--greenS);line-height:1.3}
+.qok span{display:block;font-size:13px;color:var(--mut);margin-top:2px;line-height:1.45}
+
 .cr{margin-top:10px!important;font-size:11.5px;color:var(--mut2);opacity:.85}
 
 .top{padding:24px 0 0}
@@ -528,18 +535,37 @@ function goCall(){
 })();
 
 function sendQuestion(){
-  var v = document.getElementById('q').value.trim();
-  if(v.length < 3) return;
+  var box = document.getElementById('q');
+  var v = box.value.trim();
   var b = document.getElementById('qsend');
+  if(v.length < 3){
+    box.focus();
+    b.textContent = 'צריך עוד כמה מילים';
+    setTimeout(function(){ b.textContent = 'לשליחת השאלה'; }, 1800);
+    return;
+  }
+  b.disabled = true; b.textContent = 'שולח...';
+  var lid = ''; try { lid = sessionStorage.getItem('dg_lead_id') || mapId() || ''; } catch(e){}
   if(window.__mark) window.__mark('question');
-  b.disabled = true;
-  var lid = ''; try { lid = sessionStorage.getItem('dg_lead_id') || ''; } catch(e){}
-  /* הכפתור לא מבטיח שנשלח לפני שבאמת נשלח. הבטחה שקרית כאן שורפת את כל האמון שהדף בנה. */
+
   fetch(WORKER_URL + '/question', { method:'POST', headers:{ 'Content-Type':'application/json' },
     body: JSON.stringify({ lead_id:lid, question:v, name:D.name, phone:D.phone, email:D.email }) })
-    .then(function(res){ b.textContent = res.ok ? 'נשלח. אחזור אליך היום' : 'לא נשלח. אפשר לנסות שוב'; 
-                         if(!res.ok) b.disabled = false; })
-    .catch(function(){ b.textContent = 'לא נשלח. אפשר לנסות שוב'; b.disabled = false; });
+    .then(function(res){
+      if(!res.ok) throw new Error('failed');
+      /* השדה מתנקה רק אחרי אישור מהשרת, ואז מחליפים את התיבה כולה
+         באישור קצר. אחרת אדם שולח את אותה שאלה שלוש פעמים. */
+      box.value = '';
+      var wrap = b.parentNode;
+      wrap.innerHTML = '<div class="qok">'
+        + '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" '
+        + 'stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>'
+        + '<div><b>השאלה הגיעה אליי</b>'
+        + '<span>אני עונה אישית, בדרך כלל באותו יום.</span></div></div>';
+    })
+    .catch(function(){
+      b.disabled = false;
+      b.textContent = 'לא נשלח. אפשר לנסות שוב';
+    });
 }
 
 var fl = document.getElementById('float');
