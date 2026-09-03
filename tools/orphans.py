@@ -13,7 +13,7 @@ import subprocess
 CHROME = r"C:/Program Files/Google/Chrome/Application/chrome.exe"
 W = 390
 
-PROBE = """setTimeout(function(){
+PROBE = r"""setTimeout(function(){
   var bad = [], w = %d;
   document.querySelectorAll('h1,h2,h3,p,.res,.pun,.mirror,.sub,.rel').forEach(function(e){
     var r = document.createRange(); r.selectNodeContents(e);
@@ -33,7 +33,12 @@ PROBE = """setTimeout(function(){
     var last = ls[ls.length - 1];
     /* מילה יתומה היא מילה בודדת בשורה האחרונה. מודדים אותה ממש: לוקחים את
        המילה האחרונה ובודקים אם היא לבדה תופסת את כל השורה האחרונה. */
-    var words = (e.textContent||'').trim().split(/\s+/);
+    /* innerText ולא textContent: <br> מפריד שורות, וטקסט משתי שורות
+       נדבק בלעדיו למילה אחת ונספר בטעות כיתומה.
+       שבירת שורה שנכתבה בכוונה אינה מילה יתומה, אז בודקים רק את
+       המקטע האחרון, היחיד שיכול להישבר מעצמו. */
+    var segs = (e.innerText||e.textContent||'').trim().split(/\n+/);
+    var words = segs[segs.length - 1].trim().split(/\s+/);
     if(words.length < 3) return;
     var probe = document.createElement('span');
     var cs = getComputedStyle(e);
@@ -73,10 +78,17 @@ def check(sub, name):
 
 
 if __name__ == "__main__":
-    total = 0
+    total, broken = 0, []
     for sub, name in PAGES:
         r = check(sub, name)
         n = re.search(r"orphans=(\d+)", r)
+        # גלאי שנשבר מחזיר את כותרת הדף, ובלי השורה הבאה
+        # הכלי מדווח אפס יתומות בדיוק כשהוא לא מדד כלום.
+        if not n:
+            broken.append(name)
         total += int(n.group(1)) if n else 0
         print("  %-8s %s" % (name, r[:230]))
     print("\n  %d orphan lines across the funnel" % total)
+    if broken:
+        print("  המדידה לא רצה ב: %s" % ", ".join(broken))
+        raise SystemExit(1)
