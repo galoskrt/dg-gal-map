@@ -85,16 +85,40 @@ li{color:var(--mut);margin-bottom:7px}
 <div class="gate" id="gate"><div class="g"><div class="ring"></div>
   <p>חוזרים לאבחון</p><small>התשובות שלך נשמרו</small></div></div>
 <script>
-/* מי שהגיע לכאן מהאבחון חוזר בדיוק לאן שהיה, ואם הוא הגיע ישירות
-   הוא לפחות מגיע לדף הבית ולא נתקע. */
+/* ★ החזרה מהעמוד הזה נתקעה, ונקודת הנטישה היא שנייה לפני שליחת הטופס.
+   הסיבה: הקישור נפתח בלשונית חדשה, ובלשונית חדשה אין היסטוריה, אז
+   history.back() לא עושה כלום. מסך הטעינה נשאר ומסתובב לנצח.
+
+   התיקון עובד בשלוש שכבות, מהמהיר לבטוח, ובשום מצב לא נשאר תקוע:
+     1. לשונית שנפתחה בסקריפט, נסגרת וחוזרים ללשונית המקורית כמו שהיא.
+     2. יש היסטוריה, חוזרים בה. הדפדפן מגיש את השאלון מהמטמון, מיידית.
+     3. אין היסטוריה, הולכים ישירות לכתובת שממנה הגיעו, על תשובותיה.
+   ומעל הכל רץ שומר שמכבה את המסך אם שום דבר לא קרה. */
+function hideGate(){
+  var g = document.getElementById('gate');
+  if(g) g.classList.remove('on');
+}
 function goBack(){
   var g = document.getElementById('gate');
   if(g) g.classList.add('on');
-  setTimeout(function(){
-    if(document.referrer && document.referrer.indexOf(location.host) > -1) history.back();
-    else location.href = "/";
-  }, 120);
+
+  var ref = document.referrer || '';
+  var mine = ref.indexOf('//' + location.host + '/') > -1;
+
+  if(window.opener && !window.opener.closed){
+    try { window.close(); } catch(e){}
+  }
+  if(history.length > 1 && mine){ history.back(); }
+  else if(mine){ location.replace(ref); }
+  else { location.replace('/'); }
+
+  /* אם אחרי שנייה עדיין כאן, שום ניווט לא תפס. מכבים את המסך כדי שיהיה
+     אפשר ללחוץ שוב, ומציעים את הקישור הישיר. */
+  setTimeout(hideGate, 1000);
 }
+/* חזרה לעמוד הזה דרך מטמון הדפדפן משחזרת את ה־DOM כפי שהיה, כולל מסך
+   טעינה דלוק. מכבים אותו. */
+window.addEventListener('pageshow', hideGate);
 </script>
 
 

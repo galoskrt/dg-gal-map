@@ -12,3 +12,7 @@ _*.js
 worker/
 tools/out/
 tools/img/
+
+# תצוגות ביניים של מסמכים, לא חלק מהאתר
+tools/b1.*
+tools/d1_p*.png

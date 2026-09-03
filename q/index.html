@@ -288,7 +288,7 @@ src="https://www.facebook.com/tr?id=3520763671432860&ev=PageView&noscript=1" alt
 
   <footer>
     <p><b>גל הרוש</b> · דיוק דיגיטלי<br>DG-GAL.ONLINE</p>
-    <p><a href="/privacy/" target="_blank" rel="noopener">מדיניות הפרטיות</a></p>
+    <p><a href="/privacy/">מדיניות הפרטיות</a></p>
   
   <p class="cr">© כל הזכויות שמורות · דיוק דיגיטלי · גל הרוש 2026</p>
 </footer>
@@ -536,7 +536,24 @@ function renderContact(){
     '<div class="fld" id="f-mail"><label for="i-mail">אימייל</label>'+
       '<input id="i-mail" type="email" inputmode="email" autocomplete="email" placeholder="name@example.com"><div class="err">כתובת אימייל תקינה</div></div>'+
     '<label class="consent"><input type="checkbox" id="i-ok">'+
-      '<span>אפשר לשלוח לי את המפה ועדכונים. קראתי את <a href="/privacy/" target="_blank">מדיניות הפרטיות</a>.</span></label>';
+      '<span>אפשר לשלוח לי את המפה ועדכונים. קראתי את <a href="/privacy/">מדיניות הפרטיות</a>.</span></label>';
+  /* ★ המסך הזה נבנה מחדש בכל חזרה, אז מה שהוקלד בו חייב לחזור אליו.
+     בלי זה מי שיצא לקרוא מדיניות חוזר לארבעה שדות ריקים אחרי תשע תשובות. */
+  var r = savedFields();
+  if(r){
+    if(el('i-name'))  el('i-name').value  = r.name  || '';
+    if(el('i-biz'))   el('i-biz').value   = r.biz   || '';
+    if(el('i-phone')) el('i-phone').value = r.phone || '';
+    if(el('i-mail'))  el('i-mail').value  = r.mail  || '';
+    if(el('i-ok'))    el('i-ok').checked  = !!r.ok;
+  }
+  /* ושומרים תוך כדי הקלדה, לא רק במעבר שאלה. נקודת היציאה נמצאת כאן
+     בדיוק, אחרי ההקלדה ולפני השליחה. */
+  ['i-name','i-biz','i-phone','i-mail','i-ok'].forEach(function(id){
+    var e = el(id); if(!e) return;
+    e.addEventListener('input', saveState);
+    e.addEventListener('change', saveState);
+  });
   el('next').disabled = false;
   window.scrollTo({ top:0, behavior:'smooth' });
 }
@@ -544,11 +561,19 @@ function renderContact(){
 /* המצב נשמר אחרי כל תשובה ומשוחזר בכניסה. אדם שיצא לרגע, לקרוא מדיניות
    או לענות לטלפון, חוזר בדיוק לאן שהיה. בלי זה עשר תשובות נמחקות. */
 var STATE_KEY = 'dg_survey_state';
+/* קוראים תמיד את מה ששמור עכשיו, לא תצלום מרגע הטעינה. מסך הפרטים
+   נבנה מחדש בכל חזרה אליו, וצילום ישן היה מוחק הקלדה טרייה. */
+function savedFields(){
+  var v = null;
+  try { v = JSON.parse(sessionStorage.getItem(STATE_KEY) || 'null'); } catch(e){ return null; }
+  return (v && v.f) || null;
+}
 function saveState(){
   try { sessionStorage.setItem(STATE_KEY, JSON.stringify({
     i: S.i, a: S.a, source: S.source, track: S.track, at: Date.now(),
     f: { name: (el('i-name')||{}).value || '', biz: (el('i-biz')||{}).value || '',
-         phone: (el('i-phone')||{}).value || '', mail: (el('i-mail')||{}).value || '' }
+         phone: (el('i-phone')||{}).value || '', mail: (el('i-mail')||{}).value || '',
+         ok: !!(el('i-ok')||{}).checked }
   })); } catch(e){}
 }
 function restoreState(){
@@ -560,7 +585,6 @@ function restoreState(){
   /* אחרי שעתיים זו כבר לא אותה ישיבה */
   if(!v || !v.a || (Date.now() - (v.at || 0)) > 7200000) return false;
   S.i = v.i || 0; S.a = v.a || {}; S.source = v.source; S.track = v.track;
-  S._restore = v.f || null;
   return true;
 }
 
