@@ -25,9 +25,13 @@ SP = os.path.dirname(os.path.abspath(__file__))
 SK = u"C:/Users/HP/.claude/skills/carousel-diyuk-digitali/assets"
 CH = r"C:/Program Files/Google/Chrome/Application/chrome.exe"
 
+# מסמך 09: פיד 4:5 וסטורי 9:16. בפורמט הסטורי 14 אחוז
+# ריקים למעלה ו-20 למטה, שם הממשק של פייסבוק יושב וחותך טקסט.
+# הריבוע נשמר לפוסטים אורגניים.
 FORMATS = {          # name: (w, h, type scale, padTop, padBottom, padX)
     "square": (1080, 1080, 1.00, 0.052, 0.050, 0.070),
     "feed":   (1080, 1350, 1.02, 0.052, 0.046, 0.070),
+    "story":  (1080, 1920, 1.00, 0.150, 0.205, 0.075),
 }
 
 SPEC3 = u"והמספר שלך על המסך"
@@ -53,28 +57,33 @@ CTA = u"למפת הדליפה שלי"
 # ולכן הם מדברים ל-37% ולא ל-3%. "עסקים שחיים על המלצות" היה
 # האשמה. "עסקים שבנו לעצמם שם" היא מחמאה.
 
+# הבאדג׳ המנצח, החלטת גל 04/09/2026. הוא אינו מפלח אלא מסנן,
+# והוא היחיד שנושא את התכונה שמפרידה את השוק שלו: מבנה העסקה,
+# ולא ערוץ תנועה. הסינון הבא הוא שאלה 1 באבחון.
+BADGE = u"לעסקי שירות שהעסקה נסגרת בשיחה או בפגישה"
+
 ADS = [
     {   # כניסה דרך הניחוש. הפותחת, כי היא מניחה רק שיש קמפיין
-        "id": "a1_guess", "art": "art_7.png", "tag": u"\u05dc\u05e2\u05e1\u05e7\u05d9\u05dd \u05e9\u05de\u05d1\u05d9\u05d0\u05d9\u05dd \u05dc\u05e7\u05d5\u05d7\u05d5\u05ea \u05de\u05e4\u05e8\u05e1\u05d5\u05dd \u05de\u05de\u05d5\u05de\u05df",
+        "id": "a1_guess", "art": "art_7.png", "tag": BADGE,
         "h1": [u'במקום <span class="mark p">לנחש</span> למה הקמפיין לא מוכר,',
                u'אפשר <span class="mark g">לדעת</span> איפה הלקוח נעצר.'],
         "primary": u"בלי לפרק את מה שכבר בנית, ובלי להתחיל הכל מחדש.",
     },
     {   # כניסה דרך התסכול. כבוד המומחה אינו נתון למשא ומתן
-        "id": "b2_expert", "art": "art_12.png", "tag": u"\u05dc\u05e2\u05e1\u05e7\u05d9\u05dd \u05e9\u05d1\u05e0\u05d5 \u05e0\u05d5\u05db\u05d7\u05d5\u05ea \u05d0\u05d5\u05e8\u05d2\u05e0\u05d9\u05ea",
+        "id": "b2_expert", "art": "art_12.png", "tag": BADGE,
         "h1": [u'<span class="mark g">המומחיות שלך</span> היא בתחום שלך.',
                u'לא צריך להיות מומחה גם <span class="mark p">בשיווק</span>.'],
         "primary": u"בלי ללמוד קמפיינים, ובלי עוד קורס שנשאר פתוח בלשונית.",
     },
     {   # כניסה דרך המדידה. צרה יותר בכוונה, ולכן לא פותחת
-        "id": "c3_cost", "art": "art_14.png", "tag": u"\u05dc\u05e2\u05e1\u05e7\u05d9\u05dd \u05e9\u05de\u05d7\u05d1\u05e8\u05d9\u05dd \u05d1\u05d9\u05df \u05ea\u05d5\u05db\u05df, \u05e7\u05de\u05e4\u05d9\u05d9\u05e0\u05d9\u05dd \u05d5\u05d4\u05de\u05dc\u05e6\u05d5\u05ea",
+        "id": "c3_cost", "art": "art_14.png", "tag": BADGE,
         "h1": [u'<span class="mark g">ידוע לך</span> כמה עולה פנייה.',
                u'כמה עולה <span class="mark p">עסקה</span>, כבר פחות.'],
         "primary": u"בלי להחליף מערכות, ובלי להתחיל למדוד הכל מהיום.",
     },
     {   # כניסה דרך שליטה, לאיש הפה לאוזן. בלי ורוד בכוונה:
         # הזווית שלו היא תקרה ושליטה, לעולם לא כישלון
-        "id": "d4_control", "art": "art_10.png", "tag": u"\u05dc\u05e2\u05e1\u05e7\u05d9\u05dd \u05e9\u05d1\u05e0\u05d5 \u05dc\u05e2\u05e6\u05de\u05dd \u05e9\u05dd \u05e9\u05e2\u05d5\u05d1\u05e8 \u05de\u05e4\u05d4 \u05dc\u05d0\u05d5\u05d6\u05df",
+        "id": "d4_control", "art": "art_10.png", "tag": BADGE,
         "h1": [u'ידעת להביא לקוחות בלי לפרסם.',
                u'עכשיו גם <span class="mark g">לפתוח את הברז</span> בהחלטה שלך.'],
         "primary": u"גם בלי עוקבים, וגם בלי להעלות סרטונים לרשתות.",
