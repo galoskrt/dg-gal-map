@@ -6,3 +6,7 @@ tools/out/
 tools/view/
 _*.html
 _*.js
+
+# מטמון של wrangler. אין בו סוד, אבל גם אין סיבה שיהיה במאגר ציבורי
+.wrangler/
+worker/
