@@ -19,7 +19,8 @@ import os
 import numpy as np
 from PIL import Image
 
-SRC = u"C:/Users/HP/Downloads/\u05d4\u05de\u05e9\u05e4\u05da \u05e9\u05dc\u05d9 \u05d3\u05d9\u05d5\u05e7 \u05d3\u05d9\u05d2\u05d9\u05d8\u05dc\u05d9/\u05e7\u05e8\u05d9\u05d0\u05d9\u05d9\u05d8\u05d9\u05d1 2"
+# המודעות שמהן נחתכת האמנות, בתת התיקייה "מקור".
+SRC = u"C:/Users/HP/Downloads/\u05d4\u05de\u05e9\u05e4\u05da \u05e9\u05dc\u05d9 \u05d3\u05d9\u05d5\u05e7 \u05d3\u05d9\u05d2\u05d9\u05d8\u05dc\u05d9/\u05e7\u05e8\u05d9\u05d0\u05d9\u05d9\u05d8\u05d9\u05d1 2/מקור"
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "img")
 
 # רצועת האמנות בכל מודעה, בין הכותרת לשם המוצר
@@ -63,7 +64,9 @@ def cut(n, top, bot):
     # יוצאת שקופה למחצה זה בלתי נראה. בלי זה נשאר מלבן בהיר סביב
     # האובייקט בכל קנה מידה שאינו רוחב מלא.
     d = np.abs(crop.astype(float) - np.array(CANVAS, dtype=float)).sum(axis=2)
-    key = np.clip((d - 5.0) / 23.0, 0, 1) * 255.0
+    # הסף הועלה אחרי שהמסגרת נכנסה: עם קצה מוגדר לכרטיס, שאריות
+    # הזוהר הצבעוני מהמודעה המקורית נראות כלכלוך ולא כרקע.
+    key = np.clip((d - 15.0) / 30.0, 0, 1) * 255.0
 
     # ריכוך למעלה ולמטה, מעל המפתח
     ramp = (np.linspace(0, 1, FEATHER) ** 1.5 * 255)

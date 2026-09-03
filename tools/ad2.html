@@ -9,12 +9,28 @@
   --orange:#ff7a1a; --orangeS:#c95c07;
   --green:#34d399; --greenS:#0c8a5f; --greenL:#d6f2e6;
   --txt:#14121c; --mut:#4f4d5e; --bg:#f9f3f2; --card:#ffffff;
+  --ground:#f1e8e6; --line:#e6dfe4; --line2:#dcd4da;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{background:var(--bg)}
+html,body{background:var(--ground)}
 body{font-family:'TelAviv','Segoe UI',Arial,sans-serif;-webkit-font-smoothing:antialiased}
 
-.ad{position:relative;width:var(--W);height:var(--H);background:var(--bg);overflow:hidden}
+.ad{position:relative;width:var(--W);height:var(--H);background:var(--ground);overflow:hidden}
+
+/* מסגרת הקלף. אותה מסגרת של כרטיסיות סיפור הלקוח באתר, ובכוונה: אותה
+   הוכחה ואותו מותג לא אמורים להיראות אחרת בשני מקומות. */
+.card{position:absolute;inset:var(--cardM);background:var(--bg);
+  border:var(--cardB) solid var(--line2);border-radius:var(--cardR);overflow:hidden}
+.card::before{content:"";position:absolute;inset:var(--cardI);z-index:3;
+  border:var(--cardB) solid var(--line);border-radius:var(--cardIR);pointer-events:none}
+.tick{position:absolute;z-index:4;width:var(--tick);height:var(--tick);pointer-events:none}
+.tick::before,.tick::after{content:"";position:absolute;background:var(--pink);
+  opacity:.45;border-radius:2px}
+.tick::before{width:var(--tick);height:var(--tickW)}
+.tick::after{width:var(--tickW);height:var(--tick)}
+.t1{top:var(--tickO);right:var(--tickO)} .t2{top:var(--tickO);left:var(--tickO)}
+.t3{bottom:var(--tickO);right:var(--tickO)} .t4{bottom:var(--tickO);left:var(--tickO)}
+.t2::before,.t4::before{right:0} .t3::after,.t4::after{bottom:0}
 
 /* רשת רקע כמעט בלתי נראית, כמו במקור. שתי אחוזי אטימות בכוונה:
    היא נועדה לתת מרקם, לא להיראות. */
@@ -77,7 +93,9 @@ h1 i{display:block;font-style:normal;white-space:nowrap}
 </head>
 <body>
 <div class="ad">
+  <div class="card">
   <i class="grid"></i>
+  <i class="tick t1"></i><i class="tick t2"></i><i class="tick t3"></i><i class="tick t4"></i>
   <div class="inner">
     <div class="tag">/*TAG*/</div>
     <h1>/*H1*/</h1>
@@ -97,6 +115,7 @@ h1 i{display:block;font-style:normal;white-space:nowrap}
         <path d="M12 12h.01"/></svg>/*SPEC3*/</b>
     </div>
     <div class="cta">/*CTA*/</div>
+  </div>
   </div>
 </div>
 </body>
