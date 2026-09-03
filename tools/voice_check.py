@@ -62,9 +62,14 @@ def forms(token):
 
 
 def check(label, text):
-    plain = re.sub(r"<[^>]+>", " ", text)
+    # קופסת סימון היא יחידה אחת שאינה נשברת, אז לצורך בדיקת
+    # מילה יתומה היא נספרת כמילה אחת. בלי זה סיום של שורה
+    # בקופסה נראה כיתומה שאינו קיים.
+    unit = re.sub(r'<span class="mark [pg]">(.*?)</span>',
+                  lambda m: m.group(1).replace(" ", " "), text)
+    plain = re.sub(r"<[^>]+>", " ", unit)
     plain = re.sub(r"\s+", " ", plain).strip()
-    for token in plain.split():
+    for token in plain.replace(u" ", " ").split():
         cand = forms(token)
         for word, why in BANNED.items():
             if word in cand:
