@@ -469,14 +469,36 @@ function go(){
       s.classList.toggle('on', b.top + b.height / 2 <= mark + 4);
     });
   }
-  window.addEventListener('scroll', draw, { passive:true });
-  window.addEventListener('resize', draw);
+  /* גלילה בטלפון יורה הרבה יותר מהר מקצב הציור, אז מודדים פעם אחת לפריים.
+     בלי זה כל אירוע גלילה מחשב מחדש את מיקום כל שלב והמסך נתקע. */
+  var queued = false, backstop = null;
+  function run(){ queued = false; clearTimeout(backstop); backstop = null; draw(); }
+  function onScroll(){
+    if(queued) return;
+    queued = true;
+    if(window.requestAnimationFrame) requestAnimationFrame(run);
+    /* גיבוי: אם פריים לא מגיע, הציור עדיין קורה ולא נשאר תקוע באמצע */
+    backstop = setTimeout(run, 60);
+  }
+  window.addEventListener('scroll', onScroll, { passive:true });
+  window.addEventListener('resize', onScroll);
+  window.__tlDraw = draw;
   draw();
 })();
 
 var fl = document.getElementById('float');
-window.addEventListener('scroll', function(){
+/* מצטרף לאותו קצב פריים במקום להאזין בנפרד לגלילה */
+var floatQueued = false;
+function floatDraw(){
   fl.classList.toggle('on', window.scrollY > 620);
+}
+function floatRun(){ floatQueued = false; clearTimeout(floatBack); floatBack = null; floatDraw(); }
+var floatBack = null;
+window.addEventListener('scroll', function(){
+  if(floatQueued) return;
+  floatQueued = true;
+  if(window.requestAnimationFrame) requestAnimationFrame(floatRun);
+  floatBack = setTimeout(floatRun, 60);
 }, { passive:true });
 </script>
 </body>
