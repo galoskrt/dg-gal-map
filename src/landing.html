@@ -1,0 +1,305 @@
+<!doctype html>
+<html dir="rtl" lang="he">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>מפת הדליפה · גל הרוש · דיוק דיגיטלי</title>
+<meta name="description" content="עשר שאלות, ארבע דקות, ובסוף מפה אישית שמראה כמה כסף הולך לך לאיבוד בין הפנייה למעמד המכירה, ואיפה בדיוק זה קורה.">
+<meta property="og:title" content="מפת הדליפה · דיוק דיגיטלי">
+<meta property="og:description" content="כמה כסף הולך לאיבוד בין הפנייה למעמד המכירה, ואיפה בדיוק. אבחון אישי בארבע דקות.">
+<meta property="og:type" content="website">
+<style>
+/*FONT*/
+/*BRAND*/
+
+
+
+
+
+
+
+
+/* הפרצופים קטנים יותר עכשיו, כי הם שתים עשרה ולא שבע */
+.faces img{width:30px;height:30px;margin-left:-9px}
+.proof span{font-size:12.5px}
+/* באדג' מעל הסרטון */
+.vbadge{display:inline-block;margin:0 auto 10px;padding:6px 13px;border-radius:999px;
+  background:var(--pinkT);border:1px solid var(--pinkL);color:var(--pinkS);
+  font-size:12.5px;font-weight:800;white-space:nowrap}
+.vid{text-align:center}
+
+/* הוכחה חברתית: פרצופים אמיתיים, לא איורים */
+.proof{display:flex;align-items:center;justify-content:center;gap:10px;
+  margin:16px auto 0;flex-wrap:wrap}
+.faces{display:flex;direction:ltr}
+.faces img{width:34px;height:34px;border-radius:50%;display:block;
+  border:2px solid #fff;box-shadow:0 1px 3px rgba(20,18,28,.16);object-fit:cover;
+  margin-left:-10px;background:#fff}
+.faces img:first-child{margin-left:0}
+.proof span{font-size:13px;font-weight:700;color:var(--mut2);line-height:1.45}
+.proof span b{color:var(--txt);font-weight:800}
+
+.cr{margin-top:10px!important;font-size:11.5px;color:var(--mut2);opacity:.85}
+
+.hero{padding:30px 0 4px;text-align:center}
+.h1{font-size:31px;line-height:1.24;font-weight:800;margin:0 0 12px;letter-spacing:-.02em}
+.rel{font-size:15.5px;font-weight:800;color:var(--pinkS);margin:0 0 16px;line-height:1.5}
+.sub{font-size:15.5px;color:var(--mut);margin:0 auto 20px;max-width:430px}
+.vid{position:relative;margin:0 auto 20px;max-width:100%}
+.frame{position:relative;aspect-ratio:16/9;border-radius:26px 26px 26px 8px;overflow:hidden;
+  border:1px solid var(--line2);box-shadow:var(--sh2);
+  background:linear-gradient(168deg,#fff 0%,var(--pinkT) 42%,var(--orangeT) 100%)}
+.frame::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(90% 55% at 50% 118%,rgba(20,18,28,.30),transparent 62%)}
+.frame img{position:absolute;bottom:0;right:7%;left:auto;transform:none;
+  height:94%;width:auto;max-width:none;display:block}
+.play{position:absolute;z-index:2;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:64px;height:64px;border-radius:50%;border:0;cursor:pointer;display:grid;place-items:center;
+  background:linear-gradient(96deg,var(--pink),var(--orange));box-shadow:var(--shC),0 0 0 8px rgba(255,255,255,.30)}
+.play svg{width:23px;height:23px;color:#fff;margin-right:3px}
+.mirror{background:#fff;border:1px solid var(--line);border-radius:var(--rC);
+  padding:15px 16px;margin-bottom:10px;box-shadow:var(--sh1);font-size:16px;font-weight:700;color:var(--txt);line-height:1.5}
+.step{display:flex;gap:14px;align-items:flex-start;margin-bottom:14px}
+.step .n{flex:0 0 auto;width:40px;text-align:center}
+.step .n b{display:block;font-size:27px;line-height:1;font-weight:800;letter-spacing:-.03em;
+  color:transparent;-webkit-text-stroke:1.4px var(--pink);opacity:.95}
+.step .n i{display:block;width:1px;height:22px;margin:8px auto 0;opacity:.5;
+  background:linear-gradient(180deg,var(--pink),transparent)}
+.step h3{margin:0 0 4px;font-size:17px;font-weight:800}
+.step p{margin:0;font-size:14.5px}
+.tl{position:relative;background:#fff;border:1px solid var(--line2);border-radius:26px 26px 26px 8px;
+  padding:26px 20px 22px;box-shadow:var(--sh2);overflow:hidden}
+.tl::before{content:"";position:absolute;inset:7px;border:1px solid var(--line);
+  border-radius:20px 20px 20px 5px;pointer-events:none}
+.tl .tick{position:absolute;width:13px;height:13px;pointer-events:none}
+.tl .tick::before,.tl .tick::after{content:"";position:absolute;background:var(--pink);opacity:.45;border-radius:2px}
+.tl .tick::before{width:13px;height:2px}
+.tl .tick::after{width:2px;height:13px}
+.rail{position:absolute;top:74px;bottom:64px;right:37.5px;width:3px;border-radius:3px;background:var(--line);overflow:hidden}
+.rail i{position:absolute;top:0;right:0;left:0;height:0;border-radius:3px;
+  background:linear-gradient(180deg,var(--pink),var(--orange));transition:height .25s ease-out}
+.tl .step{position:relative;z-index:2;display:flex;gap:16px;align-items:flex-start;margin-bottom:26px}
+.tl .step:last-of-type{margin-bottom:6px}
+.tl .step .n{flex:0 0 auto;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;
+  background:#fff;border:2px solid var(--line2);font-size:14px;font-weight:800;color:var(--mut2);
+  transition:border-color .3s,color .3s,box-shadow .3s,background .3s}
+.tl .step.on .n{border-color:var(--pink);color:#fff;background:linear-gradient(150deg,var(--pink),var(--orange));
+  box-shadow:0 0 0 5px var(--pinkL)}
+.tl .step h3{margin:6px 0 4px;font-size:17.5px;font-weight:800;letter-spacing:-.01em}
+.tl .step p{margin:0;font-size:14.5px}
+
+.pf{background:#fff;border:1px solid var(--line);border-radius:var(--rC);padding:17px 16px;
+  margin-bottom:12px;box-shadow:var(--sh1)}
+.pf .nm{font-size:12.5px;font-weight:800;color:var(--pinkS);margin:0 0 7px}
+.pf p{margin:0;font-size:14.5px}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.fit{display:flex;gap:12px;align-items:flex-start;margin-bottom:11px;font-size:15px;color:var(--mut);line-height:1.55}
+.fit i{flex:0 0 auto;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;margin-top:2px}
+.fit svg{width:12px;height:12px;stroke-width:3.2}
+.fit.y i{background:var(--greenT);border:1px solid var(--greenL);color:var(--greenS)}
+.fit.n i{background:var(--pinkT);border:1px solid var(--pinkL);color:var(--pinkS)}
+.me{position:relative;overflow:hidden;padding-bottom:0}
+.me .in{padding-bottom:6px}
+.me{padding-bottom:0}
+.me .glowme{position:absolute;bottom:-30px;left:50%;transform:translateX(-50%);
+  width:300px;height:210px;border-radius:50%;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(255,45,142,.16),rgba(255,122,26,.09) 55%,transparent 78%)}
+.me .av{position:relative;z-index:2;display:block;width:min(74%,250px);margin:16px auto -1px;
+  -webkit-mask-image:linear-gradient(180deg,#000 58%,rgba(0,0,0,.62) 80%,rgba(0,0,0,0) 100%);
+  mask-image:linear-gradient(180deg,#000 58%,rgba(0,0,0,.62) 80%,rgba(0,0,0,0) 100%)}
+.close{text-align:center;border:1px solid var(--greenL);background:var(--greenT);
+  border-radius:30px 30px 30px 8px;padding:26px 19px;box-shadow:var(--sh2)}
+.close .cta{margin-top:15px}
+.float{position:fixed;left:0;right:0;bottom:0;z-index:45;padding:11px 18px calc(11px + env(safe-area-inset-bottom));
+  background:linear-gradient(180deg,rgba(255,255,255,0),rgba(255,255,255,.97) 34%);opacity:0;transform:translateY(100%);
+  transition:opacity .28s,transform .28s;pointer-events:none}
+.float.on{opacity:1;transform:none;pointer-events:auto}
+.float .in{max-width:520px;margin:0 auto}
+.float button{width:100%;border:0;cursor:pointer;color:#fff;font-size:16px;font-weight:800;padding:15px;
+  border-radius:999px;background:linear-gradient(96deg,var(--pink),var(--orange));box-shadow:var(--shC)}
+</style>
+<link rel="prefetch" href="/q/" as="document">
+</head>
+<body>
+
+<div class="grid"></div>
+<div class="glow"><i class="g1"></i><i class="g2"></i><i class="g3"></i></div>
+
+<header><div class="hd">
+  <img src="/*LOGO*/" alt="דיוק דיגיטלי">
+  <span class="who">מפת הדליפה</span>
+</div></header>
+
+<div class="wrap">
+
+  <div class="hero">
+    <h1 class="h1">תפסיק <span class="box">לנחש</span> למה הקמפיין לא מוכר.<br>תתחיל <span class="boxg">לדעת</span> איפה <span class="nb">הלקוח נעצר.</span></h1>
+    <p class="rel">בלי לפרק את מה שכבר בנית, <span class="nb">ובלי להתחיל הכל מחדש.</span></p>
+    <p class="sub">עשר שאלות, ארבע דקות, ובסוף מפה אישית שמראה <b>כמה כסף הולך לך לאיבוד בדרך שבין הפנייה למעמד המכירה, <span class="nb">ואיפה בדיוק זה קורה.</span></b></p>
+    <div class="vid">
+      <span class="vbadge">צפו בסרטון, 60 שניות בלבד</span>
+      <div class="frame">
+        <img src="/*AVATAR*/" alt="גל הרוש">
+        <button class="play" aria-label="להפעלת הסרטון"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>
+      </div>
+    </div>
+    <button class="cta" onclick="go()">להתחיל את האבחון</button>
+    <div class="proof"><div class="faces"><img src="/*CLIENT01*/" alt=""><img src="/*CLIENT02*/" alt=""><img src="/*CLIENT03*/" alt=""><img src="/*CLIENT04*/" alt=""><img src="/*CLIENT05*/" alt=""><img src="/*CLIENT06*/" alt=""><img src="/*CLIENT07*/" alt=""><img src="/*CLIENT08*/" alt=""><img src="/*CLIENT09*/" alt=""><img src="/*CLIENT10*/" alt=""><img src="/*CLIENT11*/" alt=""><img src="/*CLIENT12*/" alt=""></div><span>עסקים שכבר <b>עברו את התהליך</b></span></div>
+    <p class="fine">בלי שיחת מכירה. המפה נשארת שלך גם אם לא נעבוד יחד.</p>
+  </div>
+
+  <div class="sec">
+    <h2 class="sh">אחד <span class="nb">מהמשפטים האלה</span> <span class="nb"><span class="box">נשמע מוכר</span>?</span></h2>
+    <div class="mirror">"אני מקבל פניות, ואני לא באמת יודע מה קרה להן אחר כך."</div>
+    <div class="mirror">"הדוח החודשי מראה עלייה. התזרים של החודש הבא לא מרגיש את זה."</div>
+    <div class="mirror">"אני סוגר מצוין מול לקוח. אז למה כל כך קשה להביא אותו לשולחן?"</div>
+    <div class="mirror">"אני מומחה בתחום שלי. למה אני צריך להיות מומחה גם בזה?"</div>
+    <p style="margin-top:14px">אם כן, הבעיה כמעט בטוח לא נמצאת בכמות הפניות. <b>היא נמצאת במי נכנס, ובמה שקורה לו אחר כך.</b></p>
+  </div>
+
+  <div class="sec">
+    <h2 class="sh">מה בדיוק <span class="boxo">מקבלים כאן</span></h2>
+    <div class="tl" id="tl">
+            <div class="rail"><i id="railfill"></i></div>
+      <div class="step"><div class="n">01</div><div>
+        <h3>עונים על עשר שאלות</h3>
+        <p>הכל בהקשה, בלי הקלדה, בערך ארבע דקות. <b>ולכל תשובה יש הסבר קצר מה היא אומרת.</b></p></div></div>
+      <div class="step"><div class="n">02</div><div>
+        <h3>מקבלים מספר</h3>
+        <p>כמה כסף הולך לאיבוד בין הפנייה למעמד המכירה, לפי מה שסימנת. <b>ומראים לך את החישוב עצמו, שורה שורה</b>, כדי שתוכל לבדוק אותי.</p></div></div>
+      <div class="step"><div class="n">03</div><div>
+        <h3>ורואים איפה זה קורה</h3>
+        <p>שלוש נקודות הדליפה שלך, לפי סדר, <b>ומשהו אחד שאפשר לעשות כבר מחר בבוקר</b> בלי אף אחד.</p></div></div>
+    </div>
+    <p class="fine" style="margin-top:12px">המספר הוא הערכה על סמך התשובות, ומעוגל כלפי מטה. אני לא מנפח מספרים.</p>
+  </div>
+
+  <div class="sec">
+    <h2 class="sh">מי כבר <span class="boxg">עשה את זה</span></h2>
+    <div class="cases">
+<!--CASES-->  </div>
+  </div>
+
+<div class="sec card lift">
+    <h2 class="sh">למי זה <span class="boxg">מתאים</span>, ולמי <span class="box">פחות</span></h2>
+    <div class="fit y"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></i>
+      <span>עסק מבוסס שכבר מביא לקוחות, ורוצה לדעת איפה הכסף נעצר בדרך.</span></div>
+    <div class="fit y"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></i>
+      <span>לקוח ששווה יותר מעשרת אלפים שקל בשנה הראשונה.</span></div>
+    <div class="fit y"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></i>
+      <span>מומחה בתחום שלו, שאין לו זמן להיות מומחה גם בשיווק.</span></div>
+    <div class="fit n"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></i>
+      <span>עסק שרק נפתח ועדיין אין לו לקוחות ראשונים למדוד.</span></div>
+    <div class="fit n"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></i>
+      <span>מי שמחפש הבטחות מנופחות לאחוזי סגירה או להמרה של פניות לעסקאות. <b>לא באתי למכור, באתי לאבחן. אני לא מחלק הבטחות.</b></span></div>
+  </div>
+
+  <div class="sec">
+    <h2 class="sh">ומי <span class="box">כותב את זה</span></h2>
+    <div class="card lift me"><div class="in">
+      <p>אני גל הרוש. <b>אני לא קמפיינר ואני לא סוכנות.</b> אני מאבחן מסלול לקוח ובונה את המערכת שסוגרת את הפערים בו.</p>
+      <p>רוב מי שמגיע אליי כבר עשה הכל: אתר, אוטומציות, מערכת ניהול לקוחות, לפעמים גם קמפיין שרץ. <b>ובכל זאת, בכל פעם שהוא צריך להדליק תקציב, הוא אומר לעצמו שהוא שוב מהמר.</b></p>
+      <p style="margin-bottom:0">אני מתחיל מהשאלה שאף אחד לא שואל, <b>למי בדיוק אנחנו מפרסמים</b>, וממנה בונה אחורה. <span class="boxg">ובסוף התהליך הם כבר לא מהמרים. <span class="nb">הם יודעים.</span></span></p>
+    </div><i class="glowme"></i><img class="av" src="/*GAL*/" alt="גל הרוש"></div>
+  </div>
+
+  <div class="sec close">
+    <h2>ארבע דקות, והמספר שלך על המסך</h2>
+    <p>בלי שיחת מכירה ובלי טופס ארוך. עשר שאלות בהקשה, <b>והמפה נשארת שלך בכל מקרה.</b></p>
+    <button class="cta" onclick="go()">להתחיל את האבחון</button>
+  </div>
+
+  <footer>
+    <p><b>גל הרוש</b> · דיוק דיגיטלי<br>DG-GAL.ONLINE</p>
+    <p><a href="/privacy/">מדיניות הפרטיות</a></p>
+  
+  <p class="cr">© כל הזכויות שמורות · דיוק דיגיטלי · גל הרוש 2026</p>
+</footer>
+</div>
+
+<div class="gate" id="gate"><div class="g"><div class="ring"></div><p>מכינים עבורך את האבחון</p><small>עשר שאלות, ארבע דקות, והמפה שלך בסוף</small></div></div>
+<div class="float" id="float"><div class="in"><button onclick="go()">להתחיל את האבחון</button></div></div>
+
+<script>
+function go(){
+  /* לא StartDiagnostic. לחיצה כאן היא כוונה, לא התחלה, והאירוע שהקמפיין
+     מיועל אליו נשמר לרגע שבו באמת נענתה השאלה הראשונה. */
+  if(window.fbq) fbq('trackCustom','ClickDiagnostic');
+  /* המסך הזה נשאר על הדף הישן עד שהחדש מצייר, ולכן הוא מכסה בדיוק את
+     השניות שבהן קודם לא קרה כלום. */
+  var g = document.getElementById('gate');
+  if(g) g.classList.add('on');
+  setTimeout(function(){ location.href = '/q/' + location.search; }, 120);
+}
+
+/* הפס מתמלא לפי הגלילה, והמספרים נדלקים כשהוא עובר אותם */
+(function(){
+  var tl = document.getElementById('tl'), fill = document.getElementById('railfill');
+  if(!tl || !fill) return;
+  var steps = [].slice.call(tl.querySelectorAll('.step'));
+  var rail = tl.querySelector('.rail');
+  function draw(){
+    var r = rail.getBoundingClientRect();
+    var line = (window.innerHeight * 0.62) - r.top;
+    var pct = Math.max(0, Math.min(1, line / r.height));
+    fill.style.height = (pct * 100) + '%';
+    var mark = r.top + pct * r.height;
+    steps.forEach(function(s){
+      var b = s.querySelector('.n').getBoundingClientRect();
+      s.classList.toggle('on', b.top + b.height / 2 <= mark + 4);
+    });
+  }
+  /* גלילה בטלפון יורה הרבה יותר מהר מקצב הציור, אז מודדים פעם אחת לפריים.
+     בלי זה כל אירוע גלילה מחשב מחדש את מיקום כל שלב והמסך נתקע. */
+  var queued = false, backstop = null;
+  function run(){ queued = false; clearTimeout(backstop); backstop = null; draw(); }
+  function onScroll(){
+    if(queued) return;
+    queued = true;
+    if(window.requestAnimationFrame) requestAnimationFrame(run);
+    /* גיבוי: אם פריים לא מגיע, הציור עדיין קורה ולא נשאר תקוע באמצע */
+    backstop = setTimeout(run, 60);
+  }
+  window.addEventListener('scroll', onScroll, { passive:true });
+  window.addEventListener('resize', onScroll);
+  window.__tlDraw = draw;
+  draw();
+})();
+
+var fl = document.getElementById('float');
+/* מצטרף לאותו קצב פריים במקום להאזין בנפרד לגלילה */
+var floatQueued = false;
+function floatDraw(){
+  fl.classList.toggle('on', window.scrollY > 620);
+}
+function floatRun(){ floatQueued = false; clearTimeout(floatBack); floatBack = null; floatDraw(); }
+var floatBack = null;
+window.addEventListener('scroll', function(){
+  if(floatQueued) return;
+  floatQueued = true;
+  if(window.requestAnimationFrame) requestAnimationFrame(floatRun);
+  floatBack = setTimeout(floatRun, 60);
+}, { passive:true });
+</script>
+</body>
+</html>

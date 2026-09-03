@@ -1,0 +1,94 @@
+<!doctype html>
+<html dir="rtl" lang="he">
+<head>
+<meta charset="utf-8">
+<style>
+/*FONT*/
+:root{
+  --pink:#ff2d8e; --pinkS:#d81b73; --pinkL:#ffe3ef;
+  --orange:#ff7a1a; --orangeS:#c95c07; --orangeL:#ffe7d2;
+  --green:#34d399; --greenS:#0c8a5f; --greenL:#d6f2e6;
+  --txt:#14121c; --mut:#4f4d5e; --mut2:#8b8899; --line:#ece9f2; --line2:#dfdbe9;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#fff}
+body{font-family:'TelAviv','Segoe UI',Arial,sans-serif;-webkit-font-smoothing:antialiased}
+
+.ad{position:relative;width:var(--W);height:var(--H);background:#fff;overflow:hidden}
+
+/* רקע שקט: נגיעות צבע רחוקות בפינות בלבד, בלי להתחרות בטקסט */
+.wash{position:absolute;pointer-events:none;border-radius:50%;filter:blur(var(--blur))}
+.w1{top:-14%;right:-20%;width:62%;height:30%;
+  background:radial-gradient(closest-side,rgba(255,45,142,.17),transparent 70%)}
+.w2{top:-10%;left:-22%;width:56%;height:26%;
+  background:radial-gradient(closest-side,rgba(52,211,153,.13),transparent 70%)}
+.w3{bottom:-12%;right:-18%;width:64%;height:28%;
+  background:radial-gradient(closest-side,rgba(255,122,26,.15),transparent 70%)}
+
+/* עמודה אחת, הכל ממורכז, מרווחים קבועים */
+.inner{position:relative;z-index:2;width:100%;height:100%;
+  display:flex;flex-direction:column;align-items:center;text-align:center;
+  padding:var(--padT) var(--padX) var(--padB)}
+
+.logo{display:flex;align-items:center;gap:var(--logoGap);flex:0 0 auto}
+.logo img{height:var(--logoH);width:auto;display:block}
+.logo b{font-size:var(--logoT);font-weight:800;color:var(--txt);white-space:nowrap}
+.logo em{font-style:normal;font-size:var(--logoT);font-weight:400;color:var(--mut2);
+  white-space:nowrap}
+
+h1 i{display:block;font-style:normal;white-space:nowrap}
+h1{margin-top:var(--gapA);font-size:var(--h1);line-height:1.36;font-weight:800;
+  letter-spacing:-.022em;color:var(--txt);max-width:var(--colW);flex:0 0 auto}
+.mark{position:relative;display:inline-block;padding:0 .08em;white-space:nowrap}
+.mark::before{content:"";position:absolute;z-index:-1;left:-.05em;right:-.05em;
+  top:.2em;bottom:.1em;border-radius:.14em;transform:rotate(-.5deg)}
+.mark.p::before{background:var(--pinkL)} .mark.p{color:var(--pinkS)}
+.mark.g::before{background:var(--greenL)} .mark.g{color:var(--greenS)}
+
+.art{flex:1 1 auto;display:flex;align-items:center;justify-content:center;
+  width:var(--artW);min-height:0;margin-top:var(--gapB)}
+.art img{max-width:100%;max-height:100%;object-fit:contain;display:block;
+  mix-blend-mode:multiply}
+
+.spec{flex:0 0 auto;display:inline-flex;align-items:center;gap:var(--specGap);
+  background:#fff;border:1px solid var(--line2);border-radius:999px;
+  padding:var(--specP);margin-top:var(--gapC);
+  box-shadow:0 1px 2px rgba(20,18,28,.05),0 10px 26px rgba(20,18,28,.07)}
+.spec s{width:1px;height:var(--specSep);background:var(--line2);flex:0 0 auto}
+.spec b{font-size:var(--specF);font-weight:800;color:var(--txt);white-space:nowrap}
+.spec b em{font-style:normal;color:var(--pinkS)}
+.spec b.g em{color:var(--greenS)}
+
+.cta{flex:0 0 auto;margin-top:var(--gapD);font-size:var(--ctaF);font-weight:800;
+  color:#fff;white-space:nowrap;padding:var(--ctaP);border-radius:var(--ctaR);
+  background:linear-gradient(105deg,var(--orange),var(--pink) 62%);
+  box-shadow:0 4px 12px rgba(255,45,142,.24),0 16px 34px rgba(255,45,142,.18)}
+
+.me{flex:0 0 auto;margin-top:var(--gapE);display:flex;align-items:center;
+  gap:var(--meGap)}
+.me .ph{position:relative;width:var(--faceD);height:var(--faceD);border-radius:50%;
+  overflow:hidden;background:linear-gradient(158deg,#fff,var(--pinkL));
+  border:var(--faceB) solid #fff;box-shadow:0 2px 8px rgba(20,18,28,.12),0 0 0 1px var(--pinkL)}
+.me .ph img{position:absolute;left:50%;top:6%;width:152%;transform:translateX(-50%);display:block}
+.me span{font-size:var(--nameF);font-weight:800;color:var(--mut);white-space:nowrap}
+</style>
+</head>
+<body>
+<div class="ad">
+  <i class="wash w1"></i><i class="wash w2"></i><i class="wash w3"></i>
+  <div class="inner">
+    <div class="logo"><img src="/*LOGO*/" alt=""><b>גל הרוש</b><em>·&nbsp;דיוק דיגיטלי</em></div>
+    <h1><i>תפסיק <span class="mark p">לנחש</span> למה הקמפיין לא מוכר.</i>
+        <i>תתחיל <span class="mark g">לדעת</span> איפה הלקוח נעצר.</i></h1>
+    <div class="art"><img src="/*ART*/" alt=""></div>
+    <div class="spec">
+      <b><em>10</em>&nbsp;שאלות</b><s></s>
+      <b><em>4</em>&nbsp;דקות</b><s></s>
+      <b class="g">והאבחון&nbsp;<em>אצלך</em></b>
+    </div>
+    <div class="cta">למפת הדליפה</div>
+    <div class="me"><div class="ph"><img src="/*GAL*/" alt=""></div><span>גל הרוש</span></div>
+  </div>
+</div>
+</body>
+</html>

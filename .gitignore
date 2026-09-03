@@ -1,3 +1,8 @@
-worker/.wrangler/
-.wrangler/
-node_modules/
+# תוצרי ביניים של הבנייה והבדיקות
+tools/_*
+tools/*.pyc
+tools/__pycache__/
+tools/out/
+tools/view/
+_*.html
+_*.js

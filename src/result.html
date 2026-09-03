@@ -1,0 +1,419 @@
+<!doctype html>
+<html dir="rtl" lang="he">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>המפה שלך · דיוק דיגיטלי</title>
+<style>
+/*FONT*/
+/*BRAND*/
+/* אישור קצר במקום התיבה, כדי שיהיה ברור לגמרי שההודעה יצאה */
+.qok{display:flex;align-items:center;gap:11px;background:var(--greenT);
+  border:1px solid var(--greenL);border-radius:14px;padding:13px 15px}
+.qok svg{flex:0 0 auto;width:22px;height:22px;color:var(--greenS)}
+.qok b{display:block;font-size:15px;font-weight:800;color:var(--greenS);line-height:1.3}
+.qok span{display:block;font-size:13px;color:var(--mut);margin-top:2px;line-height:1.45}
+
+.cr{margin-top:10px!important;font-size:11.5px;color:var(--mut2);opacity:.85}
+
+.top{padding:24px 0 0}
+.kicker{font-size:12.5px;color:var(--mut2);font-weight:700;margin:0 0 10px;text-align:center}
+.big{font-size:clamp(30px,8.6vw,46px);line-height:1.1;font-weight:800;margin:0;letter-spacing:-.025em;white-space:nowrap;
+  background:linear-gradient(96deg,var(--pink) 0%,var(--orange) 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.numsub{display:block;font-size:15px;color:var(--mut);font-weight:700;margin:9px 0 0}
+.seal{display:flex;align-items:center;justify-content:center;gap:7px;margin:15px 0 0;padding-top:13px;
+  border-top:1px dashed var(--line2);font-size:11.5px;color:var(--mut2);font-weight:700}
+.seal svg{width:14px;height:14px;stroke-width:2.4;color:var(--greenS);flex:0 0 auto}
+.under{font-size:14px;color:var(--mut);margin:16px auto 0;max-width:440px;text-align:center}
+.vid{position:relative;margin:0 auto;max-width:100%}
+.frame{position:relative;aspect-ratio:16/9;border-radius:26px 26px 26px 8px;overflow:hidden;
+  border:1px solid var(--line2);box-shadow:var(--sh2);
+  background:linear-gradient(168deg,#fff 0%,var(--pinkT) 42%,var(--orangeT) 100%)}
+.frame::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(90% 55% at 50% 118%,rgba(20,18,28,.30),transparent 62%)}
+.frame img{position:absolute;bottom:0;right:7%;left:auto;transform:none;
+  height:94%;width:auto;max-width:none;display:block}
+.play{position:absolute;z-index:2;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:66px;height:66px;border-radius:50%;border:0;cursor:pointer;display:grid;place-items:center;
+  background:linear-gradient(96deg,var(--pink),var(--orange));box-shadow:var(--shC),0 0 0 8px rgba(255,255,255,.30)}
+.play svg{width:24px;height:24px;color:#fff;margin-right:3px}
+.vcap{font-size:13px;color:var(--mut2);text-align:center;margin:13px 0 0;font-weight:700}
+.calc{margin-top:20px;background:var(--bg2);border:1px solid var(--line);border-radius:var(--rC);
+  padding:17px 17px 7px;box-shadow:var(--sh1)}
+.calc .row{display:flex;justify-content:space-between;gap:12px;padding:9px 0;font-size:14px;
+  border-bottom:1px dashed #dcd8e8}
+.calc .row:last-of-type{border-bottom:0}
+.calc .row span:first-child{color:var(--mut2)}
+.calc .row span:last-child{font-weight:800;color:var(--txt)}
+.calc .row.tot{border-top:2px solid var(--pinkL);border-bottom:0;margin-top:4px;padding-top:13px}
+.calc .row.tot span:first-child{color:var(--txt);font-weight:800}
+.calc .row.tot .totv{font-size:18px;color:var(--pinkS)}
+.calc .note{font-size:12.5px;color:var(--mut2);padding:11px 0 12px;line-height:1.65}
+.why{position:relative;border-radius:var(--rC);padding:20px 18px;border:1px solid #ffd4e6;background:var(--pinkT);
+  box-shadow:var(--sh1);overflow:hidden}
+.why::before{content:"";position:absolute;top:0;right:0;width:3px;height:100%;
+  background:linear-gradient(180deg,var(--pink),rgba(255,45,142,.25))}
+.why p:last-child{margin-bottom:0}
+.leak{display:flex;gap:14px;align-items:flex-start;margin-bottom:14px;background:#fff;
+  border:1px solid var(--line);border-radius:var(--rC);padding:16px 15px;box-shadow:var(--sh1)}
+.leak h3{margin:0 0 5px;font-size:17px;font-weight:800;letter-spacing:-.01em}
+.leak p{margin:0;font-size:14.5px}
+.leak .worth{display:inline-block;margin-top:10px;font-size:12.5px;font-weight:800;color:var(--greenS);
+  background:var(--greenT);border:1px solid var(--greenL);border-radius:999px;padding:5px 12px}
+.proof{position:relative;overflow:hidden;padding-bottom:0}
+.proof .in{padding-bottom:6px}
+.proof .av{display:block;width:132px;margin:8px 0 -1px auto}
+.proof .nm{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:800;color:var(--pinkS);margin:0 0 9px}
+.proof .nm i{display:block;width:24px;height:24px;border-radius:50%;flex:0 0 auto;
+  background:linear-gradient(158deg,#fff,var(--pinkL));border:1px solid #ffc9de;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 2px 5px rgba(20,18,28,.07)}
+.invite{position:relative;text-align:center;border:1px solid var(--greenL);background:var(--greenT);
+  border-radius:30px 30px 30px 8px;padding:26px 19px;box-shadow:var(--sh2)}
+.invite .cta{margin-top:15px}
+.ask textarea{width:100%;min-height:88px;resize:vertical;margin-top:11px;color:var(--txt);font-size:15px;
+  background:var(--bg3);border:1px solid var(--line);border-radius:16px 16px 16px 5px;padding:12px 13px}
+.ask textarea::placeholder{color:var(--mut2)}
+.ask .send{margin-top:10px;width:100%;cursor:pointer;color:var(--txt);font-size:15px;font-weight:800;
+  padding:13px;border-radius:999px;background:#fff;border:1px solid var(--line2);box-shadow:var(--sh1)}
+.float{position:fixed;left:0;right:0;bottom:0;z-index:45;padding:11px 18px calc(11px + env(safe-area-inset-bottom));
+  background:linear-gradient(180deg,rgba(255,255,255,0),rgba(255,255,255,.97) 34%);opacity:0;transform:translateY(100%);
+  transition:opacity .28s,transform .28s;pointer-events:none}
+.float.on{opacity:1;transform:none;pointer-events:auto}
+.float .in{max-width:520px;margin:0 auto}
+.float button{width:100%;border:0;cursor:pointer;color:#fff;font-size:16px;font-weight:800;padding:15px;
+  border-radius:999px;background:linear-gradient(96deg,var(--pink),var(--orange));box-shadow:var(--shC)}
+.empty{text-align:center;padding:60px 0}
+</style>
+<link rel="prefetch" href="/call/" as="document">
+</head>
+<body>
+
+<div class="grid"></div>
+<div class="glow"><i class="g1"></i><i class="g2"></i><i class="g3"></i></div>
+
+<header><div class="hd">
+  <img src="/*LOGO*/" alt="דיוק דיגיטלי">
+  <span class="who">מפת הדליפה</span>
+</div></header>
+
+<div class="wrap" id="wrap"></div>
+
+<div class="gate" id="gate"><div class="g"><div class="ring"></div><p>פותחים את היומן</p><small>עוד רגע תוכל לבחור מועד שנוח לך</small></div></div>
+<div class="float" id="float"><div class="in"><button onclick="goCall()">לבחירת מועד לשיחת אבחון</button></div></div>
+
+<script>
+var D = null;
+try { D = JSON.parse(sessionStorage.getItem('dg_map') || 'null'); } catch(e){}
+
+/* מפה נפתחת מקישור, גם ממכשיר אחר וגם בעוד שנה. זה מה שהופך אותה למשהו
+   ששייך לאדם ולא לרגע. הזיכרון של הלשונית הוא רק קיצור דרך. */
+function mapId(){
+  var m = location.search.match(/[?&]id=([\w-]{8,64})/);
+  return m ? m[1] : '';
+}
+
+function boot(){
+  if(!D){
+  document.getElementById('wrap').innerHTML =
+    '<div class="empty"><h2>המפה לא נמצאה</h2>'+
+    '<p>נראה שהדף נפתח בלי לעבור את השאלון, או שהדפדפן ניקה את הנתונים.</p>'+
+    '<button class="cta" onclick="location.href=\'/q/\'">למילוי האבחון</button></div>';
+    return;
+  }
+  render();
+}
+
+/* הפתיחה של פסקת "לא רואה" חייבת לתאר את מה שבאמת נעשה בשאלון */
+function blindOpener(d){
+  var u = d.unknown || 0;
+  if(u >= 2) return 'בכמה שאלות כאן סימנת שהמספר לא ידוע לך.';
+  if(u === 1) return 'בשאלה אחת כאן סימנת שהמספר לא ידוע לך.';
+  if(d.approx) return 'על חלק מהמספרים כאן ענית בהערכה ולא במדויק.';
+  return 'התשובות כאן מראות שהמספרים עצמם לא נמדדים בשום מקום.';
+}
+
+function fmt(n){ return n.toLocaleString('en-US'); }
+function money(n){ return n < 1000 ? 'פחות מ-1,000 ₪' : 'בערך ' + fmt(n) + ' ₪'; }
+
+/*__LEAKS__*/
+
+/* ---------- למה זה קורה דווקא אצלך ---------- */
+var WHY = {
+  sees:'על השאלות שנוגעות למספרים ידעת לענות, וזה לא מובן מאליו. רוב מי שממלא את זה לא יודע. <b>ברור לך בדיוק מה לא עובד.</b> פשוט אין לך את השעות לבנות את המערכת שתסגור את זה, ואין שום סיבה שיהיו לך.',
+  blind:'\u200b{OPEN} <b>אף אחד לא בנה לך את המקום שבו המספרים האלה נמדדים</b>, ולכן אין שום דרך לדעת אותם. מומחיות בתחום שלך היא לא מומחיות בזה, ואף אחד לא אמור לצפות לשתיהן. אבל כל עוד המספרים חסרים, <span class="box">כל החלטה על תקציב היא ניחוש. ובגלל זה זה מרגיש כמו הימור.</span>',
+  burned:'סימנת שכבר ניסית, ושזה לא עבד. <b>אני לא אגיד לך שניסית לא מספיק.</b> ברוב המקרים שאני רואה, הפרסום עצמו היה בסדר גמור. פשוט אף אחד לא הגדיר למי לפרסם לפני שהדליק את הכסף. הקמפיין רץ, המספרים על המסך נראו סבירים, <span class="box">והאנשים שנכנסו לא היו הלקוחות שלך.</span> את זה לא מתקנים בתוך הקמפיין. זה נשבר לפניו.'
+};
+var LINE = {
+  sees:'נבנה את המערכת שסוגרת את שלוש הנקודות האלה.',
+  blind:'נעבור על המספרים יחד, וההחלטה אצלך.',
+  burned:'לפני שמדליקים משהו, נגדיר בדיוק למי. משם מתחילים.'
+};
+var SRC = {
+  paid:{
+    lead:'נופלים כל חודש בדרך שבין הפנייה למעמד המכירה',
+    why:'אתה משלם על כל פנייה שנכנסת, ולכן כל פנייה שלא הגיעה לשיחה היא כסף שכבר יצא מהחשבון ולא חזר.',
+    note:'מתוך הפניות שלא הגיעו לשיחה לקחתי בחשבון רק חלק, לפי זמן התגובה והמעקב שסימנת. את השאר חתכתי החוצה, כי מספר מנופח לא היה עוזר לאף אחד מאיתנו.'
+  },
+  mix:{
+    lead:'נופלים כל חודש בדרך שבין הפנייה למעמד המכירה',
+    why:'חלק מהפניות שלך עולות כסף וחלק מגיעות מעצמן, ובלי הפרדה ביניהן אי אפשר לדעת על מה באמת שילמת ומה הגיע בחינם.',
+    note:'מתוך הפניות שלא הגיעו לשיחה לקחתי בחשבון רק חלק, לפי זמן התגובה והמעקב שסימנת. את השאר חתכתי החוצה, כי מספר מנופח לא היה עוזר לאף אחד מאיתנו.'
+  },
+  ref:{
+    lead:'שהעסק שלך כבר בנוי לקבל כל חודש, ולא מקבל',
+    why:'העסק שלך גדל על המלצות, וזה אומר שהקצב שלו נקבע על ידי אנשים אחרים ולא על ידך.',
+    note:'המספר למעלה הוא הקיבולת הפנויה: כמה לקוחות נוספים אפשר לקחת מחר, כפול שווי לקוח. זה לא כסף חדש שצריך להמציא, זה מקום שכבר קיים ביומן.'
+  },
+  org:{
+    lead:'נופלים כל חודש בין העניין שהתוכן שלך יצר לבין השיחה',
+    why:'התוכן שלך כבר עשה את החלק הקשה. מי שפונה אליך מכיר אותך, קרא, צפה, וכבר סומך עליך. <b>ולכן כל פנייה שנעצרת אחרי זה היא לא פנייה קרה שלא הבשילה, היא אמון שנבנה ולא נוצל.</b>',
+    note:'מתוך הפניות שלא הגיעו לשיחה לקחתי בחשבון רק חלק, לפי מה שסימנת על מקום ללמוד על השירות ועל הצעה מנוסחת. את השאר חתכתי החוצה, כי אלה שני דברים שאפשר לתקן, וכל השאר הוא ניחוש.'
+  }
+};
+var UNDER = {
+  a:'<b>זה לא כסף שצריך להביא מבחוץ.</b> כבר שילמת עליו, והוא פשוט לא הפך לעסקה. המספר הוא הערכה על סמך מה שסימנת, מעוגלת כלפי מטה.',
+  b:'<b>זה לא כסף חדש שצריך להמציא.</b> הקיבולת כבר קיימת אצלך, היא פשוט יושבת ריקה. המספר הוא הערכה על סמך מה שסימנת, מעוגלת כלפי מטה.',
+  c:'<b>זה לא כסף שצריך לייצר מאפס.</b> העניין כבר נוצר, התוכן שלך עשה את העבודה, והוא פשוט לא הפך לשיחה. המספר הוא הערכה על סמך מה שסימנת, מעוגלת כלפי מטה.'
+};
+var TEMP = {
+  hot:{h:'נעבור על המפה הזאת יחד?',
+       p:'המספר גבוה, ורוב מה שמייצר אותו נמצא בשליטה שלך. שלוש הנקודות למעלה נסגרות בדרך כלל בלי להגדיל שקל בתקציב.',
+       c:'לבחירת מועד', f:true},
+  warm:{h:'שווה שנסתכל על זה יחד',
+       p:'יש כאן בסיס שעובד, ויש נקודה אחת או שתיים ששוות תיקון. הן לא דורשות שינוי גדול. הן דורשות שמישהו יסתכל על המספרים יחד איתך.',
+       c:'לבחירת מועד', f:true},
+  ok:{h:'בכנות, אין כאן סיבה למהר',
+       p:'המספרים נראים מסודרים יחסית, ואין כאן דליפה גדולה. המפה נשארת שלך. אם בעוד חצי שנה משהו ישתנה, הדלת פתוחה.',
+       c:'לקביעת שיחה, מתי שיתאים', f:false}
+};
+/* איזה סיפור מוצג. מסלול ממומן מקבל את מי שהגיע עם תנועה קנויה, ומסלול
+   פה לאוזן מקבל את מי שנשען שנים על המלצות. אותן כרטיסיות בדיוק כמו
+   בדף הבית, מאותו מקור, כדי שההוכחה לא תסתור את עצמה בין הדפים. */
+/* מסלול התוכן מקבל את מי שגדל בלי לשלם על תנועה, וזה הסיפור הקרוב לו ביותר */
+var PROOF_FOR = { a: 0, b: 1, c: 1 };
+var TOMORROW = {
+  a:'כל מה שצריך זה לקחת את הפניות של החודש האחרון, ולסמן ליד כל אחת כמה זמן עבר עד שמישהו חזר אליה. <b>רק את זה.</b> תוך חצי שעה יהיה שם דפוס, והוא כנראה יסביר את המספר שלמעלה טוב יותר מכל דוח שהגיע אליך עד היום.',
+  b:'כל מה שצריך זה לקחת את עשרת הלקוחות האחרונים, ולסמן ליד כל אחד מי בדיוק הפנה אותו. <b>רק את זה.</b> תוך חצי שעה יהיה ברור אם יש כאן ערוץ, או שלושה אנשים שממשיכים לזכור אותך.',
+  c:'כל מה שצריך זה לקחת את עשר הפניות האחרונות שהגיעו מהתוכן, ולסמן ליד כל אחת איפה בדיוק היא נעצרה. <b>רק את זה.</b> תוך חצי שעה יהיה ברור אם הן נעצרות באותו מקום, ואם כן, זה מקום אחד שאפשר לתקן.'
+};
+
+function render(){
+  var t = TEMP[D.temp], lk = leaksFor(D);
+  var src = SRC[D.source] || SRC[D.track === 'a' ? 'paid' : (D.track === 'c' ? 'org' : 'ref')];
+  var headline = D.track === 'a' ? D.main : (D.extra || D.main);
+
+  document.getElementById('wrap').innerHTML =
+  '<div class="top sec"><p class="kicker">מפת הדליפה של <b>' + esc(D.biz) + '</b></p>'+
+    '<div class="panel"><i class="tick t1"></i><i class="tick t2"></i><i class="tick t3"></i><i class="tick t4"></i>'+
+      '<p class="big">' + money(headline) + '</p><span class="numsub">' + src.lead + '</span>'+
+      '<div class="seal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>'+
+      '<span>אבחון אישי · עשר שאלות · נבנה מהתשובות שסימנת</span></div></div>'+
+    '<p class="under">' + UNDER[D.track] + '</p></div>'+
+
+  '<div class="sec"><h2 class="sh">רגע אחד <span class="box">לפני שממשיכים</span></h2>'+
+    '<div class="vid"><div class="frame"><img src="/*AVATAR*/" alt="גל הרוש">'+
+      '<button class="play" aria-label="להפעלת הסרטון"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>'+
+      '</div><p class="vcap">שלוש דקות על המספר שלמעלה, ומה עושים איתו.</p></div></div>'+
+
+  '<div class="calc sec"><h2 class="sh">ככה הגעתי למספר, <span class="boxo">שורה שורה</span></h2>'+
+    '<p style="font-size:14px;margin-bottom:14px">אלה הנתונים שסימנת. אפשר לעבור עליהם ולבדוק אותי.</p>'+
+    D.rows.map(function(x){ return '<div class="row"><span>'+esc(x[0])+'</span><span>'+esc(x[1])+'</span></div>'; }).join('')+
+    '<div class="row tot"><span>' + (D.track === 'b' ? 'קיבולת פנויה בחודש' : 'הולך לאיבוד בחודש') + '</span>'+
+      '<span class="totv">' + money(headline) + '</span></div>'+
+    (D.track === 'b' && D.main >= 1000
+      ? '<div class="row"><span>ומתוך ההכנסה הקיימת, תלוי בהמלצות</span><span>' + money(D.main) + '</span></div>'
+      : '')+
+    '<p class="note">' + src.note + '</p></div>'+
+
+  '<div class="sec"><h2 class="sh">למה זה קורה <span class="box">דווקא אצלך</span></h2>'+
+    '<div class="why"><p>' + src.why + '</p><p>' + WHY[D.aware].replace('{OPEN}', blindOpener(D)) + '</p></div></div>'+
+
+  '<div class="sec"><h2 class="sh"><span class="box">איפה זה נעצר</span>, לפי סדר</h2>'+
+    '<p>שלוש הנקודות האלה נבחרו מהתשובות שסימנת, לפי סדר הכסף שיושב על כל אחת מהן.</p>'+
+    '<div style="margin-top:18px">' + lk.map(function(l,i){
+      return '<div class="leak">'+ numeral(i+1, l.k) +'<div><h3>'+l.h+'</h3><p>'+l.t+'</p></div></div>';
+    }).join('') + '</div></div>'+
+
+  '<div class="sec card lift"><h2 class="sh">משהו שאפשר לעשות <span class="boxo">כבר מחר בבוקר</span>, בלי אף אחד</h2>'+
+    '<p style="margin-bottom:0">' + TOMORROW[D.track] + '</p></div>'+
+
+  '<div class="sec"><h2 class="sh">מי שכבר <span class="boxg">סגר את הנקודות האלה</span></h2>'+
+    '<div class="cases">' + caseCard(CASES[PROOF_FOR[D.track] || 0]) + '</div></div>'+
+
+  '<div class="sec invite" id="s-inv"><h2>'+t.h+'</h2>'+
+    '<p>'+t.p + (D.temp === 'ok' ? '' : ' <b>'+LINE[D.aware]+'</b>') + '</p>'+
+    '<button class="cta'+(D.temp === 'ok' ? ' quiet' : '')+'" onclick="location.href=\'/call/\'">'+t.c+'</button>'+
+    '<p class="fine">המפה נשארת שלך גם אם לא נעבוד יחד. שלחתי אותה גם למייל.</p></div>'+
+
+  '<div class="sec card ask"><h2 style="font-size:18px">יש שאלה על המפה?</h2>'+
+    '<p style="font-size:14px;margin-bottom:0">אפשר לכתוב אותה כאן. <b>אני עונה אישית</b>, בדרך כלל באותו יום.</p>'+
+    '<textarea id="q" placeholder="לדוגמה, מאיפה בדיוק הגיע המספר של זמן התגובה?"></textarea>'+
+    '<button class="send" id="qsend">לשליחת השאלה</button></div>'+
+
+  '<footer><p><b>גל הרוש</b> · דיוק דיגיטלי<br>DG-GAL.ONLINE</p>'+
+    '<p><a href="/privacy/">מדיניות הפרטיות</a></p>'+
+    '<p class="cr">© כל הזכויות שמורות · דיוק דיגיטלי · גל הרוש 2026</p>'+
+  '</footer>';
+
+  document.getElementById('float').dataset.allow = t.f ? '1' : '0';
+  document.getElementById('qsend').addEventListener('click', sendQuestion);
+  if(window.fbq) fbq('trackCustom','ViewMap',{ temperature:D.temp, score:D.score });
+}
+
+function numeral(n,k){
+  var c = k === 'p' ? 'var(--pink)' : (k === 'o' ? 'var(--orange)' : 'var(--green)');
+  return '<div style="flex:0 0 auto;width:44px;text-align:center">'+
+    '<b style="display:block;font-size:30px;line-height:1;font-weight:800;letter-spacing:-.03em;'+
+    'color:transparent;-webkit-text-stroke:1.4px '+c+';opacity:.95">0'+n+'</b>'+
+    '<i style="display:block;width:1px;height:26px;margin:9px auto 0;opacity:.5;'+
+    'background:linear-gradient(180deg,'+c+',transparent)"></i></div>';
+}
+/*__CASES__*/
+
+function esc(s){ return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){
+  return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]; }); }
+
+var WORKER_URL = 'https://dg-gal-funnel.tom-harush.workers.dev';
+
+/* מעבר ליומן. המסך נשאר על הדף הזה עד שהיומן מצייר, כי שם הייתה השתיקה
+   הארוכה ביותר: גם הדף וגם ה-embed של קאל צריכים להיטען. */
+function goCall(){
+  if(window.__mark) window.__mark('booking');
+  if(window.fbq) fbq('trackCustom','ClickBooking');
+  var g = document.getElementById('gate');
+  if(g) g.classList.add('on');
+  setTimeout(function(){ location.href = '/call/' + location.search; }, 120);
+}
+
+/* ניסיון חוזר לליד שלא הצליח להישלח בהגשה. רץ בשקט, ולא מציג כלום לאדם
+   שקורא את המפה שלו: הכישלון הוא שלנו, לא שלו. */
+(function retryPending(){
+  var raw = null;
+  try { raw = localStorage.getItem('dg_pending_lead'); } catch(e){ return; }
+  if(!raw) return;
+  fetch(WORKER_URL + '/lead', { method:'POST', headers:{ 'Content-Type':'application/json' },
+    body: raw })
+    .then(function(res){ return res.ok ? res.json() : null; })
+    .then(function(j){
+      if(j && j.id){
+        try { sessionStorage.setItem('dg_lead_id', j.id);
+              localStorage.removeItem('dg_pending_lead'); } catch(e){}
+      }
+    })
+    .catch(function(){});
+})();
+
+function sendQuestion(){
+  var box = document.getElementById('q');
+  var v = box.value.trim();
+  var b = document.getElementById('qsend');
+  if(v.length < 3){
+    box.focus();
+    b.textContent = 'צריך עוד כמה מילים';
+    setTimeout(function(){ b.textContent = 'לשליחת השאלה'; }, 1800);
+    return;
+  }
+  b.disabled = true; b.textContent = 'שולח...';
+  var lid = ''; try { lid = sessionStorage.getItem('dg_lead_id') || mapId() || ''; } catch(e){}
+  if(window.__mark) window.__mark('question');
+
+  fetch(WORKER_URL + '/question', { method:'POST', headers:{ 'Content-Type':'application/json' },
+    body: JSON.stringify({ lead_id:lid, question:v, name:D.name, phone:D.phone, email:D.email }) })
+    .then(function(res){
+      if(!res.ok) throw new Error('failed');
+      /* השדה מתנקה רק אחרי אישור מהשרת, ואז מחליפים את התיבה כולה
+         באישור קצר. אחרת אדם שולח את אותה שאלה שלוש פעמים. */
+      box.value = '';
+      var wrap = b.parentNode;
+      wrap.innerHTML = '<div class="qok">'
+        + '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" '
+        + 'stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>'
+        + '<div><b>השאלה הגיעה אליי</b>'
+        + '<span>אני עונה אישית, בדרך כלל באותו יום.</span></div></div>';
+    })
+    .catch(function(){
+      b.disabled = false;
+      b.textContent = 'לא נשלח. אפשר לנסות שוב';
+    });
+}
+
+var fl = document.getElementById('float');
+window.addEventListener('scroll', function(){
+  if(!D || fl.dataset.allow === '0'){ fl.classList.remove('on'); return; }
+  var inv = document.getElementById('s-inv'); if(!inv) return;
+  var r = inv.getBoundingClientRect();
+  fl.classList.toggle('on', window.scrollY > 420 && r.top > window.innerHeight);
+}, { passive:true });
+
+
+/* ── מה קרה בדף ──────────────────────────────────────────────────────
+   שתי אוטומציות תלויות בזה: מי צפה בסרטון ולא קבע, ומי נטש תוך פחות מדקה
+   בלי לצפות בכלל. הדיווח נשלח פעם אחת ביציאה, ב-sendBeacon כדי שהוא ישרוד
+   גם סגירת לשונית, ובלי לעכב את המשתמש בכלום.                            */
+document.addEventListener('click', function(e){
+  /* עד שייכנס הסרטון האמיתי, לחיצה על ההפעלה היא הסימן שנצפה. אחר כך
+     נחליף את זה במדידת שניות צפייה מתוך אלמנט הווידאו עצמו. */
+  if(e.target.closest && e.target.closest('.play') && window.__mark) window.__mark('video');
+});
+
+(function telemetry(){
+  var t0 = Date.now(), sent = false;
+  var seen = { video: false, videoSecs: 0, booking: false, question: false, scroll: 0 };
+
+  function mark(k, v){ seen[k] = (v === undefined) ? true : v; }
+  window.__mark = mark;
+
+  var maxScroll = 0;
+  addEventListener('scroll', function(){
+    var h = document.documentElement.scrollHeight - innerHeight;
+    if(h > 0) maxScroll = Math.max(maxScroll, Math.round(scrollY / h * 100));
+  }, { passive:true });
+
+  function report(reason){
+    if(sent) return; sent = true;
+    var id = '';
+    try { id = sessionStorage.getItem('dg_lead_id') || mapId() || ''; } catch(e){}
+    if(!id) return;
+    var body = JSON.stringify({
+      lead_id: id, reason: reason,
+      seconds: Math.round((Date.now() - t0) / 1000),
+      video: seen.video, video_secs: Math.round(seen.videoSecs),
+      booking_click: seen.booking, asked: seen.question,
+      scroll: Math.max(maxScroll, seen.scroll)
+    });
+    try {
+      if(navigator.sendBeacon) navigator.sendBeacon(WORKER_URL + '/event', new Blob([body], { type:'application/json' }));
+      else fetch(WORKER_URL + '/event', { method:'POST', body: body, keepalive:true });
+    } catch(e){}
+  }
+  addEventListener('pagehide', function(){ report('leave'); });
+  addEventListener('visibilitychange', function(){
+    if(document.visibilityState === 'hidden') report('hidden');
+  });
+  /* רשת ביטחון למי שנשאר פתוח הרבה זמן ואז נסגר בלי אירוע */
+  setTimeout(function(){ report('dwell'); }, 90000);
+})();
+
+/* מנסים קודם את הלשונית, ואם אין, מושכים את המפה לפי המזהה שבקישור */
+(function start(){
+  if(D){ boot(); return; }
+  var id = mapId();
+  if(!id){ boot(); return; }
+  var w = document.getElementById('wrap');
+  if(w) w.innerHTML = '<div class="empty"><p>טוענים את המפה שלך.</p></div>';
+  fetch(WORKER_URL + '/m/' + id)
+    .then(function(res){ return res.ok ? res.json() : null; })
+    .then(function(j){
+      if(j && j.map){
+        D = j.map;
+        try { sessionStorage.setItem('dg_map', JSON.stringify(D)); } catch(e){}
+      }
+      boot();
+    })
+    .catch(function(){ boot(); });
+})();   /* אחרי שכל הקבועים הוגדרו, לא לפני */
+</script>
+</body>
+</html>

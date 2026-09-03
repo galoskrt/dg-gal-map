@@ -1,0 +1,155 @@
+<!doctype html>
+<html dir="rtl" lang="he">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>שיחת אבחון · דיוק דיגיטלי</title>
+<style>
+/*FONT*/
+/*BRAND*/
+.calalt{margin:14px 0 0;font-size:13.5px;color:var(--mut2);line-height:1.6;text-align:center}
+.calalt a{color:var(--pinkS);font-weight:700}
+
+.cr{margin-top:10px!important;font-size:11.5px;color:var(--mut2);opacity:.85}
+
+.hero{padding:28px 0 2px;text-align:center}
+.h1{font-size:29px;line-height:1.26;font-weight:800;margin:0 0 12px;letter-spacing:-.02em}
+.sub{font-size:15.5px;color:var(--mut);margin:0 auto 4px;max-width:430px}
+.pt{display:flex;gap:12px;align-items:flex-start;margin-bottom:12px;font-size:15px;color:var(--mut);line-height:1.55}
+.pt i{flex:0 0 auto;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;margin-top:2px;
+  background:var(--greenT);border:1px solid var(--greenL);color:var(--greenS)}
+.pt svg{width:12px;height:12px;stroke-width:3.2}
+#cal{position:relative;min-height:520px;width:100%;overflow:hidden;border-radius:var(--rC);overflow:hidden;border:1px solid var(--line);
+  box-shadow:var(--sh2);background:#fff}
+.calfall{position:absolute;inset:0;display:grid;place-content:center;padding:30px 20px;text-align:center}
+#cal.ready{min-height:0}
+#cal.ready .calfall{display:none}
+.me{position:relative;overflow:hidden;padding-bottom:0}
+.me .in{padding-bottom:6px}
+.me .av{display:block;width:130px;margin:8px 0 -1px auto}
+</style>
+</head>
+<body>
+
+<div class="grid"></div>
+<div class="glow"><i class="g1"></i><i class="g2"></i><i class="g3"></i></div>
+
+<header><div class="hd">
+  <img src="/*LOGO*/" alt="דיוק דיגיטלי">
+  <span class="who">שיחת אבחון</span>
+</div></header>
+
+<div class="wrap">
+
+  <div class="hero">
+    <h1 class="h1">נעבור על המפה שלך <span class="box">יחד</span></h1>
+    <p class="sub">שיחת אבחון וניתוח המפה, אחד על אחד איתי בזום.<br><b>זו לא שיחת מכירה, זה אבחון.</b> ואם אני חושב שאני לא יכול לעזור לך, <span class="nb">אני אגיד לך את זה בפנים.</span></p>
+  </div>
+
+  <div class="sec card lift">
+    <h2 class="sh">מה מחכה לך <span class="boxo">בניתוח המפה שלך</span></h2>
+    <div class="pt"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></i>
+      <span>עוברים על המספר שקיבלת ועל שלוש נקודות הדליפה, אחת אחת.</span></div>
+    <div class="pt"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></i>
+      <span>מגדירים מי בדיוק הלקוח שכדאי להביא, לפני שמדברים על ערוץ או תקציב.</span></div>
+    <div class="pt"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></i>
+      <span>יוצאים עם סדר עדיפויות, <span class="nb">גם אם לא נעבוד יחד.</span></span></div>
+    <p class="fine" style="margin-top:2px">שיחה אחת, בלי מצגת ובלי הקלטה. אם בסוף יתברר ששווה לנו לעבוד יחד, נדבר על זה בשיחה נפרדת ובנחת. <b>כאן אנחנו רק מסתכלים על המספרים שלך.</b></p>
+  </div>
+
+  <div class="sec">
+    <h2 class="sh">בחירת <span class="box">מועד</span></h2>
+    <div id="cal"><div class="calfall">
+      <p style="margin-bottom:14px">היומן נטען.</p>
+      <button class="cta quiet" id="fallback" style="display:none" onclick="window.open(CAL_URL,'_blank')">לפתיחת היומן בחלון חדש</button>
+    </div></div>
+  </div>
+    <p class="calalt">לא מצאת מועד שמתאים לך? <a href="mailto:gal@send.dg-gal.online">אפשר לכתוב לי במייל שממנו נשלחה המפה</a> ונתאם יחד, או <a href="tel:0509928400" dir="ltr">050-9928400</a>.</p>
+
+
+  <div class="sec">
+    <div class="card lift me"><div class="in">
+      <p class="sh" style="margin-bottom:8px">לפני שאנחנו נפגשים</p>
+      <p style="margin-bottom:0">כדאי שיהיו בהישג יד <b>המספרים של החודש האחרון</b>: כמה פניות נכנסו, כמה הגיעו לשיחה, וכמה נסגרו. <b>לא חייבים מדויק. הערכה מספיקה, והיא עצמה תגלה משהו.</b></p>
+    </div><img class="av" src="/*AVATAR*/" alt="גל הרוש"></div>
+  </div>
+
+  <footer>
+    <p><b>גל הרוש</b> · דיוק דיגיטלי<br>DG-GAL.ONLINE</p>
+    <p><a href="/privacy/">מדיניות הפרטיות</a></p>
+  
+  <p class="cr">© כל הזכויות שמורות · דיוק דיגיטלי · גל הרוש 2026</p>
+</footer>
+</div>
+
+<script>
+/* ==== היומן של גל. calLink הוא user/event-type בלבד ==== */
+var CAL_LINK = 'dg-gal.online/map';
+var CAL_URL  = 'https://cal.com/' + CAL_LINK;
+
+(function (C, A, L) { var p = function (a, ar) { a.q.push(ar); };
+  var d = C.document; C.Cal = C.Cal || function () { var cal = C.Cal, ar = arguments;
+    if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || [];
+      d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; }
+    if (ar[0] === L) { var api = function () { p(api, arguments); };
+      var namespace = ar[1]; api.q = api.q || [];
+      if (typeof namespace === "string") { cal.ns[namespace] = cal.ns[namespace] || api; p(cal.ns[namespace], ar); p(cal, ["initNamespace", namespace]); }
+      else p(cal, ar); return; }
+    p(cal, ar); };
+})(window, "https://app.cal.com/embed/embed.js", "init");
+
+try {
+  Cal("init", "map", { origin: "https://app.cal.com" });
+  Cal.config = Cal.config || {};
+  Cal.config.forwardQueryParams = true;
+
+  /* ui לפני inline. בסדר ההפוך היומן נטען לבן, וזה תועד אצלנו בעבר */
+  Cal.ns.map("ui", {
+    theme: "light",
+    hideEventTypeDetails: false,
+    layout: "month_view",
+    cssVarsPerTheme: { light: {
+      "cal-brand": "#ff2d8e",
+      "cal-brand-emphasis": "#d81b73",
+      "cal-brand-text": "#ffffff",
+      "cal-text": "#14121c",
+      "cal-text-emphasis": "#14121c",
+      "cal-text-subtle": "#4f4d5e",
+      "cal-text-muted": "#8b8899",
+      "cal-text-inverted": "#ffffff",
+      "cal-bg": "#ffffff",
+      "cal-bg-emphasis": "#f8f7fb",
+      "cal-bg-subtle": "#f8f7fb",
+      "cal-bg-muted": "#fcfbfe",
+      "cal-bg-inverted": "#14121c",
+      "cal-border": "#ece9f2",
+      "cal-border-default": "#ece9f2",
+      "cal-border-emphasis": "#dfdbe9",
+      "cal-border-subtle": "#ece9f2",
+      "cal-border-booker": "#ece9f2"
+    }}
+  });
+  Cal.ns.map("inline", {
+    elementOrSelector: "#cal",
+    calLink: CAL_LINK,
+    config: { layout: "month_view", useSlotsViewOnSmallScreen: "true" }
+  });
+  /* ברגע שקאל מזריק את המסגרת שלו, מסירים את הודעת הטעינה */
+  var box = document.getElementById('cal');
+  var mo = new MutationObserver(function(){
+    if(box.querySelector('iframe')){ box.classList.add('ready'); mo.disconnect(); }
+  });
+  mo.observe(box, { childList:true, subtree:true });
+  setTimeout(function(){
+    if(!box.querySelector('iframe')){
+      document.getElementById('fallback').style.display = 'block';
+    }
+  }, 6000);
+} catch(e){
+  var f = document.getElementById('fallback'); if(f) f.style.display = 'block';
+}
+if(window.fbq) fbq('trackCustom','ViewBooking');
+</script>
+</body>
+</html>

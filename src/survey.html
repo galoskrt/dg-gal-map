@@ -1,0 +1,643 @@
+<!doctype html>
+<html dir="rtl" lang="he">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>מפת הדליפה · דיוק דיגיטלי</title>
+<meta name="description" content="עשר שאלות, ארבע דקות, ובסוף מפה אישית שמראה כמה כסף מתפוגג בין הפנייה לעסקה, ואיפה בדיוק.">
+<style>
+/*FONT*/
+/*BRAND*/
+.faces img{width:30px;height:30px;margin-left:-9px}
+.proof span{font-size:12.5px}
+
+/* הוכחה חברתית: פרצופים אמיתיים, לא איורים */
+.proof{display:flex;align-items:center;justify-content:center;gap:10px;
+  margin:16px auto 0;flex-wrap:wrap}
+.faces{display:flex;direction:ltr}
+.faces img{width:34px;height:34px;border-radius:50%;display:block;
+  border:2px solid #fff;box-shadow:0 1px 3px rgba(20,18,28,.16);object-fit:cover;
+  margin-left:-10px;background:#fff}
+.faces img:first-child{margin-left:0}
+.proof span{font-size:13px;font-weight:700;color:var(--mut2);line-height:1.45}
+.proof span b{color:var(--txt);font-weight:800}
+
+.proof{margin:0 auto 18px}
+
+.cr{margin-top:10px!important;font-size:11.5px;color:var(--mut2);opacity:.85}
+
+.chapters{display:flex;gap:6px;margin:20px 0 22px}
+.chapters div{flex:1;text-align:center;font-size:10.5px;font-weight:800;color:var(--mut2);line-height:1.3}
+.chapters div span{display:block;height:4px;border-radius:999px;background:var(--line2);margin-bottom:7px;transition:background .3s}
+.chapters div.on{color:var(--pinkS)}
+.chapters div.on span{background:linear-gradient(90deg,var(--pink),var(--orange))}
+.chapters div.done span{background:var(--green)}
+.qn{font-size:11.5px;font-weight:800;color:var(--mut2);letter-spacing:.05em;margin:0 0 7px}
+.qh{font-size:25px;line-height:1.28;font-weight:800;margin:0 0 20px;letter-spacing:-.015em}
+.opt{display:flex;gap:13px;align-items:center;width:100%;text-align:right;cursor:pointer;margin-bottom:11px;
+  background:#fff;border:1px solid var(--line);border-radius:var(--rC);padding:14px 15px;box-shadow:var(--sh1);
+  transition:border-color .16s,box-shadow .16s,transform .16s}
+.opt:hover{transform:translateY(-1px);box-shadow:var(--sh2)}
+.opt .tx{flex:1;min-width:0}
+.opt .tt{font-size:16.5px;font-weight:800;color:var(--txt);line-height:1.35}
+.opt .mc{font-size:13px;font-weight:700;color:var(--mut2);margin-top:3px;line-height:1.45}
+.opt.sel{border-color:var(--pink);box-shadow:0 0 0 3px var(--pinkL),var(--sh2)}
+.opt.sel .mc{color:var(--pinkS)}
+.qnav{display:flex;gap:10px;margin-top:20px}
+.qnav .back{cursor:pointer;font-size:15px;font-weight:800;color:var(--mut);padding:15px 20px;
+  border-radius:999px;background:#fff;border:1px solid var(--line2)}
+.qnav .cta{flex:1;margin:0;min-width:0;
+  white-space:nowrap;font-size:clamp(15px,4.2vw,17px)}
+.qfoot{margin-top:16px;font-size:12px;color:var(--mut2);text-align:center;font-weight:700}
+.fld{margin-bottom:13px}
+.fld label{display:block;font-size:13px;font-weight:800;color:var(--txt);margin-bottom:5px}
+.fld input{width:100%;font-size:16px;color:var(--txt);background:var(--bg3);
+  border:1px solid var(--line);border-radius:16px 16px 16px 5px;padding:13px 14px}
+.fld input:focus{outline:0;border-color:var(--pink);box-shadow:0 0 0 3px var(--pinkL)}
+.fld .err{font-size:12px;font-weight:700;color:var(--pinkS);margin-top:5px;display:none}
+.fld.bad input{border-color:var(--pink)}
+.fld.bad .err{display:block}
+.consent{display:flex;gap:9px;align-items:flex-start;font-size:12.5px;color:var(--mut2);
+  font-weight:700;margin:14px 0 4px;line-height:1.5}
+.consent input{width:18px;height:18px;flex:0 0 auto;margin-top:2px;accent-color:var(--pink)}
+.consent a{color:var(--pinkS)}
+.load{position:fixed;inset:0;z-index:80;display:none;align-items:center;justify-content:center;padding:26px;
+  background:rgba(11,9,18,.80);backdrop-filter:blur(7px) saturate(.85);
+  -webkit-backdrop-filter:blur(7px) saturate(.85);animation:dim .38s ease-out}
+@keyframes dim{from{opacity:0}to{opacity:1}}
+.load.on{display:flex}
+.load.out{animation:undim .42s ease-in forwards}
+@keyframes undim{to{opacity:0}}
+.load .aur{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none}
+.load .a1{width:300px;height:300px;background:#ff2d8e;top:-90px;right:-90px;opacity:.22;animation:drift 7s ease-in-out infinite}
+.load .a2{width:280px;height:280px;background:#ff7a1a;bottom:-90px;left:-90px;opacity:.18;animation:drift 9s ease-in-out infinite reverse}
+@keyframes drift{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(-18px,22px,0)}}
+.load .in{position:relative;z-index:2;width:min(360px,100%);margin:0 auto;text-align:center}
+.load .ring{position:relative;width:126px;height:126px;margin:0 auto 24px}
+.load .ring::before{content:"";position:absolute;inset:-16px;border-radius:50%;
+  background:conic-gradient(from 0deg,rgba(255,45,142,0),rgba(255,45,142,.55),rgba(255,122,26,.55),rgba(255,45,142,0));
+  filter:blur(16px);animation:spin 2.6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.load .ring svg{position:relative;width:126px;height:126px;transform:rotate(-90deg)}
+.load .ring .tr{fill:none;stroke:rgba(255,255,255,.13);stroke-width:7}
+.load .ring .vl{fill:none;stroke:url(#lg);stroke-width:7;stroke-linecap:round;
+  stroke-dasharray:326;stroke-dashoffset:326;transition:stroke-dashoffset .88s linear}
+.load .ring b{position:absolute;inset:0;display:grid;place-items:center;font-size:26px;font-weight:800;
+  letter-spacing:-.02em;color:#fff}
+.load h3{font-size:24px;font-weight:800;margin:0 0 8px;letter-spacing:-.015em;color:#fff}
+.load .sb{font-size:13.5px;color:#9b98ac;font-weight:700;margin:0 0 26px}
+.load ul{list-style:none;padding:0 4px;margin:0;text-align:right}
+.load li{display:flex;align-items:center;gap:12px;padding:9px 0;font-size:15px;font-weight:700;
+  color:#9b98ac;opacity:.38;transform:translateY(5px);transition:opacity .34s,color .34s,transform .34s}
+.load li .mk{width:23px;height:23px;flex:0 0 auto;border-radius:50%;border:2px solid rgba(255,255,255,.2);
+  display:grid;place-items:center;transition:border-color .3s,background .3s,box-shadow .3s}
+.load li .mk svg{width:12px;height:12px;color:#05261a;opacity:0;transition:opacity .25s}
+.load li.act{opacity:1;color:#fff;transform:none}
+.load li.act .mk{border-color:#ff2d8e;box-shadow:0 0 0 5px rgba(255,45,142,.16)}
+.load li.ok{opacity:1;color:#fff;transform:none}
+.load li.ok .mk{border-color:#34d399;background:#34d399;box-shadow:none}
+.load li.ok .mk svg{opacity:1}
+</style>
+</head>
+<body>
+
+<div class="grid"></div>
+<div class="glow"><i class="g1"></i><i class="g2"></i><i class="g3"></i></div>
+
+<header><div class="hd">
+  <img src="/*LOGO*/" alt="דיוק דיגיטלי">
+  <span class="who">מפת הדליפה</span>
+</div></header>
+
+<div class="wrap">
+  <div class="chapters" id="chapters"></div>
+  <p class="qn" id="qn"></p>
+  <h1 class="qh" id="qh"></h1>
+  <div id="body"></div>
+  <div class="qnav">
+    <button class="cta" id="next" disabled>להמשך</button>
+    <button class="back" id="back" style="display:none">חזרה</button>
+  </div>
+  <p class="qfoot" id="qfoot">אין כאן תשובה נכונה. כל תשובה היא נתון.</p>
+
+  <footer>
+    <p><b>גל הרוש</b> · דיוק דיגיטלי<br>DG-GAL.ONLINE</p>
+    <p><a href="/privacy/" target="_blank" rel="noopener">מדיניות הפרטיות</a></p>
+  
+  <p class="cr">© כל הזכויות שמורות · דיוק דיגיטלי · גל הרוש 2026</p>
+</footer>
+</div>
+
+<div class="load" id="load"><i class="aur a1"></i><i class="aur a2"></i><div class="in">
+  <div class="ring">
+    <svg viewBox="0 0 126 126">
+      <defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#ff2d8e"/><stop offset="1" stop-color="#ff7a1a"/></linearGradient></defs>
+      <circle class="tr" cx="63" cy="63" r="52"/>
+      <circle class="vl" id="lvl" cx="63" cy="63" r="52"/>
+    </svg>
+    <b id="lpc">0%</b>
+  </div>
+  <h3>מייצר עבורך את המפה שלך</h3>
+  <p class="sb">עוד כמה שניות. לא כדאי לרענן את העמוד.</p>
+  <ul id="lsteps"></ul>
+</div></div>
+
+<script>
+/* ============ גלפים: הגלף מציג את הנתון עצמו, לא איור ============ */
+function pie(v){
+  if(v === null){
+    return '<circle cx="12" cy="12" r="8.8" fill="none" stroke="currentColor" stroke-width="1.9" stroke-dasharray="2.5 3.3" opacity=".55"/>'+
+      '<path d="M9.4 9.6a2.8 2.8 0 0 1 5.3 1c0 1.9-2.7 2.6-2.7 2.6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>'+
+      '<circle cx="12" cy="17" r="1.05" fill="currentColor"/>';
+  }
+  var ring = '<circle cx="12" cy="12" r="8.8" fill="none" stroke="currentColor" stroke-width="1.9" opacity=".28"/>';
+  if(v >= 1) return ring + '<circle cx="12" cy="12" r="8.8" fill="currentColor"/>';
+  if(v <= 0) return ring;
+  var r = 8.8, s = -Math.PI/2, e = s + 2*Math.PI*v;
+  var x1 = (12 + r*Math.cos(s)).toFixed(2), y1 = (12 + r*Math.sin(s)).toFixed(2);
+  var x2 = (12 + r*Math.cos(e)).toFixed(2), y2 = (12 + r*Math.sin(e)).toFixed(2);
+  return ring + '<path d="M12 12 L'+x1+' '+y1+' A'+r+' '+r+' 0 '+(v>0.5?1:0)+' 1 '+x2+' '+y2+' Z" fill="currentColor"/>';
+}
+function puck(v,k){
+  return '<div class="puck pk-'+k+'"><svg viewBox="0 0 24 24">'+pie(v)+'</svg></div>';
+}
+
+/* ============ השאלון ============
+   כל תשובה: [ערך מד 0..1 או null, צבע, כותרת, מיקרו קופי, ניקוד, ערך לחישוב]
+   ==================================================================== */
+var CH_A = ['מאיפה מגיעים הלקוחות','מה קורה לפניות','המערכת שמאחורי'];
+var CH_B = ['מאיפה מגיעים הלקוחות','הקצב והתקרה','כשהברז נסגר'];
+var CH_C = ['מאיפה מגיעים הלקוחות','מה התוכן מייצר','מה קורה אחרי'];
+
+var Q1 = { ch:0, q:'היום, מאיפה מגיעים רוב הלקוחות החדשים שלך?', k:'source', o:[
+  [0.95,'g','מפרסום ממומן','יש לך ברז. השאלה היא מה קורה אחריו.',3,'paid'],
+  [0.6,'o','משילוב של פרסום והמלצות','המצב הנפוץ ביותר, וגם הקשה ביותר למדידה.',3,'mix'],
+  [0.35,'p','מהמלצות ופה לאוזן בלבד','צמחת בלי לשלם על תנועה. לא מובן מאליו.',2,'ref'],
+  [0.5,'p','מתוכן אורגני ורשתות','הם מכירים אותך עוד לפני שהם פונים.',2,'org']
+]};
+/* אורגני קיבל את שאלות ההמלצות ונאמר לו שהוא תלוי בזיכרון של אנשים.
+   מי שבנה קהל בתוכן בנה נכס, ולכן יש לו מסלול משלו. */
+var SRC2TRACK = { paid:'a', mix:'a', ref:'b', org:'c' };
+
+var QA = [
+ { ch:0, q:'מה גובה ההשקעה החודשית בפרסום?', k:'budget', o:[
+   [0.2,'p','עד 3,000 ₪','בטווח הזה כל פנייה יקרה יחסית.',1,3000],
+   [0.45,'o','בין 3,000 ל-7,000','כאן דליפה מתחילה להיות מורגשת בתזרים.',2,5000],
+   [0.75,'o','בין 7,000 ל-15,000','אחוז אחד של שיפור כאן שווה כסף אמיתי.',3,11000],
+   [1,'g','מעל 15,000','כל נקודת דליפה עולה כאן אלפים בחודש.',3,20000]]},
+ { ch:1, q:'כמה פניות חדשות נכנסות בחודש?', k:'leads', o:[
+   [0.2,'p','עד 10','בנפח כזה כל פנייה בודדת קריטית.',1,7],
+   [0.45,'o','בין 10 ל-30','מספיק נפח כדי שיהיה דפוס לראות.',2,20],
+   [0.75,'o','בין 30 ל-80','בנפח הזה כבר אי אפשר לזכור מי נפל.',2,55],
+   [1,'g','מעל 80','בלי מערכת, בחלק מהן פשוט לא נוגעים.',2,100]]},
+ { ch:1, q:'מתוך הפניות האלה, כמה מגיעות לשיחה אמיתית?', k:'reach', o:[
+   [0.9,'g','כמעט כולן','מצב נדיר, ומעיד על מעקב שעובד.',0,0.10],
+   [0.5,'o','בערך חצי','הממוצע בשוק, וגם המקום עם הכי הרבה מרווח.',1,0.50],
+   [0.28,'p','פחות משליש','רוב מה ששולם עליו לא הגיע לשיחה.',2,0.70],
+   [null,'p','לא ידוע לי','וזה בעצמו נתון. אי אפשר לתקן את מה שלא רואים.',2,0.60]]},
+ { ch:1, q:'ומתוך אלה שהגיעו לשיחה, כמה נסגרות?', k:'close', o:[
+   [0.6,'g','יותר מחצי','סוגר מצוין. הבעיה לא כאן.',0,0.60],
+   [0.25,'o','בערך רבע','סביר לרוב התחומים, ויש מה לשפר.',1,0.25],
+   [0.08,'p','פחות מעשירית','הפניות מגיעות, והן כנראה לא האנשים הנכונים.',2,0.08],
+   [null,'p','לא ידוע לי','שווה מאוד לדעת את זה לפני שמגדילים תקציב.',2,0.15]]},
+ { ch:2, q:'כמה שווה לקוח חדש, בממוצע, בשנה הראשונה?', k:'value', o:[
+   [0.2,'p','עד 5,000 ₪','נדרש נפח כדי שהמתמטיקה תעבוד.',0,3500],
+   [0.45,'o','בין 5,000 ל-15,000','הטווח שבו שיווק ממומן מתחיל להשתלם.',2,10000],
+   [0.75,'o','בין 15,000 ל-50,000','כל לקוח שאבד הוא סכום שמרגישים.',3,30000],
+   [1,'g','מעל 50,000','פנייה אחת שנפלה שווה חודש שלם של פרסום.',3,70000]]},
+ { ch:2, q:'תוך כמה זמן חוזרים לפנייה חדשה?', k:'speed', o:[
+   [1,'g','תוך דקות','בעשירון העליון, וזה נכס.',0,0.10],
+   [0.6,'o','תוך כמה שעות','עדיין בתחום הסביר לרוב התחומים.',1,0.25],
+   [0.25,'p','בדרך כלל למחרת','רוב הסיכוי כבר נסגר אצל מישהו אחר.',2,0.40],
+   [null,'p','תלוי בעומס','כלומר בימים העמוסים, שבהם נכנסות הכי הרבה פניות.',2,0.40]]},
+ { ch:2, q:'ומה קורה למי שלא ענה בפעם הראשונה?', k:'followup', o:[
+   [1,'g','יש מערכת מעקב שדואגת לזה','הנכס הכי שקט והכי רווחי שיש.',0,-0.05],
+   [0.45,'o','חוזרים ידנית כשנזכרים','תלוי בזיכרון, ולכן תלוי בעומס.',2,0],
+   [0,'p','בדרך כלל הוא הולך לאיבוד','ושולם עליו במלואו.',3,0.15]]},
+ { ch:2, q:'ידוע לך כמה עולה לקוח משלם?', k:'cac', o:[
+   [1,'g','כן, במדויק','בשליש העליון של השוק, בלי הגזמה.',0,0],
+   [0.5,'o','בערך','תחושה טובה, וקשה לבנות עליה החלטה.',1,1],
+   [0.25,'o','רק כמה עולה פנייה','זה המספר שרוב הדוחות נעצרים בו.',2,1],
+   [null,'p','לא','ורוב מי שממלא את זה עונה בדיוק כמוך.',3,2]]}
+];
+
+var QB = [
+ { ch:0, q:'כמה לקוחות חדשים נכנסים בחודש בממוצע?', k:'clients', o:[
+   [0.2,'p','1 עד 3','כל לקוח הוא נתח משמעותי מהחודש.',1,2],
+   [0.45,'o','4 עד 8','קצב שכבר מאפשר לתכנן קדימה.',2,6],
+   [0.75,'o','9 עד 20','יש כאן משהו שעובד, גם בלי שקראו לו מערכת.',2,14],
+   [1,'g','מעל 20','הנפח הוא כבר לא המחסום.',2,25]]},
+ { ch:1, q:'מתוכם, כמה הגיעו מהמלצה או מהיכרות אישית?', k:'refer', o:[
+   [0.9,'p','כמעט כולם','כמעט כל ההכנסה נשענת על זיכרון של אנשים.',3,0.90],
+   [0.7,'o','רובם','יש בסיס חזק, ואין ברז שפותחים.',2,0.70],
+   [0.5,'o','בערך חצי','יש שני ערוצים, ואפשר לחזק את החלש.',1,0.50],
+   [0.2,'g','מיעוט','נבנה כאן ערוץ שלא תלוי בהמלצות. זה נדיר.',0,0.20]]},
+ { ch:1, q:'כמה שווה לקוח חדש, בממוצע, בשנה הראשונה?', k:'value', o:[
+   [0.2,'p','עד 5,000 ₪','נדרש נפח כדי שהמתמטיקה תעבוד.',0,3500],
+   [0.45,'o','בין 5,000 ל-15,000','הטווח שבו שיווק ממומן מתחיל להשתלם.',2,10000],
+   [0.75,'o','בין 15,000 ל-50,000','כל מקום פנוי ביומן הוא סכום שמרגישים.',3,30000],
+   [1,'g','מעל 50,000','לקוח אחד נוסף בחודש משנה את השנה.',3,70000]]},
+ { ch:1, q:'כמה לקוחות נוספים אפשר לקחת מחר, בלי לפגוע בשירות?', k:'capacity', o:[
+   [0.2,'p','עוד 1 עד 2','כמעט מלא. כאן מדברים על מחיר לפני נפח.',1,1.5],
+   [0.45,'o','עוד 3 עד 5','יש מקום לצמיחה מיידית, בלי לגעת בכלום.',2,4],
+   [0.75,'o','עוד 6 עד 10','העסק בנוי להרבה יותר ממה שהוא מקבל היום.',3,8],
+   [1,'g','הרבה יותר','הקיבולת היא בוודאות לא המחסום.',3,14]]},
+ { ch:2, q:'מה קורה בחודש שבו ההפניות מתייבשות?', k:'dry', o:[
+   [1,'g','יש ערוץ אחר שעובד','יש גיבוי, וזה נדיר בעסקים כאלה.',0,0],
+   [0.45,'o','פונים ידנית ללקוחות עבר','פתרון שעובד, ונשחק קצת בכל פעם.',2,0],
+   [0,'p','בעיקר מחכים שזה יסתדר','וזה בדיוק החודש שהכי קשה לתכנן אחריו.',3,1]]},
+ { ch:2, q:'ניסית פרסום ממומן בעבר?', k:'tried', o:[
+   [0.5,'o','מעולם לא','אין הרגלים לשבור, וזו נקודת פתיחה טובה.',2,0],
+   [0.25,'p','ניסית לבד ולא הצליח','הנפוץ ביותר, וכמעט תמיד מאותה סיבה אחת.',2,1],
+   [0,'p','היה ליווי של חברת שיווק ולא עבד','שולם גם בכסף וגם באמון. השני יקר יותר.',3,1],
+   [1,'g','רץ עכשיו במקביל','יש נתונים, וזה יתרון פתיחה אמיתי.',1,0]]},
+ { ch:2, q:'יש הצעה מנוסחת שחוזרת בכל שיחה?', k:'offer', o:[
+   [1,'g','כן, ברורה וקבועה','אפשר לשכפל הצלחה, וזה חצי מהעבודה.',0,0],
+   [0.5,'o','משהו כללי','משתנה לפי איך שהשיחה מתגלגלת.',2,0],
+   [0,'p','כל שיחה יוצאת אחרת','כל שיחה מתחילה מאפס, גם מבחינתך.',3,1]]},
+ { ch:2, q:'ידוע לך כמה עולה להשיג לקוח חדש?', k:'cac', o:[
+   [1,'g','כן','נדיר מאוד בעסק שרץ על מוניטין.',1,0],
+   [0.25,'o','לא, כי הוא לא עולה כסף','הוא עולה זמן, ומקום ביומן.',2,2],
+   [null,'p','לא חשבנו על זה ככה','וזו בדיוק הסיבה שקשה לתכנן קדימה.',3,2]]}
+];
+
+/* מסלול ג: העסק בנוי על תוכן. הפניות מגיעות ממי שכבר צרך, כבר מכיר, וכבר
+   בנה אמון, ולכן השאלות על המלצות פשוט לא רלוונטיות לו. */
+var QC = [
+ { ch:0, q:'כמה פניות בחודש מגיעות מהתוכן שלך?', k:'leads', o:[
+   [0.2,'p','עד 5','כל פנייה כאן יקרה, כי היא עלתה בזמן ולא בכסף.',1,5],
+   [0.5,'o','בין 5 ל-15','יש זרימה. השאלה היא מה קורה לה אחר כך.',2,12],
+   [0.75,'o','בין 15 ל-40','התוכן כבר עובד כמו ערוץ לכל דבר.',2,28],
+   [1,'g','מעל 40','נפח שרוב העסקים הממומנים לא מגיעים אליו.',2,55]]},
+
+ { ch:1, q:'כמה מהפניות האלה מגיעות לשיחה אמיתית?', k:'reach', o:[
+   [0.9,'p','מיעוט מהן','רוב מי שפנה נעצר לפני שהיה סיכוי.',3,0.70],
+   [0.7,'o','בערך חצי','חצי מהעניין שנוצר לא מגיע לשולחן.',2,0.50],
+   [0.45,'o','רובן','יש כאן תהליך שעובד, עם דליפה קטנה.',1,0.28],
+   [0.2,'g','כמעט כולן','נדיר. מי שפנה מגיע לדבר.',0,0.15]]},
+
+ { ch:1, q:'מתוך השיחות, כמה הופכות ללקוח?', k:'close', o:[
+   [0.25,'p','פחות מעשירית','העניין מגיע ולא מבשיל. זה לא חוסר בפניות.',3,0.08],
+   [0.5,'o','בערך רבע','טווח נורמלי, ויש בו מקום גדול לשיפור.',2,0.25],
+   [0.75,'o','בערך חצי','אחוז גבוה. סימן שהאמון כבר נבנה מראש.',1,0.45],
+   [1,'g','יותר מחצי','מי שמגיע לשיחה כבר החליט. זה נכס.',0,0.62]]},
+
+ { ch:1, q:'כמה שווה לקוח חדש, בממוצע, בשנה הראשונה?', k:'value', o:[
+   [0.2,'p','עד 5,000 ₪','נדרש נפח כדי שהמתמטיקה תעבוד.',0,3500],
+   [0.45,'o','בין 5,000 ל-15,000','הטווח שבו ערוץ ממומן מתחיל להשתלם.',2,10000],
+   [0.75,'o','בין 15,000 ל-50,000','כל מקום פנוי ביומן הוא סכום שמרגישים.',3,30000],
+   [1,'g','מעל 50,000','לקוח אחד נוסף בחודש משנה את השנה.',3,70000]]},
+
+ /* השאלה שגל הוסיף, והיא מפרידה בין מי שיש לו נכס המרה למי שהתוכן
+    שלו הוא גם הפרסום וגם דף המכירה. בלי דף שמחמם, כל שיחה מתחילה מאפס. */
+ { ch:1, q:'כשמישהו מתעניין, יש לו איפה ללמוד על השירות עצמו?', k:'page', o:[
+   [0.2,'g','יש דף שמסביר הכל','נכס המרה שעובד גם כשלא מפרסמים.',0,0],
+   [0.55,'o','יש עמוד כללי באתר','קיים, אבל הוא לא מחמם ולא מסביר.',2,0.16],
+   [0.95,'p','הכל דרך התוכן והשיחה','כל שיחה מתחילה מאפס, ואת ההסבר נותנים בעל פה.',3,0.30]]},
+
+ { ch:2, q:'יש הצעה מנוסחת שחוזרת בכל שיחה?', k:'offer', o:[
+   [0.2,'g','כן, ברורה וקבועה','אפשר לשכפל הצלחה, כי יודעים מה נאמר.',0,0],
+   [0.6,'o','משהו כללי','הכיוון קיים, הניסוח משתנה.',2,0.10],
+   [1,'p','כל שיחה יוצאת אחרת','אי אפשר ללמוד ממה שעבד, כי לא ברור מה נאמר.',3,0.20]]},
+
+ { ch:2, q:'מה קורה בחודש שבו כמעט לא העלית תוכן?', k:'dry', o:[
+   [0.2,'g','יש ערוץ נוסף שעובד','לא הכל תלוי בקצב שלך. זה נדיר.',0,0],
+   [0.6,'o','הפניות יורדות, אבל יש מלאי','יש חמצן, והוא נגמר.',2,1],
+   [1,'p','הפניות נעצרות כמעט לגמרי','הערוץ היחיד הוא הזמן שלך.',3,2]]},
+
+ { ch:2, q:'ניסית פרסום ממומן?', k:'tried', o:[
+   [0.35,'o','מעולם לא','אין כאן שריפה, יש כאן ערוץ שעוד לא נפתח.',1,0],
+   [0.85,'p','ניסית לבד ולא הצליח','הבעיה כמעט תמיד לפני הקמפיין, לא בתוכו.',3,0],
+   [1,'p','היה ליווי ולא עבד','שילמת פעם אחת על מה שלא הוגדר מראש.',3,0],
+   [0.5,'o','רץ עכשיו במקביל','יש שני ערוצים, וצריך לדעת מה כל אחד מביא.',2,0]]},
+
+ { ch:2, q:'ידוע לך כמה עולה לך להשיג לקוח, בזמן ולא בשקלים?', k:'cac', o:[
+   [0.2,'g','כן, בערך','יש מספר להשוות אליו כשתשקול ממומן.',0,0],
+   [0.75,'o','לא, כי התוכן לא עולה כסף','הוא עולה את הזמן שלך, וזה המשאב היקר.',2,1],
+   [1,'p','לא חשבנו על זה ככה','בלי המספר הזה אין לדעת אם ערוץ נוסף זול או יקר.',2,2]]}
+];
+
+
+/* ============ מצב ============ */
+var S = { track:null, source:null, i:0, a:{}, sel:null };
+var el = function(id){ return document.getElementById(id); };
+function qs(){ return S.track === 'a' ? QA : (S.track === 'c' ? QC : QB); }
+function chapters(){ return S.track === 'c' ? CH_C : (S.track === 'b' ? CH_B : CH_A); }
+function current(){ return S.i === 0 ? Q1 : (S.i <= 8 ? qs()[S.i-1] : null); }
+
+function renderChapters(ch){
+  el('chapters').innerHTML = chapters().map(function(c,i){
+    return '<div class="'+(i===ch?'on':(i<ch?'done':''))+'"><span></span>'+c+'</div>';
+  }).join('');
+}
+
+function render(){
+  var q = current();
+  el('back').style.display = S.i === 0 ? 'none' : '';
+  if(!q){ return renderContact(); }
+  renderChapters(q.ch);
+  el('qn').textContent = 'שאלה ' + (S.i+1) + ' מתוך 10';
+  el('qh').textContent = q.q;
+  el('qfoot').textContent = 'אין כאן תשובה נכונה. כל תשובה היא נתון.';
+  el('next').textContent = 'להמשך';
+  var chosen = S.a[q.k];
+  el('body').innerHTML = q.o.map(function(o,i){
+    var on = chosen && chosen.i === i;
+    return '<div class="opt'+(on?' sel':'')+'" data-i="'+i+'">'+puck(o[0],o[1])+
+      '<div class="tx"><div class="tt">'+o[2]+'</div><div class="mc">'+o[3]+'</div></div></div>';
+  }).join('');
+  el('next').disabled = !chosen;
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+function renderContact(){
+  renderChapters(2);
+  el('qn').textContent = 'שאלה 10 מתוך 10';
+  el('qh').textContent = 'לאן לשלוח את המפה?';
+  el('qfoot').textContent = 'המפה נשארת שלך גם אם לא נעבוד יחד.';
+  el('next').textContent = 'להצגת המפה שלי';
+  el('body').innerHTML =
+    /* כאן נמצאת נקודת הנטישה הגבוהה ביותר במשפך: תשע הקשות מאחור, ועכשיו
+       מבקשים טלפון. פרצופים אמיתיים כאן שווים יותר מבכל מקום אחר בדף. */
+    '<div class="proof"><div class="faces"><img src="/*CLIENT01*/" alt=""><img src="/*CLIENT02*/" alt=""><img src="/*CLIENT03*/" alt=""><img src="/*CLIENT04*/" alt=""><img src="/*CLIENT05*/" alt=""><img src="/*CLIENT06*/" alt=""><img src="/*CLIENT07*/" alt=""><img src="/*CLIENT08*/" alt=""><img src="/*CLIENT09*/" alt=""><img src="/*CLIENT10*/" alt=""><img src="/*CLIENT11*/" alt=""><img src="/*CLIENT12*/" alt=""></div><span>עסקים שכבר <b>עברו את התהליך</b></span></div>'+
+    '<div class="fld" id="f-name"><label for="i-name">שם</label>'+
+      '<input id="i-name" type="text" autocomplete="name" placeholder="השם שלך"><div class="err">צריך שם כדי לפנות אליך</div></div>'+
+    '<div class="fld" id="f-biz"><label for="i-biz">שם העסק והתחום</label>'+
+      '<input id="i-biz" type="text" autocomplete="organization" placeholder="לדוגמה, סטודיו נועה, ייעוץ עסקי"><div class="err">צריך את זה כדי שהמפה תהיה שלך</div></div>'+
+    '<div class="fld" id="f-phone"><label for="i-phone">טלפון</label>'+
+      '<input id="i-phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="05X-XXXXXXX"><div class="err">מספר טלפון ישראלי תקין</div></div>'+
+    '<div class="fld" id="f-mail"><label for="i-mail">אימייל</label>'+
+      '<input id="i-mail" type="email" inputmode="email" autocomplete="email" placeholder="name@example.com"><div class="err">כתובת אימייל תקינה</div></div>'+
+    '<label class="consent"><input type="checkbox" id="i-ok">'+
+      '<span>אפשר לשלוח לי את המפה ועדכונים. קראתי את <a href="/privacy/" target="_blank">מדיניות הפרטיות</a>.</span></label>';
+  el('next').disabled = false;
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+/* המצב נשמר אחרי כל תשובה ומשוחזר בכניסה. אדם שיצא לרגע, לקרוא מדיניות
+   או לענות לטלפון, חוזר בדיוק לאן שהיה. בלי זה עשר תשובות נמחקות. */
+var STATE_KEY = 'dg_survey_state';
+function saveState(){
+  try { sessionStorage.setItem(STATE_KEY, JSON.stringify({
+    i: S.i, a: S.a, source: S.source, track: S.track, at: Date.now(),
+    f: { name: (el('i-name')||{}).value || '', biz: (el('i-biz')||{}).value || '',
+         phone: (el('i-phone')||{}).value || '', mail: (el('i-mail')||{}).value || '' }
+  })); } catch(e){}
+}
+function restoreState(){
+  var raw = null;
+  try { raw = sessionStorage.getItem(STATE_KEY); } catch(e){ return false; }
+  if(!raw) return false;
+  var v;
+  try { v = JSON.parse(raw); } catch(e){ return false; }
+  /* אחרי שעתיים זו כבר לא אותה ישיבה */
+  if(!v || !v.a || (Date.now() - (v.at || 0)) > 7200000) return false;
+  S.i = v.i || 0; S.a = v.a || {}; S.source = v.source; S.track = v.track;
+  S._restore = v.f || null;
+  return true;
+}
+
+el('body').addEventListener('click', function(e){
+  var o = e.target.closest('.opt'); if(!o) return;
+  var q = current(); if(!q) return;
+  var i = +o.dataset.i;
+  S.a[q.k] = { i:i, label:q.o[i][2], score:q.o[i][4], val:q.o[i][5] };
+  /* אירוע ההתחלה שהקמפיין מיועל אליו. יורה פעם אחת, ורק כשבאמת נענתה שאלה.
+     קודם הוא ירה על כל נגיעה במסך, וגם דף הנחיתה ירה אותו, אז כל אדם נספר
+     פעמיים ופייסבוק היה לומד לחפש אנשים שנוגעים ובורחים. */
+  if(!S.started){ S.started = true; if(window.fbq) fbq('trackCustom','StartDiagnostic'); }
+  this.querySelectorAll('.opt').forEach(function(x){ x.classList.remove('sel'); });
+  o.classList.add('sel');
+  el('next').disabled = false;
+  if(S.i === 0){ S.source = q.o[i][5]; S.track = SRC2TRACK[S.source]; }
+  setTimeout(function(){ if(S.i < 9) { S.i++; render(); } saveState(); }, 260);
+});
+
+el('back').addEventListener('click', function(){ if(S.i > 0){ S.i--; saveState(); render(); } });
+
+el('next').addEventListener('click', function(){
+  if(S.i < 9){ if(!el('next').disabled){ S.i++; saveState(); render(); } return; }
+  submit();
+});
+
+/* ============ ולידציה ============ */
+function normPhone(v){ return String(v||'').replace(/[^0-9]/g,''); }
+function okPhone(v){ var p = normPhone(v); return /^0(5[0-9]|[2-489])[0-9]{7}$/.test(p); }
+function okMail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(v||'').trim()); }
+function mark(id, good){ el(id).classList.toggle('bad', !good); return good; }
+
+/* ============ חישוב ============ */
+function roundDown(n){
+  if(n >= 100000) return Math.floor(n/10000)*10000;
+  if(n >= 20000)  return Math.floor(n/5000)*5000;
+  if(n >= 5000)   return Math.floor(n/1000)*1000;
+  return Math.floor(n/500)*500;
+}
+function fmt(n){ return n.toLocaleString('en-US'); }
+
+function compute(){
+  var a = S.a, score = 0, blind = 0, burn = false;
+  Object.keys(a).forEach(function(k){ score += (a[k].score || 0); });
+
+  if(S.track === 'a'){
+    if(a.reach && a.reach.i === 3) blind++;
+    if(a.close && a.close.i === 3) blind++;
+    if(a.speed && a.speed.i === 3) blind++;
+    if(a.cac){ blind += a.cac.val; }
+    if(a.budget && a.budget.i > 0 && a.close && a.close.i === 2) burn = true;
+  } else if(S.track === 'c'){
+    /* עיוורון אצל מי שבנוי על תוכן: אין דף שמחמם, אין הצעה מנוסחת,
+       ואין מושג כמה עולה לקוח. כולם ניתנים לתיקון, וזו בדיוק הנקודה. */
+    if(a.page && a.page.i === 2) blind++;
+    if(a.offer) blind += (a.offer.val > 0 ? 1 : 0);
+    if(a.cac) blind += a.cac.val;
+    if(a.dry && a.dry.i === 2) blind++;
+    if(a.tried && (a.tried.i === 1 || a.tried.i === 2)) burn = true;
+  } else {
+    if(a.refer && a.refer.i === 0) blind++;
+    if(a.dry) blind += a.dry.val;
+    if(a.offer) blind += a.offer.val;
+    if(a.cac) blind += a.cac.val;
+    if(a.tried && (a.tried.i === 1 || a.tried.i === 2)) burn = true;
+  }
+
+  /* כמה פעמים באמת נבחרה תשובה שאומרת "לא יודע", להבדיל מתשובה שרק מלמדת על עיוורון */
+  var unknown = 0;
+  if(S.track === 'a'){
+    if(a.reach && a.reach.i === 3) unknown++;   /* לא ידוע לי */
+    if(a.close && a.close.i === 3) unknown++;   /* לא ידוע לי */
+    if(a.cac   && a.cac.i   === 3) unknown++;   /* לא */
+  } else {
+    if(a.cac && a.cac.i === 2) unknown++;       /* לא חשבנו על זה ככה */
+  }
+  var approx = 0;
+  if(S.track === 'a' && a.cac && (a.cac.i === 1 || a.cac.i === 2)) approx++;  /* בערך / רק פנייה */
+
+  var aware = burn ? 'burned' : (blind >= 3 ? 'blind' : 'sees');
+  var temp  = score >= 15 ? 'hot' : (score >= 9 ? 'warm' : 'ok');
+
+  var main = 0, extra = 0, rows = [];
+  if(S.track === 'a'){
+    var leads = a.leads.val, notReach = a.reach.val, close = a.close.val, val = a.value.val;
+    var rescue = Math.max(0.10, (a.speed.val || 0.40) + (a.followup.val || 0));
+    main = roundDown(leads * notReach * rescue * close * val);
+    rows = [
+      ['פניות חדשות בחודש', a.leads.label],
+      ['לא מגיעות לשיחה', a.reach.label],
+      ['זמן חזרה לפנייה', a.speed.label],
+      ['מעקב למי שלא ענה', a.followup.label],
+      ['סגירה מתוך השיחות', a.close.label],
+      ['שווי לקוח בשנה הראשונה', a.value.label]
+    ];
+  } else if(S.track === 'c'){
+    /* אותה פיזיקה של מסלול א: פניות נכנסות, חלק לא מגיע לשיחה, וחלק ממי
+       שכן היה נסגר. מה שמשתנה הוא כמה מזה בר השבה, וכאן זה נגזר משני
+       הדברים שחסרים דווקא לעסק שבנוי על תוכן: דף שמחמם והצעה מנוסחת. */
+    var cLeads = a.leads.val, cMiss = a.reach.val, cClose = a.close.val, cVal = a.value.val;
+    var recover = Math.max(0.15, (a.page.val || 0) + (a.offer.val || 0));
+    main = roundDown(cLeads * cMiss * recover * cClose * cVal);
+    rows = [
+      ['פניות מהתוכן בחודש', a.leads.label],
+      ['לא מגיעות לשיחה', a.reach.label],
+      ['מקום ללמוד על השירות', a.page.label],
+      ['הצעה מנוסחת', a.offer.label],
+      ['סגירה מתוך השיחות', a.close.label],
+      ['שווי לקוח בשנה הראשונה', a.value.label]
+    ];
+  } else {
+    main  = roundDown(a.clients.val * a.refer.val * a.value.val);
+    extra = roundDown(a.capacity.val * a.value.val);
+    rows = [
+      ['לקוחות חדשים בחודש', a.clients.label],
+      ['מתוכם מהמלצה או היכרות', a.refer.label],
+      ['שווי לקוח בשנה הראשונה', a.value.label],
+      ['אפשר לקחת מחר עוד', a.capacity.label],
+      ['בחודש שההפניות מתייבשות', a.dry.label],
+      ['הצעה מנוסחת וקבועה', a.offer.label]
+    ];
+  }
+  /* רצפת הכסף. ליווי של 9,800 ועוד ריטיינר לא מחזיר את עצמו על דליפה קטנה,
+     ולכן מתחת לסכום הזה שום דבר אינו דחוף, בלי קשר לכמה כשלים סומנו.
+     בלי הרצפה הזו הדף מזמין לשיחה על 500 שקל, וזה שובר את האמון. */
+  var URGENCY_FLOOR = 5000;
+  var headline = (S.track === 'b') ? (extra || main) : main;
+  if(headline < URGENCY_FLOOR) temp = 'ok';
+
+  return { track:S.track, source:S.source, score:score, temp:temp, headline:headline, floor:URGENCY_FLOOR, aware:aware, blind:blind, burn:burn, unknown:unknown, approx:approx,
+           main:main, extra:extra, rows:rows, answers:a };
+}
+
+/* ============ מסך הטעינה ============ */
+var STEPS = {
+  a:['קורא את התשובות שסימנת','מחשב את הפער בין הפנייה לעסקה','מאתר את שלוש נקודות הדליפה','מרכיב את המפה'],
+  b:['קורא את התשובות שסימנת','מחשב את התלות ואת הקיבולת הפנויה','מאתר את שלוש נקודות הדליפה','מרכיב את המפה']
+};
+var CK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+
+function runLoad(done){
+  var box = el('load'), ul = el('lsteps'), st = STEPS[S.track] || STEPS.a;
+  ul.innerHTML = st.map(function(x){ return '<li><span class="mk">'+CK+'</span>'+x+'</li>'; }).join('');
+  el('lvl').style.strokeDashoffset = 326;
+  el('lpc').textContent = '0%';
+  box.classList.add('on');
+  var li = ul.querySelectorAll('li'), each = 950;
+  st.forEach(function(_, i){
+    setTimeout(function(){
+      if(i) li[i-1].classList.replace('act','ok');
+      li[i].classList.add('act');
+      el('lvl').style.strokeDashoffset = 326 - 326*(i+1)/st.length;
+      el('lpc').textContent = Math.round((i+1)/st.length*100) + '%';
+    }, i*each);
+  });
+  setTimeout(function(){ li[st.length-1].classList.replace('act','ok'); }, st.length*each);
+  setTimeout(function(){ box.classList.add('out'); }, st.length*each + 500);
+  setTimeout(done, st.length*each + 920);
+}
+
+/* ============ שליחה ============ */
+var WORKER_URL = 'https://dg-gal-funnel.tom-harush.workers.dev';
+
+/*__LEAKS__*/
+
+function submit(){
+  var name = el('i-name').value.trim(), biz = el('i-biz').value.trim();
+  var phone = el('i-phone').value.trim(), mail = el('i-mail').value.trim();
+  var ok = true;
+  ok = mark('f-name', name.length >= 2) && ok;
+  ok = mark('f-biz',  biz.length  >= 2) && ok;
+  ok = mark('f-phone', okPhone(phone))  && ok;
+  ok = mark('f-mail',  okMail(mail))    && ok;
+  if(!ok){ return; }
+
+  var r = compute();
+  r.name = name; r.biz = biz; r.phone = normPhone(phone); r.email = mail;
+  r.consent = el('i-ok').checked;
+  r.ts = new Date().toISOString();
+  r.utm = {};
+  new URLSearchParams(location.search).forEach(function(v,k){ if(/^utm_|^fbclid$|^ad_id$/.test(k)) r.utm[k] = v; });
+  try { sessionStorage.setItem('dg_map', JSON.stringify(r));
+        sessionStorage.removeItem(STATE_KEY); } catch(e){}
+
+  /* מבנה המטען הוא חוזה עם הוורקר. שינוי כאן בלי שינוי שם שובר את המייל בשקט. */
+  var head = (r.track === 'b') ? (r.extra || r.main) : r.main;
+  var qlist = qs(), pairs = [];
+  for(var qi = 0; qi < qlist.length; qi++){
+    var ans = r.answers[qlist[qi].k];
+    if(ans) pairs.push({ q: qlist[qi].q, a: ans.label });
+  }
+  /* מזהה אחד לשני הצדדים. הדפדפן והשרת שולחים את אותה המרה, ופייסבוק מאחד
+     אותן לפי המזהה הזה במקום לספור את אותו אדם פעמיים. */
+  var evId = (window.crypto && crypto.randomUUID) ? crypto.randomUUID()
+             : String(Date.now()) + Math.random().toString(16).slice(2);
+  function cookie(n){
+    var m = document.cookie.match('(^|;)\s*' + n + '\s*=\s*([^;]+)');
+    return m ? m.pop() : '';
+  }
+  /* המפה המלאה נשמרת עם הליד, כדי שהקישור במייל יוכל לשחזר אותה גם מחר
+     וגם ממכשיר אחר. בלי זה כפתור "להצגת המפה שלי" מוביל לדף ריק. */
+  var full = {};
+  for(var k in r) if(k !== 'phone' && k !== 'email') full[k] = r[k];
+
+  var payload = {
+    name: name, phone: r.phone, email: mail, business: biz,
+    full: full,
+    event_id: evId, fbp: cookie('_fbp'), fbc: cookie('_fbc'),
+    ref_url: location.href,
+    utm: { campaign: r.utm.utm_campaign || '', adset: r.utm.utm_content || '', ad: r.utm.utm_term || '' },
+    map: { main: head, source: r.source, awareness: r.aware, temp: r.temp, score: r.score,
+           leaks: leaksFor(r).map(function(l){ return { h:l.h, t:l.t }; }), answers: pairs }
+  };
+  /* נכשלה שליחה, נשמר לניסיון חוזר מדף התוצאה. בלי זה אדם שהרשת שלו נפלה
+     לשנייה רואה את המפה שלו ומאמין שהוא במערכת, וגל לא יודע שהוא קיים. */
+  if(WORKER_URL){
+    try { localStorage.setItem('dg_pending_lead', JSON.stringify(payload)); } catch(e){}
+    try {
+      fetch(WORKER_URL + '/lead', { method:'POST', headers:{ 'Content-Type':'application/json' },
+        body: JSON.stringify(payload) })
+        .then(function(res){ return res.ok ? res.json() : null; })
+        .then(function(j){
+          if(j && j.id){
+            try { sessionStorage.setItem('dg_lead_id', j.id);
+                  localStorage.removeItem('dg_pending_lead'); } catch(e){}
+          }
+        })
+        .catch(function(){});
+    } catch(e){}
+  }
+  if(window.fbq){
+    fbq('trackCustom','CompleteDiagnostic',
+        { temperature:r.temp, score:r.score, value:head, currency:'ILS' },
+        { eventID: evId });
+  }
+
+  runLoad(function(){ location.href = '/map/'; });
+}
+
+
+restoreState();
+render();
+</script>
+</body>
+</html>
