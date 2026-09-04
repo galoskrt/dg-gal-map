@@ -279,12 +279,19 @@ function mapId(){
   return m ? m[1] : '';
 }
 
+/* גם מסך שלא נמצאה בו מפה הוא עמוד אמיתי שמבקר יכול לנחות עליו,
+   קישור ישן, מכשיר שניקה נתונים, ליד שנמחק. לכן גם הוא נושא כותרת
+   תחתונה מלאה, לא רק את הכפתור. */
 function boot(){
   if(!D){
   document.getElementById('wrap').innerHTML =
     '<div class="empty"><h2>המפה לא נמצאה</h2>'+
     '<p>נראה שהדף נפתח בלי לעבור את השאלון, או שהדפדפן ניקה את הנתונים.</p>'+
-    '<button class="cta" onclick="location.href=\'/q/\'">למילוי האבחון</button></div>';
+    '<button class="cta" onclick="location.href=\'/q/\'">למילוי האבחון</button></div>'+
+    '<footer><p><b>גל הרוש</b> · דיוק דיגיטלי<br>DG-GAL.ONLINE</p>'+
+    '<p><a href="/privacy/">מדיניות הפרטיות</a></p>'+
+    '<p class="cr">© כל הזכויות שמורות · דיוק דיגיטלי · גל הרוש 2026</p>'+
+    '</footer>';
     return;
   }
   render();
