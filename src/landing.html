@@ -160,7 +160,7 @@
       <span class="vbadge">צפו בסרטון, 60 שניות בלבד</span>
       <div class="frame">
         <img src="/*AVATAR*/" alt="גל הרוש">
-        <button class="play" aria-label="להפעלת הסרטון"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>
+        <button class="play" aria-label="להפעלת הסרטון" onclick="openVid('vlHero','vidHero','/media/hero.mp4')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>
       </div>
     </div>
     <button class="cta" onclick="go()">להתחיל את האבחון</button>
@@ -240,7 +240,33 @@
 <div class="gate" id="gate"><div class="g"><div class="ring"></div><p>מכינים עבורך את האבחון</p><small>עשר שאלות, ארבע דקות, והמפה שלך בסוף</small></div></div>
 <div class="float" id="float"><div class="in"><button onclick="go()">להתחיל את האבחון</button></div></div>
 
+<div class="vlite" id="vlHero" onclick="if(event.target===this) closeVid('vlHero','vidHero')">
+  <div class="vbox"><button class="vx" aria-label="סגירה" onclick="closeVid('vlHero','vidHero')">&times;</button>
+    <video id="vidHero" playsinline controls></video></div>
+</div>
+
 <script>
+/* הסרטון נטען רק בלחיצה, לא לפני. עמוד שמשקל את עצמו ב-11MB בטעינה
+   הראשונה מפסיד אנשים לפני שהם בכלל ראו כותרת. */
+function openVid(boxId, videoId, src){
+  var box = document.getElementById(boxId), v = document.getElementById(videoId);
+  if(!v.src) v.src = src;
+  box.classList.add('on');
+  v.play().catch(function(){});
+}
+function closeVid(boxId, videoId){
+  var box = document.getElementById(boxId), v = document.getElementById(videoId);
+  v.pause();
+  box.classList.remove('on');
+}
+document.addEventListener('keydown', function(e){
+  if(e.key !== 'Escape') return;
+  document.querySelectorAll('.vlite.on').forEach(function(b){
+    b.classList.remove('on');
+    var v = b.querySelector('video'); if(v) v.pause();
+  });
+});
+
 function go(){
   /* לא StartDiagnostic. לחיצה כאן היא כוונה, לא התחלה, והאירוע שהקמפיין
      מיועל אליו נשמר לרגע שבו באמת נענתה השאלה הראשונה. */

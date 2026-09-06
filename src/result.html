@@ -103,7 +103,33 @@
 <div class="gate" id="gate"><div class="g"><div class="ring"></div><p>פותחים את היומן</p><small>עוד רגע תוכל לבחור מועד שנוח לך</small></div></div>
 <div class="float" id="float"><div class="in"><button onclick="goCall()">לבחירת מועד לשיחת אבחון</button></div></div>
 
+<div class="vlite" id="vlResult" onclick="if(event.target===this) closeVid('vlResult','vidResult')">
+  <div class="vbox"><button class="vx" aria-label="סגירה" onclick="closeVid('vlResult','vidResult')">&times;</button>
+    <video id="vidResult" playsinline controls></video></div>
+</div>
+
 <script>
+/* הסרטון נטען רק בלחיצה. שלוש דקות זה כבר משקל אמיתי, ואין סיבה
+   שמי שלא ילחץ ישלם עליו בזמן טעינה. */
+function openVid(boxId, videoId, src){
+  var box = document.getElementById(boxId), v = document.getElementById(videoId);
+  if(!v.src) v.src = src;
+  box.classList.add('on');
+  v.play().catch(function(){});
+}
+function closeVid(boxId, videoId){
+  var box = document.getElementById(boxId), v = document.getElementById(videoId);
+  v.pause();
+  box.classList.remove('on');
+}
+document.addEventListener('keydown', function(e){
+  if(e.key !== 'Escape') return;
+  document.querySelectorAll('.vlite.on').forEach(function(b){
+    b.classList.remove('on');
+    var v = b.querySelector('video'); if(v) v.pause();
+  });
+});
+
 var D = null;
 try { D = JSON.parse(sessionStorage.getItem('dg_map') || 'null'); } catch(e){}
 
@@ -231,7 +257,7 @@ function render(){
 
   '<div class="sec"><h2 class="sh">רגע אחד <span class="box">לפני שממשיכים</span></h2>'+
     '<div class="vid"><div class="frame"><img src="/*AVATAR*/" alt="גל הרוש">'+
-      '<button class="play" aria-label="להפעלת הסרטון"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>'+
+      '<button class="play" aria-label="להפעלת הסרטון" onclick="openVid(\'vlResult\',\'vidResult\',\'/media/result.mp4\')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>'+
       '</div><p class="vcap">שלוש דקות על המספר שלמעלה, ומה עושים איתו.</p></div></div>'+
 
   '<div class="calc sec"><h2 class="sh">ככה הגעתי למספר, <span class="boxo">שורה שורה</span></h2>'+
