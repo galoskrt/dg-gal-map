@@ -50,12 +50,16 @@ header{position:sticky;top:0;z-index:40;backdrop-filter:blur(16px);-webkit-backd
 h2{font-size:22px;line-height:1.32;margin:0 0 10px;font-weight:800;letter-spacing:-.01em}
 p{margin:0 0 12px;color:var(--mut)}
 b,strong{color:var(--txt);font-weight:800}
+/* כלל ברזל של גל: מילים שמודגשות בקופסא לא נשברות לעולם באמצע, בשום
+   נכס דיגיטלי שלו. הקופסא זזה כיחידה שלמה לשורה הבאה, ולא מתפצלת
+   לשני חלקים צבועים. איפה שהביטוי ארוך מכדי להיכנס לרוחב מובייל
+   אפילו לבדו, זו כבר בעיית ניסוח, לא בעיית CSS, ומדווחים על זה. */
 .box{display:inline;background:var(--pink);color:#fff;font-weight:800;padding:1px 8px;border-radius:7px;
-  box-decoration-break:clone;-webkit-box-decoration-break:clone}
+  white-space:nowrap}
 .boxg{display:inline;background:var(--green);color:#05261a;font-weight:800;padding:1px 8px;border-radius:7px;
-  box-decoration-break:clone;-webkit-box-decoration-break:clone}
+  white-space:nowrap}
 .boxo{display:inline;background:var(--orange);color:#fff;font-weight:800;padding:1px 8px;border-radius:7px;
-  box-decoration-break:clone;-webkit-box-decoration-break:clone}
+  white-space:nowrap}
 .nb{white-space:nowrap}
 
 .card{position:relative;background:#fff;border:1px solid var(--line);border-radius:var(--rC);

@@ -61,12 +61,16 @@ header{position:sticky;top:0;z-index:40;backdrop-filter:blur(16px);-webkit-backd
 h2{font-size:22px;line-height:1.32;margin:0 0 10px;font-weight:800;letter-spacing:-.01em}
 p{margin:0 0 12px;color:var(--mut)}
 b,strong{color:var(--txt);font-weight:800}
+/* כלל ברזל של גל: מילים שמודגשות בקופסא לא נשברות לעולם באמצע, בשום
+   נכס דיגיטלי שלו. הקופסא זזה כיחידה שלמה לשורה הבאה, ולא מתפצלת
+   לשני חלקים צבועים. איפה שהביטוי ארוך מכדי להיכנס לרוחב מובייל
+   אפילו לבדו, זו כבר בעיית ניסוח, לא בעיית CSS, ומדווחים על זה. */
 .box{display:inline;background:var(--pink);color:#fff;font-weight:800;padding:1px 8px;border-radius:7px;
-  box-decoration-break:clone;-webkit-box-decoration-break:clone}
+  white-space:nowrap}
 .boxg{display:inline;background:var(--green);color:#05261a;font-weight:800;padding:1px 8px;border-radius:7px;
-  box-decoration-break:clone;-webkit-box-decoration-break:clone}
+  white-space:nowrap}
 .boxo{display:inline;background:var(--orange);color:#fff;font-weight:800;padding:1px 8px;border-radius:7px;
-  box-decoration-break:clone;-webkit-box-decoration-break:clone}
+  white-space:nowrap}
 .nb{white-space:nowrap}
 
 .card{position:relative;background:#fff;border:1px solid var(--line);border-radius:var(--rC);
@@ -215,7 +219,7 @@ src="https://www.facebook.com/tr?id=3520763671432860&ev=PageView&noscript=1" alt
   <div class="sec card lift">
     <h2 class="sh">מה מחכה לך <span class="boxo">בניתוח המפה שלך</span></h2>
     <div class="pt"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></i>
-      <span>עוברים על המספר שקיבלת ועל שלוש נקודות הדליפה, אחת אחת.</span></div>
+      <span>עוברים על המספר שקיבלת ועל נקודות הדליפה שלך, אחת אחת.</span></div>
     <div class="pt"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></i>
       <span>מגדירים מי בדיוק הלקוח שכדאי להביא, לפני שמדברים על ערוץ או תקציב.</span></div>
     <div class="pt"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></i>
@@ -264,6 +268,12 @@ var CAL_URL  = 'https://cal.com/' + CAL_LINK;
     p(cal, ar); };
 })(window, "https://app.cal.com/embed/embed.js", "init");
 
+/* השם, הטלפון והמייל כבר נאספו בשאלון. מי שהגיע לכאן מדף התוצאה, באותה
+   לשונית, לא צריך להקליד אותם שוב. אם אין נתון (הגעה ישירה, לשונית
+   חדשה), קאל פשוט פותח את הטופס הרגיל שלו, בלי שגיאה. */
+var lead = null;
+try { lead = JSON.parse(sessionStorage.getItem('dg_map') || 'null'); } catch(e){}
+
 try {
   Cal("init", "map", { origin: "https://app.cal.com" });
   Cal.config = Cal.config || {};
@@ -295,10 +305,16 @@ try {
       "cal-border-booker": "#ece9f2"
     }}
   });
+  var bookConfig = { layout: "month_view", useSlotsViewOnSmallScreen: "true" };
+  if(lead && lead.name)  bookConfig.name  = lead.name;
+  if(lead && lead.email) bookConfig.email = lead.email;
+  /* לא כל סוג פגישה בקאל שואל טלפון. אם השדה קיים אצלו הוא יתמלא,
+     ואם לא, הערך פשוט לא בשימוש ולא שובר כלום. */
+  if(lead && lead.phone) bookConfig.attendeePhoneNumber = lead.phone;
   Cal.ns.map("inline", {
     elementOrSelector: "#cal",
     calLink: CAL_LINK,
-    config: { layout: "month_view", useSlotsViewOnSmallScreen: "true" }
+    config: bookConfig
   });
   /* ברגע שקאל מזריק את המסגרת שלו, מסירים את הודעת הטעינה */
   var box = document.getElementById('cal');

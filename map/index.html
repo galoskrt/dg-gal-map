@@ -61,12 +61,16 @@ header{position:sticky;top:0;z-index:40;backdrop-filter:blur(16px);-webkit-backd
 h2{font-size:22px;line-height:1.32;margin:0 0 10px;font-weight:800;letter-spacing:-.01em}
 p{margin:0 0 12px;color:var(--mut)}
 b,strong{color:var(--txt);font-weight:800}
+/* כלל ברזל של גל: מילים שמודגשות בקופסא לא נשברות לעולם באמצע, בשום
+   נכס דיגיטלי שלו. הקופסא זזה כיחידה שלמה לשורה הבאה, ולא מתפצלת
+   לשני חלקים צבועים. איפה שהביטוי ארוך מכדי להיכנס לרוחב מובייל
+   אפילו לבדו, זו כבר בעיית ניסוח, לא בעיית CSS, ומדווחים על זה. */
 .box{display:inline;background:var(--pink);color:#fff;font-weight:800;padding:1px 8px;border-radius:7px;
-  box-decoration-break:clone;-webkit-box-decoration-break:clone}
+  white-space:nowrap}
 .boxg{display:inline;background:var(--green);color:#05261a;font-weight:800;padding:1px 8px;border-radius:7px;
-  box-decoration-break:clone;-webkit-box-decoration-break:clone}
+  white-space:nowrap}
 .boxo{display:inline;background:var(--orange);color:#fff;font-weight:800;padding:1px 8px;border-radius:7px;
-  box-decoration-break:clone;-webkit-box-decoration-break:clone}
+  white-space:nowrap}
 .nb{white-space:nowrap}
 
 .card{position:relative;background:#fff;border:1px solid var(--line);border-radius:var(--rC);
@@ -358,11 +362,13 @@ function leaksFor(d){
 /* ---------- למה זה קורה דווקא אצלך ---------- */
 var WHY = {
   sees:'על השאלות שנוגעות למספרים ידעת לענות, וזה לא מובן מאליו. רוב מי שממלא את זה לא יודע. <b>ברור לך בדיוק מה לא עובד.</b> פשוט אין לך את השעות לבנות את המערכת שתסגור את זה, ואין שום סיבה שיהיו לך.',
-  blind:'\u200b{OPEN} <b>אף אחד לא בנה לך את המקום שבו המספרים האלה נמדדים</b>, ולכן אין שום דרך לדעת אותם. מומחיות בתחום שלך היא לא מומחיות בזה, ואף אחד לא אמור לצפות לשתיהן. אבל כל עוד המספרים חסרים, <span class="box">כל החלטה על תקציב היא ניחוש. ובגלל זה זה מרגיש כמו הימור.</span>',
+  blind:'\u200b{OPEN} <b>אף אחד לא בנה לך את המקום שבו המספרים האלה נמדדים</b>, ולכן אין שום דרך לדעת אותם. מומחיות בתחום שלך היא לא מומחיות בזה, ואף אחד לא אמור לצפות לשתיהן. אבל כל עוד המספרים חסרים, <span class="box">כל החלטה על תקציב היא ניחוש</span>. ובגלל זה <span class="box">זה מרגיש כמו הימור</span>.',
   burned:'סימנת שכבר ניסית, ושזה לא עבד. <b>אני לא אגיד לך שניסית לא מספיק.</b> ברוב המקרים שאני רואה, הפרסום עצמו היה בסדר גמור. פשוט אף אחד לא הגדיר למי לפרסם לפני שהדליק את הכסף. הקמפיין רץ, המספרים על המסך נראו סבירים, <span class="box">והאנשים שנכנסו לא היו הלקוחות שלך.</span> את זה לא מתקנים בתוך הקמפיין. זה נשבר לפניו.'
 };
+/* {PHRASE} מוחלף במספר הנקודות בפועל, כי לא לכולם יוצאות שלוש. הבטחה
+   שלא תואמת את מה שמופיע למטה בעמוד שוברת בדיוק את האמון שהמפה בנתה. */
 var LINE = {
-  sees:'נבנה את המערכת שסוגרת את שלוש הנקודות האלה.',
+  sees:'נבנה את המערכת שסוגרת את {PHRASE}.',
   blind:'נעבור על המספרים יחד, וההחלטה אצלך.',
   burned:'לפני שמדליקים משהו, נגדיר בדיוק למי. משם מתחילים.'
 };
@@ -395,7 +401,7 @@ var UNDER = {
 };
 var TEMP = {
   hot:{h:'נעבור על המפה הזאת יחד?',
-       p:'המספר גבוה, ורוב מה שמייצר אותו נמצא בשליטה שלך. שלוש הנקודות למעלה נסגרות בדרך כלל בלי להגדיל שקל בתקציב.',
+       p:'המספר גבוה, ורוב מה שמייצר אותו נמצא בשליטה שלך. {PHRASE} נסגרות בדרך כלל בלי להגדיל שקל בתקציב.',
        c:'לבחירת מועד', f:true},
   warm:{h:'שווה שנסתכל על זה יחד',
        p:'יש כאן בסיס שעובד, ויש נקודה אחת או שתיים ששוות תיקון. הן לא דורשות שינוי גדול. הן דורשות שמישהו יסתכל על המספרים יחד איתך.',
@@ -414,6 +420,14 @@ var TOMORROW = {
   b:'כל מה שצריך זה לקחת את עשרת הלקוחות האחרונים, ולסמן ליד כל אחד מי בדיוק הפנה אותו. <b>רק את זה.</b> תוך חצי שעה יהיה ברור אם יש כאן ערוץ, או שלושה אנשים שממשיכים לזכור אותך.',
   c:'כל מה שצריך זה לקחת את עשר הפניות האחרונות שהגיעו מהתוכן, ולסמן ליד כל אחת איפה בדיוק היא נעצרה. <b>רק את זה.</b> תוך חצי שעה יהיה ברור אם הן נעצרות באותו מקום, ואם כן, זה מקום אחד שאפשר לתקן.'
 };
+
+/* משתמשים בביטוי שלם, לא רק במספר, כי יחיד דורש ניסוח אחר מרבים.
+   "שתי" ולא "שתיים" כי הספרה יושבת צמוד ל"נקודות" והצורה הזאת נשמעת. */
+function pointsPhrase(n, tail){
+  tail = tail || 'האלה';
+  if(n === 1) return 'הנקודה ' + (tail === 'האלה' ? 'הזאת' : tail);
+  return (n === 2 ? 'שתי' : 'שלוש') + ' הנקודות ' + tail;
+}
 
 function render(){
   var t = TEMP[D.temp], lk = leaksFor(D);
@@ -447,7 +461,7 @@ function render(){
     '<div class="why"><p>' + src.why + '</p><p>' + WHY[D.aware].replace('{OPEN}', blindOpener(D)) + '</p></div></div>'+
 
   '<div class="sec"><h2 class="sh"><span class="box">איפה זה נעצר</span>, לפי סדר</h2>'+
-    '<p>שלוש הנקודות האלה נבחרו מהתשובות שסימנת, לפי סדר הכסף שיושב על כל אחת מהן.</p>'+
+    '<p>הנקודות האלה נבחרו מהתשובות שסימנת, לפי סדר הכסף שיושב על כל אחת מהן.</p>'+
     '<div style="margin-top:18px">' + lk.map(function(l,i){
       return '<div class="leak">'+ numeral(i+1, l.k) +'<div><h3>'+l.h+'</h3><p>'+l.t+'</p></div></div>';
     }).join('') + '</div></div>'+
@@ -459,7 +473,8 @@ function render(){
     '<div class="cases">' + caseCard(CASES[PROOF_FOR[D.track] || 0]) + '</div></div>'+
 
   '<div class="sec invite" id="s-inv"><h2>'+t.h+'</h2>'+
-    '<p>'+t.p + (D.temp === 'ok' ? '' : ' <b>'+LINE[D.aware]+'</b>') + '</p>'+
+    '<p>'+t.p.replace('{PHRASE}', pointsPhrase(lk.length, 'למעלה')) +
+      (D.temp === 'ok' ? '' : ' <b>'+LINE[D.aware].replace('{PHRASE}', pointsPhrase(lk.length))+'</b>') + '</p>'+
     '<button class="cta'+(D.temp === 'ok' ? ' quiet' : '')+'" onclick="location.href=\'/call/\'">'+t.c+'</button>'+
     '<p class="fine">המפה נשארת שלך גם אם לא נעבוד יחד. שלחתי אותה גם למייל.</p></div>'+
 
