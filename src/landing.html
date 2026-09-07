@@ -57,8 +57,14 @@
   width:64px;height:64px;border-radius:50%;border:0;cursor:pointer;display:grid;place-items:center;
   background:linear-gradient(96deg,var(--pink),var(--orange));box-shadow:var(--shC),0 0 0 8px rgba(255,255,255,.30)}
 .play svg{width:23px;height:23px;color:#fff;margin-right:3px}
-.mirror{background:#fff;border:1px solid var(--line);border-radius:var(--rC);
-  padding:15px 16px;margin-bottom:10px;box-shadow:var(--sh1);font-size:16px;font-weight:700;color:var(--txt);line-height:1.5}
+/* אייקון ליד כל משפט מראה, ולא רק מלווה: הוא הרגש של המשפט בקו אחד.
+   הדגשה חלקית, לא כל השורה, כי העין סורקת וקולטת קודם את מה שבולט. */
+.mirror{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:var(--rC);
+  padding:15px 16px;margin-bottom:10px;box-shadow:var(--sh1);font-size:16px;font-weight:600;color:var(--txt);line-height:1.5}
+.mirror b{font-weight:800}
+.mirror i{flex:0 0 auto;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;margin-top:2px;
+  background:var(--pinkT);border:1px solid var(--pinkL);color:var(--pinkS)}
+.mirror svg{width:14px;height:14px;stroke-width:2.4}
 .step{display:flex;gap:14px;align-items:flex-start;margin-bottom:14px}
 .step .n{flex:0 0 auto;width:40px;text-align:center}
 .step .n b{display:block;font-size:27px;line-height:1;font-weight:800;letter-spacing:-.03em;
@@ -170,10 +176,14 @@
 
   <div class="sec">
     <h2 class="sh">אחד <span class="nb">מהמשפטים האלה</span> <span class="nb"><span class="box">נשמע מוכר</span>?</span></h2>
-    <div class="mirror">"אני מקבל פניות, ואני לא באמת יודע מה קרה להן אחר כך."</div>
-    <div class="mirror">"הדוח החודשי מראה עלייה. התזרים של החודש הבא לא מרגיש את זה."</div>
-    <div class="mirror">"אני סוגר מצוין מול לקוח. אז למה כל כך קשה להביא אותו לשולחן?"</div>
-    <div class="mirror">"אני מומחה בתחום שלי. למה אני צריך להיות מומחה גם בזה?"</div>
+    <div class="mirror"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" x2="22" y1="2" y2="22"/></svg></i>
+      <span>"אני מקבל פניות, ואני לא באמת יודע <b>מה קרה להן אחר כך.</b>"</span></div>
+    <div class="mirror"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></i>
+      <span>"הדוח החודשי מראה עלייה. <b>התזרים של החודש הבא לא מרגיש את זה.</b>"</span></div>
+    <div class="mirror"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 13V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h9"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/><path d="m17 22 5-5"/><path d="m17 17 5 5"/></svg></i>
+      <span>"אני סוגר מצוין מול לקוח. אז <b>למה כל כך קשה להביא אותו לשולחן?</b>"</span></div>
+    <div class="mirror"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg></i>
+      <span>"אני מומחה בתחום שלי. <b>למה אני צריך להיות מומחה גם בזה?</b>"</span></div>
     <p style="margin-top:14px">אם כן, הבעיה כמעט בטוח לא נמצאת בכמות הפניות. <b>היא נמצאת במי נכנס, ובמה שקורה לו אחר כך.</b></p>
   </div>
 
