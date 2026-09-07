@@ -197,6 +197,12 @@ footer a{color:var(--mut2)}
 .vbadge{display:inline-block;margin:0 auto 10px;padding:6px 13px;border-radius:999px;
   background:var(--pinkT);border:1px solid var(--pinkL);color:var(--pinkS);
   font-size:12.5px;font-weight:800;white-space:nowrap}
+/* אותו זיהוי שכבר קיים בבאדג' של המודעה, כאן על הדף עצמו. מי שמגיע
+   בלי לעבור דרך המודעה (קישור ישיר, פה לאוזן) לא ראה את הסינון הזה
+   בכלל. לא נייד, כי הטקסט ארוך מכדי להיכנס לפינה עגולה בלי להישבר. */
+.qualify{display:block;margin:0 auto 14px;padding:9px 18px;border-radius:16px;
+  background:var(--pinkT);border:1px solid var(--pinkL);color:var(--pinkS);
+  font-size:13px;font-weight:800;line-height:1.45;max-width:300px}
 .vid{text-align:center}
 
 /* הוכחה חברתית: פרצופים אמיתיים, לא איורים */
@@ -340,6 +346,7 @@ src="https://www.facebook.com/tr?id=3520763671432860&ev=PageView&noscript=1" alt
 <div class="wrap">
 
   <div class="hero">
+    <span class="qualify">לעסקי שירות שיודעים שהם מומחים בתחום שלהם, וסוגרים עסקאות בשיחה או פגישה</span>
     <h1 class="h1">לדעת מראש אם <span class="boxg">שיווק מדויק</span> בכלל <span class="box">שווה את הכסף</span>,<br><span class="nb">לפני שהוא רץ.</span></h1>
     <p class="rel">גם אם שיווקת בעבר ולא קיבלת החזר השקעה ראוי, גם אם כבר נכווית מקמפיינר או סוכנות, <span class="nb">וגם אם אין לך אלפי עוקבים.</span></p>
     <p class="sub">עשר שאלות, ארבע דקות, ובסוף מפה אישית שמראה <b>כמה כסף הולך לך לאיבוד בדרך שבין הפנייה למעמד המכירה, <span class="nb">ואיפה בדיוק זה קורה.</span></b></p>
@@ -451,7 +458,7 @@ src="https://www.facebook.com/tr?id=3520763671432860&ev=PageView&noscript=1" alt
 
   <div class="sec close">
     <h2>ארבע דקות, והמספר שלך על המסך</h2>
-    <p>בלי שיחת מכירה ובלי טופס ארוך. עשר שאלות בהקשה, <b>והמפה נשארת שלך בכל מקרה.</b></p>
+    <p>בלי שיחת מכירה ובלי טופס ארוך. עשר שאלות בהקשה, <b>והמפה נשארת שלך בכל מקרה.</b><br><span class="nb">אני לא מבטיח תוצאה, אני מתחייב על התהליך.</span></p>
     <button class="cta" onclick="go()">להתחיל את האבחון</button>
   </div>
 
