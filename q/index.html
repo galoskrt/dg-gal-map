@@ -862,6 +862,10 @@ function submit(){
   };
   /* נכשלה שליחה, נשמר לניסיון חוזר מדף התוצאה. בלי זה אדם שהרשת שלו נפלה
      לשנייה רואה את המפה שלו ומאמין שהוא במערכת, וגל לא יודע שהוא קיים. */
+  /* המזהה, ברגע שהוא חוזר מהשרת, נוסע איתנו בכתובת עצמה. בלי זה הדף
+     תלוי לגמרי בזיכרון הלשונית, ולשונית ברקע במובייל שאיבדה אותו
+     (כמו בזמן מעבר להעתקת צילום מסך) נוחתת על "המפה לא נמצאה". */
+  var leadId = '';
   if(WORKER_URL){
     try { localStorage.setItem('dg_pending_lead', JSON.stringify(payload)); } catch(e){}
     try {
@@ -870,6 +874,7 @@ function submit(){
         .then(function(res){ return res.ok ? res.json() : null; })
         .then(function(j){
           if(j && j.id){
+            leadId = j.id;
             try { sessionStorage.setItem('dg_lead_id', j.id);
                   localStorage.removeItem('dg_pending_lead'); } catch(e){}
           }
@@ -883,7 +888,9 @@ function submit(){
         { eventID: evId });
   }
 
-  runLoad(function(){ location.href = '/map/'; });
+  /* מסך הטעינה רץ כמה שניות טובות, מספיק זמן לתשובת השרת להגיע.
+     אם היא לא הגיעה בזמן, חוזרים בדיוק להתנהגות הישנה. */
+  runLoad(function(){ location.href = '/map/' + (leadId ? ('?id=' + leadId) : ''); });
 }
 
 
