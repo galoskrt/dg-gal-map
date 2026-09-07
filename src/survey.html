@@ -431,7 +431,9 @@ el('body').addEventListener('click', function(e){
   /* אירוע ההתחלה שהקמפיין מיועל אליו. יורה פעם אחת, ורק כשבאמת נענתה שאלה.
      קודם הוא ירה על כל נגיעה במסך, וגם דף הנחיתה ירה אותו, אז כל אדם נספר
      פעמיים ופייסבוק היה לומד לחפש אנשים שנוגעים ובורחים. */
-  if(!S.started){ S.started = true; if(window.fbq) fbq('trackCustom','StartDiagnostic'); }
+  if(!S.started){ S.started = true; if(window.fbq) fbq('trackCustom','StartDiagnostic');
+    try { fetch(WORKER_URL + '/funnel-event', { method:'POST', headers:{ 'Content-Type':'application/json' },
+      body: JSON.stringify({ stage:'start' }), keepalive:true }).catch(function(){}); } catch(e){} }
   this.querySelectorAll('.opt').forEach(function(x){ x.classList.remove('sel'); });
   o.classList.add('sel');
   el('next').disabled = false;

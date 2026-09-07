@@ -347,7 +347,7 @@ src="https://www.facebook.com/tr?id=3520763671432860&ev=PageView&noscript=1" alt
 
   <div class="hero">
     <span class="qualify">לעסקי שירות שיודעים שהם מומחים בתחום שלהם, וסוגרים עסקאות בשיחה או פגישה</span>
-    <h1 class="h1">לדעת מראש אם <span class="boxg">שיווק מדויק</span> בכלל <span class="box">שווה את הכסף</span>,<br><span class="nb">לפני שהוא רץ.</span></h1>
+    <h1 class="h1">לדעת מראש אם <span class="boxg">שיווק מדויק</span> בכלל <span class="box">שווה את הכסף</span>,<br>לפני ש<span class="nb">שורפים כסף</span> על ניחושים.</h1>
     <p class="rel">גם אם שיווקת בעבר ולא קיבלת החזר השקעה ראוי, גם אם כבר נכווית מקמפיינר או סוכנות, <span class="nb">וגם אם אין לך אלפי עוקבים.</span></p>
     <p class="sub">עשר שאלות, ארבע דקות, ובסוף מפה אישית שמראה <b>כמה כסף הולך לך לאיבוד בדרך שבין הפנייה למעמד המכירה, <span class="nb">ואיפה בדיוק זה קורה.</span></b></p>
     <div class="vid">
@@ -479,6 +479,19 @@ src="https://www.facebook.com/tr?id=3520763671432860&ev=PageView&noscript=1" alt
 </div>
 
 <script>
+/* מונה המשפך: כניסה לדף, לחיצה להתחלה, התחלת שאלון בפועל (בשאלון
+   עצמו). לא מזהה אף אחד, רק סופר יום ושלב, כדי שגל יוכל לדעת אם
+   הבעיה בדף עצמו (הרבה כניסות, מעט לחיצות) או בשאלון (הרבה לחיצות,
+   מעט השלמות). כשל בשליחה לא אמור לעצור שום דבר על הדף. */
+var WORKER_URL = 'https://dg-gal-funnel.tom-harush.workers.dev';
+function funnelPing(stage){
+  try {
+    fetch(WORKER_URL + '/funnel-event', { method:'POST', headers:{ 'Content-Type':'application/json' },
+      body: JSON.stringify({ stage: stage }), keepalive:true }).catch(function(){});
+  } catch(e){}
+}
+funnelPing('view');
+
 /* הסרטון נטען רק בלחיצה, לא לפני. עמוד שמשקל את עצמו ב-11MB בטעינה
    הראשונה מפסיד אנשים לפני שהם בכלל ראו כותרת. */
 function openVid(boxId, videoId, src){
@@ -504,6 +517,7 @@ function go(){
   /* לא StartDiagnostic. לחיצה כאן היא כוונה, לא התחלה, והאירוע שהקמפיין
      מיועל אליו נשמר לרגע שבו באמת נענתה השאלה הראשונה. */
   if(window.fbq) fbq('trackCustom','ClickDiagnostic');
+  funnelPing('click');
   /* המסך הזה נשאר על הדף הישן עד שהחדש מצייר, ולכן הוא מכסה בדיוק את
      השניות שבהן קודם לא קרה כלום. */
   var g = document.getElementById('gate');
