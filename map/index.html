@@ -321,6 +321,27 @@ function mapId(){
   return m ? m[1] : '';
 }
 
+/* קישור כללי לדוגמה, בלי מזהה, כדי שתמיד אפשר יהיה לראות איך הדף נראה
+   בלי תלוי בליד אמיתי. נלכד פעם אחת ממילוי אמיתי של השאלון, כדי שהצורה
+   תהיה נכונה תמיד. מסומן __demo כדי שלא ייספר בפיקסל. */
+var DEMO_MAP = {"track":"b","source":"ref","score":20,"temp":"hot","headline":240000,"floor":5000,
+  "aware":"burned","blind":2,"burn":true,"unknown":0,"approx":0,"main":210000,"extra":240000,
+  "rows":[["לקוחות חדשים בחודש","9 עד 20"],["מתוכם מהמלצה או היכרות","בערך חצי"],
+    ["שווי לקוח בשנה הראשונה","בין 15,000 ל-50,000"],["אפשר לקחת מחר עוד","עוד 6 עד 10"],
+    ["בחודש שההפניות מתייבשות","פונים ידנית ללקוחות עבר"],["הצעה מנוסחת וקבועה","משהו כללי"]],
+  "answers":{"source":{"i":2,"label":"מהמלצות ופה לאוזן בלבד","score":2,"val":"ref"},
+    "clients":{"i":2,"label":"9 עד 20","score":2,"val":14},
+    "refer":{"i":2,"label":"בערך חצי","score":1,"val":0.5},
+    "value":{"i":2,"label":"בין 15,000 ל-50,000","score":3,"val":30000},
+    "capacity":{"i":2,"label":"עוד 6 עד 10","score":3,"val":8},
+    "dry":{"i":1,"label":"פונים ידנית ללקוחות עבר","score":2,"val":0},
+    "tried":{"i":2,"label":"היה ליווי של חברת שיווק ולא עבד","score":3,"val":1},
+    "offer":{"i":1,"label":"משהו כללי","score":2,"val":0},
+    "cac":{"i":1,"label":"לא, כי הוא לא עולה כסף","score":2,"val":2}},
+  "name":"דוגמה","biz":"עסק לדוגמה (תצוגה כללית)","phone":"0501234567",
+  "email":"demo-preview@example.com","consent":true,"ts":"2026-09-08T00:00:00.000Z","utm":{},
+  "__demo":true};
+
 /* גם מסך שלא נמצאה בו מפה הוא עמוד אמיתי שמבקר יכול לנחות עליו,
    קישור ישן, מכשיר שניקה נתונים, ליד שנמחק. לכן גם הוא נושא כותרת
    תחתונה מלאה, לא רק את הכפתור. */
@@ -529,7 +550,7 @@ function render(){
 
   document.getElementById('float').dataset.allow = t.f ? '1' : '0';
   document.getElementById('qsend').addEventListener('click', sendQuestion);
-  if(window.fbq) fbq('trackCustom','ViewMap',{ temperature:D.temp, score:D.score });
+  if(window.fbq && !D.__demo) fbq('trackCustom','ViewMap',{ temperature:D.temp, score:D.score });
 }
 
 function numeral(n,k){
@@ -706,7 +727,7 @@ document.addEventListener('click', function(e){
 (function start(){
   if(D){ boot(); return; }
   var id = mapId();
-  if(!id){ boot(); return; }
+  if(!id){ D = DEMO_MAP; boot(); return; }
   var w = document.getElementById('wrap');
   if(w) w.innerHTML = '<div class="empty"><p>טוענים את המפה שלך.</p></div>';
   fetch(WORKER_URL + '/m/' + id)
