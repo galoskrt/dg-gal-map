@@ -98,6 +98,8 @@
 .load li.ok{opacity:1;color:#fff;transform:none}
 .load li.ok .mk{border-color:#34d399;background:#34d399;box-shadow:none}
 .load li.ok .mk svg{opacity:1}
+.hint{margin-top:5px;font-size:12.5px;color:var(--mut2);line-height:1.55}
+.fld.bad .hint{display:none}
 </style>
 </head>
 <body>
@@ -359,7 +361,7 @@ function renderContact(){
   renderChapters(2);
   el('qn').textContent = 'שאלה 10 מתוך 10';
   el('qh').textContent = 'לאן לשלוח את המפה?';
-  el('qfoot').textContent = 'המפה נשארת שלך גם אם לא נעבוד יחד.';
+  el('qfoot').textContent = 'המפה נשלחת לוואטסאפ שלך, ונשארת שלך גם אם לא נעבוד יחד.';
   el('next').textContent = 'להצגת המפה שלי';
   el('body').innerHTML =
     /* כאן נמצאת נקודת הנטישה הגבוהה ביותר במשפך: תשע הקשות מאחור, ועכשיו
@@ -369,8 +371,10 @@ function renderContact(){
       '<input id="i-name" type="text" autocomplete="name" placeholder="השם שלך"><div class="err">צריך שם כדי לפנות אליך</div></div>'+
     '<div class="fld" id="f-biz"><label for="i-biz">שם העסק והתחום</label>'+
       '<input id="i-biz" type="text" autocomplete="organization" placeholder="לדוגמה, סטודיו נועה, ייעוץ עסקי"><div class="err">צריך את זה כדי שהמפה תהיה שלך</div></div>'+
-    '<div class="fld" id="f-phone"><label for="i-phone">טלפון</label>'+
-      '<input id="i-phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="05X-XXXXXXX"><div class="err">מספר טלפון ישראלי תקין</div></div>'+
+    '<div class="fld" id="f-phone"><label for="i-phone">הוואטסאפ שלך</label>'+
+      '<input id="i-phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="05X-XXXXXXX">'+
+      '<div class="hint">המפה מגיעה לוואטסאפ תוך דקה. בלי מספר נכון היא לא מגיעה.</div>'+
+      '<div class="err">מספר וואטסאפ ישראלי תקין</div></div>'+
     '<div class="fld" id="f-mail"><label for="i-mail">אימייל</label>'+
       '<input id="i-mail" type="email" inputmode="email" autocomplete="email" placeholder="name@example.com"><div class="err">כתובת אימייל תקינה</div></div>'+
     '<label class="consent"><input type="checkbox" id="i-ok">'+
