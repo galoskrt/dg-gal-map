@@ -106,7 +106,7 @@
 
   function snap(reason){
     return {
-      reason: reason,
+      reason: reason, src: SRC,
       seconds: Math.round((Date.now() - t0) / 1000),
       scroll: st.scroll,
       video: st.video,
