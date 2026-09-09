@@ -171,6 +171,14 @@ function boot(){
     '<p>נראה שהדף נפתח בלי לעבור את השאלון, או שהדפדפן ניקה את הנתונים.</p>'+
     '<button class="cta" onclick="location.href=\'/q/\'">למילוי האבחון</button></div>'+
     '<footer><p><b>גל הרוש</b> · דיוק דיגיטלי<br>DG-GAL.ONLINE</p>'+
+    '<p class="soc">'+
+    '<a href="https://www.instagram.com/dg.gal.online" target="_blank" rel="noopener" aria-label="אינסטגרם">'+
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5"/>'+
+      '<path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>'+
+      '<line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg></a>'+
+    '<a href="https://www.facebook.com/732380313300100" target="_blank" rel="noopener" aria-label="פייסבוק">'+
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>'+
+      '</svg></a></p>'+
     '<p><a href="/privacy/">מדיניות הפרטיות</a></p>'+
     '<p class="cr">© כל הזכויות שמורות · דיוק דיגיטלי · גל הרוש 2026</p>'+
     '</footer>';
@@ -319,6 +327,14 @@ function render(){
     '<button class="send" id="qsend">לשליחת השאלה</button></div>'+
 
   '<footer><p><b>גל הרוש</b> · דיוק דיגיטלי<br>DG-GAL.ONLINE</p>'+
+    '<p class="soc">'+
+    '<a href="https://www.instagram.com/dg.gal.online" target="_blank" rel="noopener" aria-label="אינסטגרם">'+
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5"/>'+
+      '<path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>'+
+      '<line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg></a>'+
+    '<a href="https://www.facebook.com/732380313300100" target="_blank" rel="noopener" aria-label="פייסבוק">'+
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>'+
+      '</svg></a></p>'+
     '<p><a href="/privacy/">מדיניות הפרטיות</a></p>'+
     '<p class="cr">© כל הזכויות שמורות · דיוק דיגיטלי · גל הרוש 2026</p>'+
   '</footer>';
@@ -439,6 +455,10 @@ document.addEventListener('click', function(e){
 
   function report(reason){
     if(sent) return; sent = true;
+    send(reason);
+  }
+
+  function send(reason){
     var id = '';
     try { id = sessionStorage.getItem('dg_lead_id') || mapId() || ''; } catch(e){}
     if(!id) return;
@@ -450,10 +470,14 @@ document.addEventListener('click', function(e){
       scroll: Math.max(maxScroll, seen.scroll)
     });
     try {
-      if(navigator.sendBeacon) navigator.sendBeacon(WORKER_URL + '/event', new Blob([body], { type:'application/json' }));
+      if(navigator.sendBeacon) navigator.sendBeacon(WORKER_URL + '/event', new Blob([body], { type:'text/plain;charset=UTF-8' }));
       else fetch(WORKER_URL + '/event', { method:'POST', body: body, keepalive:true });
     } catch(e){}
   }
+  /* דיווח ביניים. בלעדיו, ליד שהדפדפן שלו לא הספיק לשלוח ביציאה נשאר
+     בלי שום נתון, ואז אף אוטומציית נטישה לא יכולה לרוץ עליו. */
+  setTimeout(function(){ if(!sent) send('landed'); }, 5000);
+
   addEventListener('pagehide', function(){ report('leave'); });
   addEventListener('visibilitychange', function(){
     if(document.visibilityState === 'hidden') report('hidden');

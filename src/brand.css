@@ -167,3 +167,8 @@ footer a{color:var(--mut2)}
 .case .res{position:relative;z-index:2;font-size:17px;font-weight:800;line-height:1.45;margin:0 0 10px;color:var(--txt)}
 .case p{position:relative;z-index:2;margin:0 0 8px;font-size:14.5px}
 .case .pun{position:relative;z-index:2;margin:0;font-size:14.5px;font-weight:800;color:var(--greenS)}
+
+.soc{display:flex;gap:10px;justify-content:center;margin:12px 0 10px}
+.soc a{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border:1px solid var(--line);border-radius:50%;color:var(--mut2);transition:color .18s,border-color .18s}
+.soc a:hover{color:var(--brand);border-color:var(--brand)}
+.soc svg{width:18px;height:18px}
