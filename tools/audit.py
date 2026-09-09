@@ -72,6 +72,31 @@ def rendered_text(html):
     return re.sub(r"\s+", " ", t)
 
 
+
+def runtime_errors(h):
+    """טוען את הדף בכרום אמיתי ומחזיר כל שגיאה שנזרקה בזמן ריצה."""
+    catch = ("<script>window.__e=[];"
+             "addEventListener('error',function(v){window.__e.push(String(v.message||v))});"
+             "addEventListener('unhandledrejection',function(v){"
+             "window.__e.push('promise: '+v.reason)});</script>")
+    report = ("<script>setTimeout(function(){"
+              "document.title='DGERR'+JSON.stringify(window.__e||[]);},2200);</script>")
+    h = h.replace("<head>", "<head>" + catch, 1)
+    h = h.replace("</body>", report + "</body>", 1) if "</body>" in h else h + report
+    tmp = os.path.join(SP, "_rt.html")
+    io.open(tmp, "w", encoding="utf-8").write(h)
+    r = subprocess.run([CHROME, "--headless=new", "--disable-gpu", "--no-sandbox",
+                        "--virtual-time-budget=6000", "--dump-dom",
+                        "file:///" + tmp.replace("\\", "/")], capture_output=True)
+    m = re.search(r"DGERR(\[.*?\])</title>", r.stdout.decode("utf-8", "ignore"), re.S)
+    if not m:
+        return ["page did not finish loading"]
+    try:
+        return [e for e in json.loads(m.group(1)) if e]
+    except Exception:
+        return []
+
+
 # ─────────────────────────────────────────────── 1. every page loads and parses
 def check_pages():
     for path, name in PAGES:
@@ -83,14 +108,27 @@ def check_pages():
         kb = len(h.encode()) // 1024
         add("weight", kb <= 200, "%s is %d KB" % (name, kb))
 
-        if "<script>" in h:
-            js = h[h.rindex("<script>") + 8: h.rindex("</script>")]
-            io.open(os.path.join(SP, "_a.js"), "w", encoding="utf-8").write(js)
-            r = subprocess.run(["node", "--check", os.path.join(SP, "_a.js")],
-                               capture_output=True)
-            add("script", r.returncode == 0, "%s script %s" % (
-                name, "parses" if r.returncode == 0
-                else "IS BROKEN: " + r.stderr.decode("utf-8", "ignore").split("\n")[1][:60]))
+        # כל בלוק סקריפט, לא רק האחרון. הגרסה הקודמת השתמשה ב-rindex
+        # ובדקה בלוק יחיד, ולכן שגיאת תחביר בבלוק קודם עברה בשקט וגררה
+        # דף שבור באוויר. אל תחזיר את זה.
+        blocks = [b for b in re.findall(
+            r"<script(?![^>]*src=)[^>]*>(.*?)</script>", h, re.S | re.I) if b.strip()]
+        broken = []
+        for bi, js in enumerate(blocks):
+            f = os.path.join(SP, "_a%d.js" % bi)
+            io.open(f, "w", encoding="utf-8").write(js)
+            r = subprocess.run(["node", "--check", f], capture_output=True)
+            if r.returncode != 0:
+                e = r.stderr.decode("utf-8", "ignore").splitlines()
+                broken.append("#%d %s" % (bi, (e[1] if len(e) > 1 else e[0])[:60]))
+        add("script", not broken, "%s: %d script blocks, %s" % (
+            name, len(blocks), "all parse" if not broken else "BROKEN " + " | ".join(broken)))
+
+        # תחביר תקין אינו ריצה תקינה. רגקס שנבנה ממחרוזת פגומה, שדה חסר,
+        # קריאה למשתנה שאינו קיים: כולם נפרסים ונופלים אצל הליד.
+        errs = runtime_errors(h)
+        add("runtime", not errs, "%s runtime errors: %s" % (
+            name, "none" if not errs else " | ".join(errs)[:120]))
 
         # קוראים את מה שבאמת מוצג. בדף התוצאה הפוטר נבנה בזמן ריצה,
         # ובדיקה סטטית פשוט לא רואה אותו.

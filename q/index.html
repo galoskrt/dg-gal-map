@@ -849,9 +849,18 @@ function submit(){
      אותן לפי המזהה הזה במקום לספור את אותו אדם פעמיים. */
   var evId = (window.crypto && crypto.randomUUID) ? crypto.randomUUID()
              : String(Date.now()) + Math.random().toString(16).slice(2);
+  /* בלי רגקס בכוונה. הגרסה הקודמת בנתה תבנית ממחרוזת, ובמחרוזת \s
+     מתפרק ל-s רגיל: התבנית הפכה ל-(^|;)s*_fbps*=s*(...) וחיפשה את
+     האות s כתו ממש במקום רווח, ולכן כל עוגייה שאינה הראשונה ברשימה
+     לא נמצאה. כך אבד _fbp של כל ליד אמיתי. פיצול פשוט לא יכול לשקר. */
   function cookie(n){
-    var m = document.cookie.match('(^|;)\s*' + n + '\s*=\s*([^;]+)');
-    return m ? m.pop() : '';
+    var parts = String(document.cookie || '').split(';');
+    for(var ci = 0; ci < parts.length; ci++){
+      var eq = parts[ci].indexOf('=');
+      if(eq < 0) continue;
+      if(parts[ci].slice(0, eq).trim() === n) return parts[ci].slice(eq + 1).trim();
+    }
+    return '';
   }
   /* המפה המלאה נשמרת עם הליד, כדי שהקישור במייל יוכל לשחזר אותה גם מחר
      וגם ממכשיר אחר. בלי זה כפתור "להצגת המפה שלי" מוביל לדף ריק. */
@@ -863,6 +872,10 @@ function submit(){
     full: full,
     event_id: evId, fbp: cookie('_fbp'), fbc: cookie('_fbc'),
     ref_url: location.href,
+    /* מה שקרה בדף הנחיתה. הוא נמדד לפני שהיה ליד, ולכן הוא נוסע איתו
+       מהאחסון המקומי ומצטרף לרשומה כאן. */
+    pre: (function(){ try { return JSON.parse(localStorage.getItem('dg_pre') || 'null'); }
+                      catch(e){ return null; } })(),
     utm: { campaign: r.utm.utm_campaign || '', adset: r.utm.utm_content || '', ad: r.utm.utm_term || '' },
     map: { main: head, source: r.source, awareness: r.aware, temp: r.temp, score: r.score,
            leaks: leaksFor(r).map(function(l){ return { h:l.h, t:l.t }; }), answers: pairs }

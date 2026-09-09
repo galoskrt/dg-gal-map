@@ -31,6 +31,7 @@ def webp(name):
 
 LEAKS = io.open(os.path.join(SP, 'leaks.js'), encoding='utf-8').read()
 CASESJS = io.open(os.path.join(SP, 'cases.js'), encoding='utf-8').read()
+TRACK = io.open(os.path.join(SP, 'track.js'), encoding='utf-8').read()
 
 # סיפורי הלקוחות נקראים מהמקור האחד. דף הבית מקבל אותם כ-HTML סטטי בזמן
 # הבנייה, ודף התוצאה מקבל את הקובץ עצמו ומרנדר בזמן ריצה. אותו מידע, פעם אחת.
@@ -96,6 +97,7 @@ def build(src, dest_dir):
     for i in range(1, 13):
         h = h.replace("/*CLIENT%02d*/" % i,
                       "data:image/webp;base64," + b64(os.path.join(SP, "img", "clients", "c%02d.webp" % i)))
+    h = h.replace('/*__TRACK__*/', TRACK)
     h = h.replace("/*FONT*/", FONT).replace("/*BRAND*/", BRAND).replace("/*LOGO*/", webp("logo.webp"))
     h = h.replace("/*AVATAR*/", webp("av1.webp"))
     h = h.replace("/*AVATAR2*/", webp("av2.webp"))

@@ -362,7 +362,7 @@ var WORKER_URL = 'https://dg-gal-funnel.tom-harush.workers.dev';
 /* מעבר ליומן. המסך נשאר על הדף הזה עד שהיומן מצייר, כי שם הייתה השתיקה
    הארוכה ביותר: גם הדף וגם ה-embed של קאל צריכים להיטען. */
 function goCall(){
-  if(window.__mark) window.__mark('booking');
+  if(window.__mark) window.__mark('booking_click');
   if(window.fbq) fbq('trackCustom','ClickBooking');
   var g = document.getElementById('gate');
   if(g) g.classList.add('on');
@@ -399,7 +399,7 @@ function sendQuestion(){
   }
   b.disabled = true; b.textContent = 'שולח...';
   var lid = ''; try { lid = sessionStorage.getItem('dg_lead_id') || mapId() || ''; } catch(e){}
-  if(window.__mark) window.__mark('question');
+  if(window.__mark) window.__mark('asked');
 
   fetch(WORKER_URL + '/question', { method:'POST', headers:{ 'Content-Type':'application/json' },
     body: JSON.stringify({ lead_id:lid, question:v, name:D.name, phone:D.phone, email:D.email }) })
@@ -440,51 +440,7 @@ document.addEventListener('click', function(e){
   if(e.target.closest && e.target.closest('.play') && window.__mark) window.__mark('video');
 });
 
-(function telemetry(){
-  var t0 = Date.now(), sent = false;
-  var seen = { video: false, videoSecs: 0, booking: false, question: false, scroll: 0 };
-
-  function mark(k, v){ seen[k] = (v === undefined) ? true : v; }
-  window.__mark = mark;
-
-  var maxScroll = 0;
-  addEventListener('scroll', function(){
-    var h = document.documentElement.scrollHeight - innerHeight;
-    if(h > 0) maxScroll = Math.max(maxScroll, Math.round(scrollY / h * 100));
-  }, { passive:true });
-
-  function report(reason){
-    if(sent) return; sent = true;
-    send(reason);
-  }
-
-  function send(reason){
-    var id = '';
-    try { id = sessionStorage.getItem('dg_lead_id') || mapId() || ''; } catch(e){}
-    if(!id) return;
-    var body = JSON.stringify({
-      lead_id: id, reason: reason,
-      seconds: Math.round((Date.now() - t0) / 1000),
-      video: seen.video, video_secs: Math.round(seen.videoSecs),
-      booking_click: seen.booking, asked: seen.question,
-      scroll: Math.max(maxScroll, seen.scroll)
-    });
-    try {
-      if(navigator.sendBeacon) navigator.sendBeacon(WORKER_URL + '/event', new Blob([body], { type:'text/plain;charset=UTF-8' }));
-      else fetch(WORKER_URL + '/event', { method:'POST', body: body, keepalive:true });
-    } catch(e){}
-  }
-  /* דיווח ביניים. בלעדיו, ליד שהדפדפן שלו לא הספיק לשלוח ביציאה נשאר
-     בלי שום נתון, ואז אף אוטומציית נטישה לא יכולה לרוץ עליו. */
-  setTimeout(function(){ if(!sent) send('landed'); }, 5000);
-
-  addEventListener('pagehide', function(){ report('leave'); });
-  addEventListener('visibilitychange', function(){
-    if(document.visibilityState === 'hidden') report('hidden');
-  });
-  /* רשת ביטחון למי שנשאר פתוח הרבה זמן ואז נסגר בלי אירוע */
-  setTimeout(function(){ report('dwell'); }, 90000);
-})();
+/*__TRACK__*/
 
 /* מנסים קודם את הלשונית, ואם אין, מושכים את המפה לפי המזהה שבקישור */
 (function start(){
