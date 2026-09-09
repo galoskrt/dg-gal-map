@@ -268,13 +268,10 @@
    הבעיה בדף עצמו (הרבה כניסות, מעט לחיצות) או בשאלון (הרבה לחיצות,
    מעט השלמות). כשל בשליחה לא אמור לעצור שום דבר על הדף. */
 var WORKER_URL = 'https://dg-gal-funnel.tom-harush.workers.dev';
-function funnelPing(stage){
-  try {
-    fetch(WORKER_URL + '/funnel-event', { method:'POST', headers:{ 'Content-Type':'application/json' },
-      body: JSON.stringify({ stage: stage }), keepalive:true }).catch(function(){});
-  } catch(e){}
-}
-funnelPing('view');
+/* המונה עובר דרך __fx שבמודול המדידה, כי שם יושב זיהוי המקור.
+   בלי הפרדה בין ממומן לאורגני כל אחוז במשפך מערבב שתי תנועות שונות. */
+function funnelPing(stage){ if(window.__fx) window.__fx(stage); }
+addEventListener('DOMContentLoaded', function(){ funnelPing('view'); });
 
 /* הסרטון נטען רק בלחיצה, לא לפני. עמוד שמשקל את עצמו ב-11MB בטעינה
    הראשונה מפסיד אנשים לפני שהם בכלל ראו כותרת. */

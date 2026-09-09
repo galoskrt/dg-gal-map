@@ -334,6 +334,9 @@ function renderChapters(ch){
 }
 
 function render(){
+  /* השלב הרחוק ביותר, לניתוח נטישה. 9 הוא מסך הפרטים, ושם החיכוך
+     בדרך כלל הכי גבוה במשפכים כאלה. */
+  if(window.__step) window.__step(S.i, S.i >= 9);
   var q = current();
   el('back').style.display = S.i === 0 ? 'none' : '';
   if(!q){ return renderContact(); }
@@ -432,8 +435,7 @@ el('body').addEventListener('click', function(e){
      קודם הוא ירה על כל נגיעה במסך, וגם דף הנחיתה ירה אותו, אז כל אדם נספר
      פעמיים ופייסבוק היה לומד לחפש אנשים שנוגעים ובורחים. */
   if(!S.started){ S.started = true; if(window.fbq) fbq('trackCustom','StartDiagnostic');
-    try { fetch(WORKER_URL + '/funnel-event', { method:'POST', headers:{ 'Content-Type':'application/json' },
-      body: JSON.stringify({ stage:'start' }), keepalive:true }).catch(function(){}); } catch(e){} }
+    if(window.__fx) window.__fx('start'); }
   this.querySelectorAll('.opt').forEach(function(x){ x.classList.remove('sel'); });
   o.classList.add('sel');
   el('next').disabled = false;
@@ -686,6 +688,8 @@ function submit(){
 
 restoreState();
 render();
+window.DG_TRACK='survey';
+/*__TRACK__*/
 </script>
 </body>
 </html>
