@@ -181,6 +181,15 @@ var DEMO_MAP = {"track":"b","source":"ref","score":20,"temp":"hot","headline":24
 /* גם מסך שלא נמצאה בו מפה הוא עמוד אמיתי שמבקר יכול לנחות עליו,
    קישור ישן, מכשיר שניקה נתונים, ליד שנמחק. לכן גם הוא נושא כותרת
    תחתונה מלאה, לא רק את הכפתור. */
+/* מפה חלקית זרקה שגיאה בתוך שרשרת ה-promise, השגיאה נבלעה, והדף נשאר
+   תקוע על "טוענים את המפה שלך" לנצח בלי שאיש ידע. נצפה בפועל
+   09/09/2026: Cannot read properties of undefined. אף מסך טעינה לא
+   אמור להיות מסך סופי, ולכן כשל בציור נופל למסך שאומר משהו. */
+function safeBoot(){
+  try { boot(); }
+  catch(e){ D = null; try { boot(); } catch(e2){} }
+}
+
 function boot(){
   if(!D){
   document.getElementById('wrap').innerHTML =
@@ -473,9 +482,9 @@ document.addEventListener('click', function(e){
         D = j.map;
         try { sessionStorage.setItem('dg_map', JSON.stringify(D)); } catch(e){}
       }
-      boot();
+      safeBoot();
     })
-    .catch(function(){ boot(); });
+    .catch(function(){ safeBoot(); });
 })();   /* אחרי שכל הקבועים הוגדרו, לא לפני */
 </script>
 </body>
