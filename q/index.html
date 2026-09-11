@@ -847,6 +847,10 @@ function submit(){
   /* מבנה המטען הוא חוזה עם הוורקר. שינוי כאן בלי שינוי שם שובר את המייל בשקט. */
   var head = (r.track === 'b') ? (r.extra || r.main) : r.main;
   var qlist = qs(), pairs = [];
+  /* שאלה 1 (מקור הלקוחות שלו) אינה חלק מ-qs(), כי היא קובעת את המסלול
+     ולא נמנית איתו. בלי השורה הזו התשובה נשמרת ומשמשת לניתוב וּלתגית
+     בדשבורד, אבל אף פעם לא מופיעה תחת "מה סימנו באבחון". */
+  if(r.answers.source) pairs.push({ q: Q1.q, a: r.answers.source.label });
   for(var qi = 0; qi < qlist.length; qi++){
     var ans = r.answers[qlist[qi].k];
     if(ans) pairs.push({ q: qlist[qi].q, a: ans.label });
