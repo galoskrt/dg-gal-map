@@ -360,6 +360,16 @@ function render(){
       (x[2] ? '<div class="rm">'+esc(x[2])+'</div>' : '')+'</div>';
   }).join('');
 
+  /* פלח 3 בלבד. הצעת שיחה רכה למי שרוצה לשכפל הצלחה, מעל בלוק הקהילה.
+     גל, 15/09/2026. קישור מוטמע ולא כפתור, כדי לא להתחרות בכפתור הקהילה. */
+  var callOffer = isCommu
+    ? '<div class="sec"><div class="card lift" style="text-align:center">'+
+        '<p style="margin:0;font-size:14.5px;line-height:1.6">אם הכיוון שלך הוא <b>לשכפל את ההצלחה שלך</b>, '+
+        'אפשר לקבוע איתי <a href="/call/" style="color:var(--pinkS);font-weight:800">שיחה קצרה</a> '+
+        'כדי להבין מה הכי נכון בשבילך, ואיך אני יכול לשכפל את המערך בשבילך. בלי התחייבות.</p>'+
+      '</div></div>'
+    : '';
+
   var actionSec = isCommu
     ? '<div class="sec"><div class="commu">'+
         '<p>זיהיתי כמה פרמטרים, אמנם דהויים אבל כאלו שכדאי לשפר אצלך. אבל בכנות, לפני שאני אציע לך את השירות שלי, כדאי לנסות כמה דברים בעצמך.</p>'+
@@ -397,6 +407,7 @@ function render(){
       return '<div class="leak">'+numeral(i+1,l.k)+'<div><h3>'+l.h+'</h3><p>'+l.t+'</p></div></div>';
     }).join('')+'</div></div>'+
 
+  callOffer+
   actionSec+
 
   '<div class="sec"><h2 class="sh">מי שכבר <span class="boxg">סגר את הנקודות האלה</span></h2>'+
