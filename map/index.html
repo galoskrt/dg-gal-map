@@ -506,8 +506,21 @@ var TEMP = {
        c:'לבחירת מועד', f:true},
   ok:{h:'בכנות, אין כאן סיבה למהר',
        p:'המספרים נראים מסודרים יחסית, ואין כאן דליפה גדולה. המפה נשארת שלך. אם בעוד חצי שנה משהו ישתנה, הדלת פתוחה.',
+       c:'לקביעת שיחה, מתי שיתאים', f:false},
+  /* ★ 14/09/2026. המצב שלא היה קיים: תהליך שבור בעסק קטן. עד היום הוא
+     קיבל את הנוסח של "אין סיבה למהר", כי הסכום היה קטן, והמפה סתרה את
+     עצמה מול מי שסימן שכמעט אף פנייה לא מגיעה לשיחה. */
+  gap:{h:'יש כאן דליפה אמיתית, ומשהו שנכון לומר בכנות',
+       p:'הסכום קטן כי הנפח קטן, לא כי הכל מסודר. הנקודות שלמטה נשברות היום, והן אלה ששומרות על הנפח קטן. את רובן אפשר לתקן לבד, בלי לשלם לאיש. אם התמונה תיראה אחרת בעוד כמה חודשים, הדלת פתוחה.',
        c:'לקביעת שיחה, מתי שיתאים', f:false}
 };
+
+/* הכסף כבר לא קובע אם יש בעיה, רק אם ליווי בתשלום הוא התשובה עכשיו.
+   מפה ישנה, מלפני התיקון, אינה נושאת fit ולכן נשארת כפי שהייתה. */
+function verdictOf(d){
+  if(d.fit === false && d.temp !== 'ok') return TEMP.gap;
+  return TEMP[d.temp] || TEMP.warm;
+}
 /* איזה סיפור מוצג. מסלול ממומן מקבל את מי שהגיע עם תנועה קנויה, ומסלול
    פה לאוזן מקבל את מי שנשען שנים על המלצות. אותן כרטיסיות בדיוק כמו
    בדף הבית, מאותו מקור, כדי שההוכחה לא תסתור את עצמה בין הדפים. */
@@ -527,15 +540,25 @@ function pointsPhrase(n, tail){
   return (n === 2 ? 'שתי' : 'שלוש') + ' הנקודות ' + tail;
 }
 
+/* הכותרת הגדולה במצב שבו הכסף קטן. "נקודה אחת" ולא "1 נקודות". */
+function pointsBig(n){
+  if(n <= 1) return 'נקודה אחת';
+  return (n === 2 ? 'שתי' : (n === 3 ? 'שלוש' : n)) + ' נקודות';
+}
+
 function render(){
-  var t = TEMP[D.temp], lk = leaksFor(D);
+  var t = verdictOf(D), lk = leaksFor(D);
   var src = SRC[D.source] || SRC[D.track === 'a' ? 'paid' : (D.track === 'c' ? 'org' : 'ref')];
   var headline = D.track === 'a' ? D.main : (D.extra || D.main);
+  /* עסק קטן עם תהליך שבור לא רואה סכום ענק בראש הדף, כי אין כזה. הוא
+     רואה כמה נקודות נשברות אצלו, וזה הנתון שבאמת מחזיק אותו קטן. */
+  var isGap = (t === TEMP.gap), soft = isGap || t === TEMP.ok;
 
   document.getElementById('wrap').innerHTML =
   '<div class="top sec"><p class="kicker">מפת הדליפה של <b>' + esc(D.biz) + '</b></p>'+
     '<div class="panel"><i class="tick t1"></i><i class="tick t2"></i><i class="tick t3"></i><i class="tick t4"></i>'+
-      '<p class="big">' + money(headline) + '</p><span class="numsub">' + src.lead + '</span>'+
+      '<p class="big">' + (isGap ? pointsBig(lk.length) : money(headline)) + '</p>'+
+      '<span class="numsub">' + (isGap ? 'נקודות שנשברות היום בדרך מהפנייה ללקוח' : src.lead) + '</span>'+
       '<div class="seal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>'+
       '<span>אבחון אישי · עשר שאלות · נבנה מהתשובות שסימנת</span></div></div>'+
     '<p class="under">' + UNDER[D.track] + '</p></div>'+
@@ -572,9 +595,9 @@ function render(){
 
   '<div class="sec invite" id="s-inv"><h2>'+t.h+'</h2>'+
     '<p>'+t.p.replace('{PHRASE}', pointsPhrase(lk.length, 'למעלה')) +
-      (D.temp === 'ok' ? '' : ' <b>'+LINE[D.aware].replace('{PHRASE}', pointsPhrase(lk.length))+'</b>') + '</p>'+
+      (soft ? '' : ' <b>'+LINE[D.aware].replace('{PHRASE}', pointsPhrase(lk.length))+'</b>') + '</p>'+
     '<p class="fine">אני לא מבטיח תוצאה. <b>אני מתחייב על התהליך</b>, ואם אני חושב שאני לא יכול לעזור לך, אני אגיד לך את זה בפנים.</p>'+
-    '<button class="cta'+(D.temp === 'ok' ? ' quiet' : '')+'" onclick="location.href=\'/call/\'">'+t.c+'</button>'+
+    '<button class="cta'+(soft ? ' quiet' : '')+'" onclick="location.href=\'/call/\'">'+t.c+'</button>'+
     '<p class="fine">שלחתי לך את המפה לוואטסאפ, וגם למייל כגיבוי. היא נשארת שלך גם אם לא נעבוד יחד.</p></div>'+
 
   '<div class="sec card ask"><h2 style="font-size:18px">יש שאלה על המפה?</h2>'+

@@ -694,7 +694,33 @@ function compute(){
   if(S.track === 'a' && a.cac && (a.cac.i === 1 || a.cac.i === 2)) approx++;  /* בערך / רק פנייה */
 
   var aware = burn ? 'burned' : (blind >= 3 ? 'blind' : 'sees');
-  var temp  = score >= 15 ? 'hot' : (score >= 9 ? 'warm' : 'ok');
+
+  /* ★ 14/09/2026. כמה נקודות בתהליך עצמו שבורות היום, בלי קשר לכסף.
+     זה מה שקובע אם יש כאן בעיה. הכסף קובע רק אם ליווי בתשלום הוא
+     התשובה הנכונה כרגע, וזו שאלה אחרת לגמרי. */
+  var fails = 0;
+  if(S.track === 'a'){
+    if(a.reach    && a.reach.i    >= 2) fails++;   /* פחות משליש מגיעות לשיחה, או לא ידוע */
+    if(a.speed    && a.speed.i    >= 2) fails++;   /* חוזרים למחרת, או תלוי בעומס */
+    if(a.followup && a.followup.i >= 1) fails++;   /* אין מערכת מעקב */
+    if(a.close    && a.close.i    >= 2) fails++;   /* פחות מעשירית נסגר, או לא ידוע */
+    if(a.cac      && a.cac.i      >= 2) fails++;   /* לא ידוע כמה עולה לקוח */
+  } else if(S.track === 'c'){
+    if(a.reach && a.reach.i >= 2) fails++;
+    if(a.close && a.close.i >= 2) fails++;
+    if(a.page  && a.page.i  === 2) fails++;        /* אין מקום ללמוד על השירות */
+    if(a.offer && a.offer.val > 0) fails++;        /* אין הצעה מנוסחת */
+    if(a.dry   && a.dry.i   === 2) fails++;        /* כשהתוכן מתייבש, לא קורה כלום */
+    if(a.cac   && a.cac.val >= 1) fails++;
+  } else {
+    if(a.refer && a.refer.i <= 1) fails++;         /* כמעט הכל נשען על המלצות */
+    if(a.dry   && a.dry.val > 0) fails++;          /* בחודש שההפניות מתייבשות, אין מה לעשות */
+    if(a.offer && a.offer.val > 0) fails++;
+    if(a.cac   && a.cac.val >= 1) fails++;
+  }
+
+  var temp = (fails >= 3 || score >= 15) ? 'hot'
+           : ((fails >= 1 || score >= 9) ? 'warm' : 'ok');
 
   var main = 0, extra = 0, rows = [];
   if(S.track === 'a'){
@@ -736,15 +762,20 @@ function compute(){
       ['הצעה מנוסחת וקבועה', a.offer.label]
     ];
   }
-  /* רצפת הכסף. ליווי של 9,800 ועוד ריטיינר לא מחזיר את עצמו על דליפה קטנה,
-     ולכן מתחת לסכום הזה שום דבר אינו דחוף, בלי קשר לכמה כשלים סומנו.
-     בלי הרצפה הזו הדף מזמין לשיחה על 500 שקל, וזה שובר את האמון. */
+  /* רצפת הכסף. ליווי של 9,800 ועוד ריטיינר לא מחזיר את עצמו על דליפה
+     קטנה, ולכן מתחת לסכום הזה אין מקום להזמין לשיחה בתשלום.
+     ★ 14/09/2026, תיקון: הרצפה הזו קבעה קודם גם את האבחון עצמו, בשורה
+     `if(headline < URGENCY_FLOOR) temp = 'ok'`. התוצאה: מי שנפח העסק
+     שלו קטן קיבל "אין כאן סיבה למהר" גם כשכמעט אף פנייה לא הגיעה
+     לשיחה ואיש לא חזר אליה בזמן. נמדד על כל שילובי התשובות במסלול
+     הממומן: 34.2% מהמפות הושתקו כך, ו-17.6% מהן האבחון עצמו סימן
+     כחמות או פושרות לפני העקיפה. הרצפה קובעת עכשיו התאמה בלבד. */
   var URGENCY_FLOOR = 5000;
   var headline = (S.track === 'b') ? (extra || main) : main;
-  if(headline < URGENCY_FLOOR) temp = 'ok';
+  var fit = headline >= URGENCY_FLOOR;
 
   return { track:S.track, source:S.source, score:score, temp:temp, headline:headline, floor:URGENCY_FLOOR, aware:aware, blind:blind, burn:burn, unknown:unknown, approx:approx,
-           main:main, extra:extra, rows:rows, answers:a };
+           fails:fails, fit:fit, main:main, extra:extra, rows:rows, answers:a };
 }
 
 /* ============ מסך הטעינה ============ */
@@ -888,6 +919,7 @@ function submit(){
                       catch(e){ return null; } })(),
     utm: { campaign: r.utm.utm_campaign || '', adset: r.utm.utm_content || '', ad: r.utm.utm_term || '' },
     map: { main: head, source: r.source, awareness: r.aware, temp: r.temp, score: r.score,
+           fails: r.fails, fit: r.fit,
            leaks: leaksFor(r).map(function(l){ return { h:l.h, t:l.t }; }), answers: pairs }
   };
   /* נכשלה שליחה, נשמר לניסיון חוזר מדף התוצאה. בלי זה אדם שהרשת שלו נפלה
