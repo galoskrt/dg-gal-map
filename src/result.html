@@ -57,6 +57,31 @@
 .calc .row.tot span:first-child{color:var(--txt);font-weight:800}
 .calc .row.tot .totv{font-size:18px;color:var(--pinkS)}
 .calc .note{font-size:12.5px;color:var(--mut2);padding:11px 0 12px;line-height:1.65}
+/* פסק הדין לפי פלח, במקום המספר. הפס הצבעוני מקודד את דרגת הדחיפות. */
+.verdict{position:relative;overflow:hidden}
+.verdict::before{content:"";position:absolute;top:0;right:0;width:4px;height:100%}
+.verdict.s1::before{background:linear-gradient(180deg,#E23744,rgba(226,55,68,.25))}
+.verdict.s2::before{background:linear-gradient(180deg,#E8850C,rgba(232,133,12,.25))}
+.verdict.s3::before{background:linear-gradient(180deg,#1F9D57,rgba(31,157,87,.25))}
+.vh{font-size:clamp(21px,5.6vw,26px);line-height:1.24;font-weight:800;margin:2px 0 10px;letter-spacing:-.02em}
+.vp{font-size:15px;color:var(--mut);line-height:1.6;margin:0}
+.rrow{padding:12px 0;border-bottom:1px dashed #dcd8e8}
+.rrow:last-child{border-bottom:0}
+.rq{font-size:12.5px;font-weight:700;color:var(--mut2)}
+.ra{font-size:15px;font-weight:800;color:var(--txt);margin-top:2px}
+.rm{font-size:13px;color:var(--pinkS);font-weight:700;margin-top:3px;line-height:1.5}
+.plan{list-style:none;counter-reset:p;padding:0;margin:14px 0 0}
+.plan li{counter-increment:p;position:relative;padding:0 44px 16px 0;font-size:14.5px;line-height:1.6}
+.plan li:last-child{padding-bottom:0}
+.plan li::before{content:counter(p);position:absolute;right:0;top:-2px;width:30px;height:30px;
+  border-radius:50%;background:var(--pinkT);color:var(--pinkS);font-weight:800;font-size:15px;
+  display:flex;align-items:center;justify-content:center}
+.plan li b{color:var(--txt)}
+.commu{border:1px solid var(--greenL);background:var(--greenT);border-radius:24px 24px 24px 8px;
+  padding:22px 19px;box-shadow:var(--sh1)}
+.commu .nm{font-size:20px;font-weight:800;letter-spacing:-.01em;margin:10px 0 8px}
+.commu p{font-size:14.5px;line-height:1.6;color:var(--txt);margin:0 0 12px}
+.commu .cta{margin-top:6px}
 .why{position:relative;border-radius:var(--rC);padding:20px 18px;border:1px solid #ffd4e6;background:var(--pinkT);
   box-shadow:var(--sh1);overflow:hidden}
 .why::before{content:"";position:absolute;top:0;right:0;width:3px;height:100%;
@@ -273,112 +298,115 @@ var UNDER = {
   b:'<b>זה לא כסף חדש שצריך להמציא.</b> הקיבולת כבר קיימת אצלך, היא פשוט יושבת ריקה. המספר הוא הערכה על סמך מה שסימנת, מעוגלת כלפי מטה.',
   c:'<b>זה לא כסף שצריך לייצר מאפס.</b> העניין כבר נוצר, התוכן שלך עשה את העבודה, והוא פשוט לא הפך לשיחה. המספר הוא הערכה על סמך מה שסימנת, מעוגלת כלפי מטה.'
 };
-var TEMP = {
-  hot:{h:'נעבור על המפה הזאת יחד?',
-       p:'המספר גבוה, ורוב מה שמייצר אותו נמצא בשליטה שלך. {PHRASE} נסגרות בדרך כלל בלי להגדיל שקל בתקציב.',
-       c:'לבחירת מועד', f:true},
-  warm:{h:'שווה שנסתכל על זה יחד',
-       p:'יש כאן בסיס שעובד, ויש נקודה אחת או שתיים ששוות תיקון. הן לא דורשות שינוי גדול. הן דורשות שמישהו יסתכל על המספרים יחד איתך.',
-       c:'לבחירת מועד', f:true},
-  ok:{h:'בכנות, אין כאן סיבה למהר',
-       p:'המספרים נראים מסודרים יחסית, ואין כאן דליפה גדולה. המפה נשארת שלך. אם בעוד חצי שנה משהו ישתנה, הדלת פתוחה.',
-       c:'לקביעת שיחה, מתי שיתאים', f:false},
-  /* ★ 14/09/2026. המצב שלא היה קיים: תהליך שבור בעסק קטן. עד היום הוא
-     קיבל את הנוסח של "אין סיבה למהר", כי הסכום היה קטן, והמפה סתרה את
-     עצמה מול מי שסימן שכמעט אף פנייה לא מגיעה לשיחה. */
-  gap:{h:'יש כאן דליפה אמיתית, ומשהו שנכון לומר בכנות',
-       p:'הסכום קטן כי הנפח קטן, לא כי הכל מסודר. הנקודות שלמטה נשברות היום, והן אלה ששומרות על הנפח קטן. את רובן אפשר לתקן לבד, בלי לשלם לאיש. אם התמונה תיראה אחרת בעוד כמה חודשים, הדלת פתוחה.',
-       c:'לקביעת שיחה, מתי שיתאים', f:false}
+/* פסק הדין לפי פלח, גל 14-15/09/2026. מחליף את TEMP שהתבסס על כסף.
+   המספר ירד מהדף לגמרי. */
+var COMMUNITY = 'https://chat.whatsapp.com/C7PRe57QheHJhCsFH6kTFA?s=cl&p=i&mlu=4&ilr=4';
+var SEG = {
+  1:{ h:'יש כאן דליפה שדורשת יד על ההגה',
+      p:'לפי מה שסימנת, כמה נקודות נשברות בו זמנית בדרך מהפנייה ללקוח. זה לא אומר שמשהו אצלך לא בסדר, זה אומר שאף אחד עוד לא בנה את המסלול שסוגר אותן.',
+      plan:[
+        '<b>לפני הכל, אל תיגע בתקציב.</b> הדליפה שסומנה למעלה לא נסגרת בעוד כסף על פרסום. עוד תקציב רק יגדיל אותה.',
+        'קח את הפניות של החודש האחרון, וסמן ליד כל אחת <b>כמה היא הייתה באמת רלוונטית.</b> תוך חצי שעה יהיה שם דפוס.',
+        '<b>הגדר, במשפט אחד, מי הלקוח שאתה הכי רוצה.</b> לא רק דמוגרפית, אלא מי בדיוק. אפילו להוריד לכתב ולפרטי פרטים את הלקוח הכי טוב שלך, לתאר אותו ולבנות סל מסרים שיווקיים שמושכים עוד כמוהו. רוב הדליפה מתחילה בזה שההגדרה הזאת מעולם לא נכתבה.',
+        'את בניית המסלול עצמו נעשה יחד. זה בדיוק מה שקורה <b>בפגישה לזינוק באיכות הפניות</b> יחד איתי.'
+      ], cta:'לקביעת פגישה לזינוק באיכות הפניות' },
+  2:{ h:'יש בסיס שעובד, ונקודה או שתיים ששוות תיקון',
+      p:'רוב מה שסימנת מסודר, ויש נקודה או שתיים ששומרות על העסק מתחת למה שהוא יכול. הן לא דורשות שינוי גדול, הן דורשות עין אחת שתסתכל עליהן יחד איתך.',
+      plan:[
+        'קח את עשר הפניות האחרונות, וסמן ליד כל אחת <b>איפה בדיוק היא נעצרה.</b> אם הן נעצרות באותו מקום, זו נקודה אחת לתקן, לא עשר.',
+        '<b>חמש העסקאות האחרונות שנסגרו אצלך:</b> איך הצגת את ההצעה שלך, בשיחה, מצגת, קובץ או אחר, והאם היה משפט מפתח או מילת מחץ שעזרו לנעול את העסקה. בסוף יתגלה דפוס שכדאי לשכפל.',
+        'את בניית המסלול עצמו נעשה יחד. זה בדיוק מה שקורה <b>בפגישה לזינוק באיכות הפניות</b> יחד איתי.'
+      ], cta:'לקביעת פגישה לזינוק באיכות הפניות' },
+  3:{ h:'התמונה מסודרת יחסית, ואין כאן דליפה גדולה',
+      p:'רוב המסלול אצלך עובד. יש דברים קטנים שאפשר להדק, אבל אין כאן שום דבר בוער. המפה נשארת שלך, ואם בעוד כמה חודשים משהו ישתנה, <b>הדלת שלי פתוחה.</b>',
+      community:true }
 };
 
-/* הכסף כבר לא קובע אם יש בעיה, רק אם ליווי בתשלום הוא התשובה עכשיו.
-   מפה ישנה, מלפני התיקון, אינה נושאת fit ולכן נשארת כפי שהייתה. */
-function verdictOf(d){
-  if(d.fit === false && d.temp !== 'ok') return TEMP.gap;
-  return TEMP[d.temp] || TEMP.warm;
+/* התיוג של גל, אחד לכל תשובה. מקור האמת: dg-gal-worker/segments.js.
+   שינוי כאן חייב להשתקף שם, כי שני המקומות מחשבים את אותו פלח. */
+var SEG_TAGS = {
+  src:{source:[1,1,2,2]},
+  a:{budget:[3,2,1,1],leads:[3,2,2,2],reach:[3,3,2,2],close:[3,3,2,2],value:[3,2,1,1],speed:[3,3,2,2],followup:[3,2,1],cac:[3,3,2,1]},
+  b:{clients:[3,2,2,2],refer:[1,2,3,3],value:[3,2,1,1],capacity:[3,2,1,1],dry:[3,2,1],tried:[2,2,1,3],offer:[3,2,1],cac:[3,2,1]},
+  c:{leads:[3,2,2,2],reach:[1,2,3,3],close:[1,2,3,3],value:[3,2,1,1],page:[3,2,1],offer:[3,2,1],dry:[3,2,1],tried:[3,1,1,2],cac:[3,2,2]}
+};
+function segOf(d){
+  if(d && (d.segment === 1 || d.segment === 2 || d.segment === 3)) return d.segment;
+  var a = (d && d.answers) || {}, tab = SEG_TAGS[d && d.track];
+  if(!tab) return 2;
+  var n1=0,n2=0,n3=0,tot=0;
+  for(var k in a){
+    var idx = a[k] && a[k].i; if(idx == null) continue;
+    var s = (k === 'source') ? SEG_TAGS.src.source[idx] : (tab[k] || [])[idx];
+    if(s===1)n1++; else if(s===2)n2++; else if(s===3)n3++; else continue;
+    tot++;
+  }
+  if(!tot) return 2;
+  if(n1/tot >= 0.31) return 1;
+  if((n1+n2)/tot >= 0.67) return 2;
+  return 3;
 }
-/* איזה סיפור מוצג. מסלול ממומן מקבל את מי שהגיע עם תנועה קנויה, ומסלול
-   פה לאוזן מקבל את מי שנשען שנים על המלצות. אותן כרטיסיות בדיוק כמו
-   בדף הבית, מאותו מקור, כדי שההוכחה לא תסתור את עצמה בין הדפים. */
-/* מסלול התוכן מקבל את מי שגדל בלי לשלם על תנועה, וזה הסיפור הקרוב לו ביותר */
+
+/* אותן כרטיסיות הוכחה כמו בדף הבית, מאותו מקור. */
 var PROOF_FOR = { a: 0, b: 1, c: 1 };
-var TOMORROW = {
-  a:'כל מה שצריך זה לקחת את הפניות של החודש האחרון, ולסמן ליד כל אחת כמה זמן עבר עד שמישהו חזר אליה. <b>רק את זה.</b> תוך חצי שעה יהיה שם דפוס, והוא כנראה יסביר את המספר שלמעלה טוב יותר מכל דוח שהגיע אליך עד היום.',
-  b:'כל מה שצריך זה לקחת את עשרת הלקוחות האחרונים, ולסמן ליד כל אחד מי בדיוק הפנה אותו. <b>רק את זה.</b> תוך חצי שעה יהיה ברור אם יש כאן ערוץ, או שלושה אנשים שממשיכים לזכור אותך.',
-  c:'כל מה שצריך זה לקחת את עשר הפניות האחרונות שהגיעו מהתוכן, ולסמן ליד כל אחת איפה בדיוק היא נעצרה. <b>רק את זה.</b> תוך חצי שעה יהיה ברור אם הן נעצרות באותו מקום, ואם כן, זה מקום אחד שאפשר לתקן.'
-};
-
-/* משתמשים בביטוי שלם, לא רק במספר, כי יחיד דורש ניסוח אחר מרבים.
-   "שתי" ולא "שתיים" כי הספרה יושבת צמוד ל"נקודות" והצורה הזאת נשמעת. */
-function pointsPhrase(n, tail){
-  tail = tail || 'האלה';
-  if(n === 1) return 'הנקודה ' + (tail === 'האלה' ? 'הזאת' : tail);
-  return (n === 2 ? 'שתי' : 'שלוש') + ' הנקודות ' + tail;
-}
-
-/* הכותרת הגדולה במצב שבו הכסף קטן. "נקודה אחת" ולא "1 נקודות". */
-function pointsBig(n){
-  if(n <= 1) return 'נקודה אחת';
-  return (n === 2 ? 'שתי' : (n === 3 ? 'שלוש' : n)) + ' נקודות';
-}
 
 function render(){
-  var t = verdictOf(D), lk = leaksFor(D);
+  var seg = segOf(D), V = SEG[seg] || SEG[2], lk = leaksFor(D);
   var src = SRC[D.source] || SRC[D.track === 'a' ? 'paid' : (D.track === 'c' ? 'org' : 'ref')];
-  var headline = D.track === 'a' ? D.main : (D.extra || D.main);
-  /* עסק קטן עם תהליך שבור לא רואה סכום ענק בראש הדף, כי אין כזה. הוא
-     רואה כמה נקודות נשברות אצלו, וזה הנתון שבאמת מחזיק אותו קטן. */
-  var isGap = (t === TEMP.gap), soft = isGap || t === TEMP.ok;
+  var isCommu = !!V.community;
+
+  var reflect = (D.rows || []).map(function(x){
+    return '<div class="rrow"><div class="rq">'+esc(x[0])+'</div><div class="ra">'+esc(x[1])+'</div>'+
+      (x[2] ? '<div class="rm">'+esc(x[2])+'</div>' : '')+'</div>';
+  }).join('');
+
+  var actionSec = isCommu
+    ? '<div class="sec"><div class="commu">'+
+        '<p>זיהיתי כמה פרמטרים, אמנם דהויים אבל כאלו שכדאי לשפר אצלך. אבל בכנות, לפני שאני אציע לך את השירות שלי, כדאי לנסות כמה דברים בעצמך.</p>'+
+        '<p class="nm">אני מזמין אותך ל<span class="boxg">המעגל הסגור</span></p>'+
+        '<p>קהילת וואטסאפ שקטה, חדר שיווק לאנשי מקצוע כמוך מעולם הנדל"ן, המשפט והפיננסים. בפנים אני חושף את השיטות הפרקטיות והטכנולוגיה השיווקית שאני מיישם בפועל אצל הלקוחות שלי, כדי להביא פניות איכותיות יותר ולסגור עסקאות High Ticket.</p>'+
+        '<button class="cta" onclick="location.href=\''+COMMUNITY+'\'">להצטרפות למעגל הסגור</button>'+
+      '</div></div>'
+    : '<div class="sec"><h2 class="sh">סדר הפעולות שלך, <span class="boxo">לפי הסדר</span></h2>'+
+        '<ol class="plan">'+V.plan.map(function(s){ return '<li>'+s+'</li>'; }).join('')+'</ol></div>';
+
+  var inviteSec = isCommu ? '' :
+    '<div class="sec invite" id="s-inv"><h2>'+(seg===1?'נעבור על המפה הזאת יחד?':'שווה שנסתכל על זה יחד')+'</h2>'+
+      '<p>'+V.p.replace(/<\/?b>/g,'')+'</p>'+
+      '<p class="fine">אני לא מבטיח תוצאה. <b>אני מתחייב על התהליך</b>, ואם אני חושב שאני לא יכול לעזור לך, אני אגיד לך את זה בפנים.</p>'+
+      '<button class="cta" onclick="location.href=\'/call/\'">'+V.cta+'</button>'+
+      '<p class="fine">שלחתי לך את המפה לוואטסאפ, וגם למייל כגיבוי. היא נשארת שלך גם אם לא נעבוד יחד.</p></div>';
 
   document.getElementById('wrap').innerHTML =
-  '<div class="top sec"><p class="kicker">מפת הדליפה של <b>' + esc(D.biz) + '</b></p>'+
-    '<div class="panel"><i class="tick t1"></i><i class="tick t2"></i><i class="tick t3"></i><i class="tick t4"></i>'+
-      '<p class="big">' + (isGap ? pointsBig(lk.length) : money(headline)) + '</p>'+
-      '<span class="numsub">' + (isGap ? 'נקודות שנשברות היום בדרך מהפנייה ללקוח' : src.lead) + '</span>'+
+  '<div class="top sec"><p class="kicker">מפת הדליפה של <b>'+esc(D.biz)+'</b></p>'+
+    '<div class="panel verdict s'+seg+'">'+
+      '<h1 class="vh">'+V.h+'</h1><p class="vp">'+V.p+'</p>'+
       '<div class="seal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>'+
-      '<span>אבחון אישי · עשר שאלות · נבנה מהתשובות שסימנת</span></div></div>'+
-    '<p class="under">' + UNDER[D.track] + '</p></div>'+
+      '<span>אבחון אישי · עשר שאלות · נבנה מהתשובות שסימנת</span></div></div></div>'+
 
-  '<div class="sec"><h2 class="sh">רגע אחד <span class="box">לפני שממשיכים</span></h2>'+
-    '<div class="vid"><div class="frame"><img src="/*AVATAR*/" alt="גל הרוש">'+
-      '<button class="play" aria-label="להפעלת הסרטון" onclick="openVid(\'vlResult\',\'vidResult\',\'/media/result.mp4\')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>'+
-      '</div><p class="vcap">שלוש דקות על המספר שלמעלה, ומה עושים איתו.</p></div></div>'+
-
-  '<div class="calc sec"><h2 class="sh">ככה הגעתי למספר, <span class="boxo">שורה שורה</span></h2>'+
-    '<p style="font-size:14px;margin-bottom:14px">אלה הנתונים שסימנת. אפשר לעבור עליהם ולבדוק אותי.</p>'+
-    D.rows.map(function(x){ return '<div class="row"><span>'+esc(x[0])+'</span><span>'+esc(x[1])+'</span></div>'; }).join('')+
-    '<div class="row tot"><span>' + (D.track === 'b' ? 'קיבולת פנויה בחודש' : 'הולך לאיבוד בחודש') + '</span>'+
-      '<span class="totv">' + money(headline) + '</span></div>'+
-    (D.track === 'b' && D.main >= 1000
-      ? '<div class="row"><span>ומתוך ההכנסה הקיימת, תלוי בהמלצות</span><span>' + money(D.main) + '</span></div>'
-      : '')+
-    '<p class="note">' + src.note + '</p></div>'+
+  '<div class="calc sec"><h2 class="sh">ככה <span class="boxo">קראתי אותך</span></h2>'+
+    '<p style="font-size:14px;margin-bottom:6px">אלה התשובות שסימנת. עברתי עליהן אחת אחת.</p>'+
+    reflect+'</div>'+
 
   '<div class="sec"><h2 class="sh">למה זה קורה <span class="box">דווקא אצלך</span></h2>'+
-    '<div class="why"><p>' + src.why + '</p><p>' + WHY[D.aware].replace('{OPEN}', blindOpener(D)) + '</p></div></div>'+
+    '<div class="why"><p>'+src.why+'</p><p>'+WHY[D.aware].replace('{OPEN}', blindOpener(D))+'</p></div></div>'+
 
   '<div class="sec"><h2 class="sh"><span class="box">איפה זה נעצר</span>, לפי סדר</h2>'+
-    '<p>הנקודות האלה נבחרו מהתשובות שסימנת, לפי סדר הכסף שיושב על כל אחת מהן.</p>'+
-    '<div style="margin-top:18px">' + lk.map(function(l,i){
-      return '<div class="leak">'+ numeral(i+1, l.k) +'<div><h3>'+l.h+'</h3><p>'+l.t+'</p></div></div>';
-    }).join('') + '</div></div>'+
+    '<p>הנקודות האלה נבחרו מהתשובות שסימנת, לפי סדר החשיבות שלהן.</p>'+
+    '<div style="margin-top:18px">'+lk.map(function(l,i){
+      return '<div class="leak">'+numeral(i+1,l.k)+'<div><h3>'+l.h+'</h3><p>'+l.t+'</p></div></div>';
+    }).join('')+'</div></div>'+
 
-  '<div class="sec card lift"><h2 class="sh">משהו שאפשר לעשות <span class="boxo">כבר מחר בבוקר</span>, בלי אף אחד</h2>'+
-    '<p style="margin-bottom:0">' + TOMORROW[D.track] + '</p></div>'+
+  actionSec+
 
   '<div class="sec"><h2 class="sh">מי שכבר <span class="boxg">סגר את הנקודות האלה</span></h2>'+
-    '<div class="cases">' + caseCard(CASES[PROOF_FOR[D.track] || 0]) + '</div></div>'+
+    '<div class="cases">'+caseCard(CASES[PROOF_FOR[D.track] || 0])+'</div></div>'+
 
-  '<div class="sec invite" id="s-inv"><h2>'+t.h+'</h2>'+
-    '<p>'+t.p.replace('{PHRASE}', pointsPhrase(lk.length, 'למעלה')) +
-      (soft ? '' : ' <b>'+LINE[D.aware].replace('{PHRASE}', pointsPhrase(lk.length))+'</b>') + '</p>'+
-    '<p class="fine">אני לא מבטיח תוצאה. <b>אני מתחייב על התהליך</b>, ואם אני חושב שאני לא יכול לעזור לך, אני אגיד לך את זה בפנים.</p>'+
-    '<button class="cta'+(soft ? ' quiet' : '')+'" onclick="location.href=\'/call/\'">'+t.c+'</button>'+
-    '<p class="fine">שלחתי לך את המפה לוואטסאפ, וגם למייל כגיבוי. היא נשארת שלך גם אם לא נעבוד יחד.</p></div>'+
+  inviteSec+
 
   '<div class="sec card ask"><h2 style="font-size:18px">יש שאלה על המפה?</h2>'+
     '<p style="font-size:14px;margin-bottom:0">אפשר לכתוב אותה כאן. <b>אני עונה אישית</b>, בדרך כלל באותו יום.</p>'+
-    '<textarea id="q" placeholder="לדוגמה, מאיפה בדיוק הגיע המספר של זמן התגובה?"></textarea>'+
+    '<textarea id="q" placeholder="לדוגמה, מה הכי כדאי לי להתחיל ממנו?"></textarea>'+
     '<button class="send" id="qsend">לשליחת השאלה</button></div>'+
 
   '<footer><p><b>גל הרוש</b> · דיוק דיגיטלי<br>DG-GAL.ONLINE</p>'+
@@ -394,9 +422,9 @@ function render(){
     '<p class="cr">© כל הזכויות שמורות · <a href="https://wa.me/972509928400?text=%D7%94%D7%99%D7%99%20%D7%92%D7%9C%2C%20%D7%94%D7%92%D7%A2%D7%AA%D7%99%20%D7%90%D7%9C%D7%99%D7%9A%20%D7%93%D7%A8%D7%9A%20%D7%A0%D7%9B%D7%A1%20%D7%93%D7%99%D7%92%D7%99%D7%98%D7%9C%D7%99%20%D7%A9%D7%99%D7%A6%D7%A8%D7%AA%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A4%D7%A8%D7%98%D7%99%D7%9D" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">דיוק דיגיטלי</a> · גל הרוש 2026</p>'+
   '</footer>';
 
-  document.getElementById('float').dataset.allow = t.f ? '1' : '0';
+  document.getElementById('float').dataset.allow = isCommu ? '0' : '1';
   document.getElementById('qsend').addEventListener('click', sendQuestion);
-  if(window.fbq && !D.__demo) fbq('trackCustom','ViewMap',{ temperature:D.temp, score:D.score });
+  if(window.fbq && !D.__demo) fbq('trackCustom','ViewMap',{ segment:seg });
 }
 
 function numeral(n,k){

@@ -620,7 +620,7 @@ el('body').addEventListener('click', function(e){
   var o = e.target.closest('.opt'); if(!o) return;
   var q = current(); if(!q) return;
   var i = +o.dataset.i;
-  S.a[q.k] = { i:i, label:q.o[i][2], score:q.o[i][4], val:q.o[i][5] };
+  S.a[q.k] = { i:i, label:q.o[i][2], mc:q.o[i][3], score:q.o[i][4], val:q.o[i][5] };
   /* אירוע ההתחלה שהקמפיין מיועל אליו. יורה פעם אחת, ורק כשבאמת נענתה שאלה.
      קודם הוא ירה על כל נגיעה במסך, וגם דף הנחיתה ירה אותו, אז כל אדם נספר
      פעמיים ופייסבוק היה לומד לחפש אנשים שנוגעים ובורחים. */
@@ -728,12 +728,12 @@ function compute(){
     var rescue = Math.max(0.10, (a.speed.val || 0.40) + (a.followup.val || 0));
     main = roundDown(leads * notReach * rescue * close * val);
     rows = [
-      ['פניות חדשות בחודש', a.leads.label],
-      ['לא מגיעות לשיחה', a.reach.label],
-      ['זמן חזרה לפנייה', a.speed.label],
-      ['מעקב למי שלא ענה', a.followup.label],
-      ['סגירה מתוך השיחות', a.close.label],
-      ['שווי לקוח בשנה הראשונה', a.value.label]
+      ['פניות חדשות בחודש', a.leads.label, a.leads.mc],
+      ['לא מגיעות לשיחה', a.reach.label, a.reach.mc],
+      ['זמן חזרה לפנייה', a.speed.label, a.speed.mc],
+      ['מעקב למי שלא ענה', a.followup.label, a.followup.mc],
+      ['סגירה מתוך השיחות', a.close.label, a.close.mc],
+      ['שווי לקוח בשנה הראשונה', a.value.label, a.value.mc]
     ];
   } else if(S.track === 'c'){
     /* אותה פיזיקה של מסלול א: פניות נכנסות, חלק לא מגיע לשיחה, וחלק ממי
@@ -743,23 +743,23 @@ function compute(){
     var recover = Math.max(0.15, (a.page.val || 0) + (a.offer.val || 0));
     main = roundDown(cLeads * cMiss * recover * cClose * cVal);
     rows = [
-      ['פניות מהתוכן בחודש', a.leads.label],
-      ['לא מגיעות לשיחה', a.reach.label],
-      ['מקום ללמוד על השירות', a.page.label],
-      ['הצעה מנוסחת', a.offer.label],
-      ['סגירה מתוך השיחות', a.close.label],
-      ['שווי לקוח בשנה הראשונה', a.value.label]
+      ['פניות מהתוכן בחודש', a.leads.label, a.leads.mc],
+      ['לא מגיעות לשיחה', a.reach.label, a.reach.mc],
+      ['מקום ללמוד על השירות', a.page.label, a.page.mc],
+      ['הצעה מנוסחת', a.offer.label, a.offer.mc],
+      ['סגירה מתוך השיחות', a.close.label, a.close.mc],
+      ['שווי לקוח בשנה הראשונה', a.value.label, a.value.mc]
     ];
   } else {
     main  = roundDown(a.clients.val * a.refer.val * a.value.val);
     extra = roundDown(a.capacity.val * a.value.val);
     rows = [
-      ['לקוחות חדשים בחודש', a.clients.label],
-      ['מתוכם מהמלצה או היכרות', a.refer.label],
-      ['שווי לקוח בשנה הראשונה', a.value.label],
-      ['אפשר לקחת מחר עוד', a.capacity.label],
-      ['בחודש שההפניות מתייבשות', a.dry.label],
-      ['הצעה מנוסחת וקבועה', a.offer.label]
+      ['לקוחות חדשים בחודש', a.clients.label, a.clients.mc],
+      ['מתוכם מהמלצה או היכרות', a.refer.label, a.refer.mc],
+      ['שווי לקוח בשנה הראשונה', a.value.label, a.value.mc],
+      ['אפשר לקחת מחר עוד', a.capacity.label, a.capacity.mc],
+      ['בחודש שההפניות מתייבשות', a.dry.label, a.dry.mc],
+      ['הצעה מנוסחת וקבועה', a.offer.label, a.offer.mc]
     ];
   }
   /* רצפת הכסף. ליווי של 9,800 ועוד ריטיינר לא מחזיר את עצמו על דליפה
