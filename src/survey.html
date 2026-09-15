@@ -375,10 +375,8 @@ function renderContact(){
       '<input id="i-phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="05X-XXXXXXX">'+
       '<div class="hint">המפה מגיעה לוואטסאפ תוך דקה.</div>'+
       '<div class="err">מספר וואטסאפ ישראלי תקין</div></div>'+
-    '<div class="fld" id="f-mail"><label for="i-mail">אימייל</label>'+
-      '<input id="i-mail" type="email" inputmode="email" autocomplete="email" placeholder="name@example.com"><div class="err">כתובת אימייל תקינה</div></div>'+
     '<label class="consent"><input type="checkbox" id="i-ok">'+
-      '<span>אפשר לשלוח לי את המפה ועדכונים. קראתי את <a href="/privacy/">מדיניות הפרטיות</a>.</span></label>';
+      '<span>אפשר לשלוח לי את המפה לוואטסאפ ועדכונים. קראתי את <a href="/privacy/">מדיניות הפרטיות</a>.</span></label>';
   /* ★ המסך הזה נבנה מחדש בכל חזרה, אז מה שהוקלד בו חייב לחזור אליו.
      בלי זה מי שיצא לקרוא מדיניות חוזר לארבעה שדות ריקים אחרי תשע תשובות. */
   var r = savedFields();
@@ -628,12 +626,14 @@ var WORKER_URL = 'https://dg-gal-funnel.tom-harush.workers.dev';
 
 function submit(){
   var name = el('i-name').value.trim(), biz = el('i-biz').value.trim();
-  var phone = el('i-phone').value.trim(), mail = el('i-mail').value.trim();
+  var phone = el('i-phone').value.trim();
+  /* המייל ירד מהשאלון, גל 15/09/2026, להורדת חיכוך רגע לפני הפרטים.
+     הליד מקבל רק וואטסאפ, וגל מקבל התראה על כל ליד ללא תלות במייל. */
+  var mail = '';
   var ok = true;
   ok = mark('f-name', name.length >= 2) && ok;
   ok = mark('f-biz',  biz.length  >= 2) && ok;
   ok = mark('f-phone', okPhone(phone))  && ok;
-  ok = mark('f-mail',  okMail(mail))    && ok;
   if(!ok){ return; }
 
   var r = compute();
