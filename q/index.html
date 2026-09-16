@@ -948,6 +948,14 @@ function submit(){
     fbq('trackCustom','CompleteDiagnostic',
         { temperature:r.temp, score:r.score, value:head, currency:'ILS' },
         { eventID: evId });
+    /* אירוע ליד סטנדרטי, בנוסף למותאם. הסטנדרטי נספר כהמרה מעצמו בלי
+       תלות בהמרה מותאמת. שש ההמרות המותאמות נוצרו עם retention_days:0
+       ולכן ספרו אפס לעולם, וקמפיין ספטמבר הראה "לא זמין" על 1,481 ש"ח
+       ו-0 לידים מיוחסים. אומת מול Graph API, 16/09/2026. נורה רק בסיום
+       שאלון, בדיוק ההגדרה של ליד, אותו event_id לניכוי כפילות מול השרת. */
+    fbq('track','Lead',
+        { value:head, currency:'ILS' },
+        { eventID: evId });
   }
 
   /* מסך הטעינה רץ כמה שניות טובות, מספיק זמן לתשובת השרת להגיע.
