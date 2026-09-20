@@ -247,9 +247,9 @@ footer a{color:var(--mut2)}
 .ra{font-size:15px;font-weight:800;color:var(--txt);margin-top:2px}
 .rm{font-size:13px;color:var(--pinkS);font-weight:700;margin-top:3px;line-height:1.5}
 .plan{list-style:none;counter-reset:p;padding:0;margin:14px 0 0}
-.plan li{counter-increment:p;position:relative;padding:0 44px 16px 0;font-size:14.5px;line-height:1.6}
-.plan li:last-child{padding-bottom:0}
-.plan li::before{content:counter(p);position:absolute;right:0;top:-2px;width:30px;height:30px;
+.plan li{counter-increment:p;position:relative;background:#fff;border:1px solid var(--line);border-radius:16px 16px 16px 5px;box-shadow:var(--sh1);padding:16px 54px 16px 16px;margin-bottom:12px;font-size:14.5px;line-height:1.6}
+.plan li:last-child{margin-bottom:0}
+.plan li::before{content:counter(p);position:absolute;right:14px;top:14px;width:30px;height:30px;
   border-radius:50%;background:var(--pinkT);color:var(--pinkS);font-weight:800;font-size:15px;
   display:flex;align-items:center;justify-content:center}
 .plan li b{color:var(--txt)}
@@ -613,9 +613,9 @@ function render(){
     '</div></div>';
 
   var inviteSec = isCommu ? '' :
-    '<div class="sec invite" id="s-inv"><h2>'+(seg===1?'נעבור על המפה הזאת יחד?':'שווה שנסתכל על זה יחד')+'</h2>'+
+    '<div class="sec invite" id="s-inv"><h2>'+(seg===1?'נעבור על המפה הזאת יחד.':'שווה שנסתכל על זה יחד.')+'</h2>'+
       '<p>שיחה אחת, ומפסיקים לנחש. עוברים על המפה שלך שורה שורה, לפי הכסף שיושב על כל נקודה, ויוצאים עם סדר פעולות חד ומדויק לשיווק.</p>'+
-      '<p class="fine">אני לא מבטיח תוצאה, ואם אני חושב שאני לא יכול לעזור לך, אני אגיד לך את זה בפנים.</p>'+
+      '<p class="fine">יש חלק בך שרוצה לדעת, וחלק שמהסס. שיחה אחת לא מחייבת אותך לכלום, וגם אם נחליט שלא להמשיך, יצאת עם עוד בהירות על השיווק שלך.</p>'+
       '<button class="cta" onclick="location.href=\'/call/\'">'+V.cta+'</button>'+
       '<p class="fine">שלחתי לך את המפה לוואטסאפ. היא נשארת שלך גם אם לא נעבוד יחד.</p></div>';
 
@@ -646,12 +646,11 @@ function render(){
     '<div class="cases">'+caseCard(CASES[PROOF_FOR[D.track] || 0])+'</div></div>'+
 
   inviteSec+
-  communitySec+
-
   '<div class="sec card ask"><h2 style="font-size:18px">יש שאלה על המפה?</h2>'+
     '<p style="font-size:14px;margin-bottom:0">אפשר לכתוב אותה כאן. <b>אני עונה אישית</b>, בדרך כלל באותו יום.</p>'+
     '<textarea id="q" placeholder="לדוגמה, מה הכי כדאי לי להתחיל ממנו?"></textarea>'+
     '<button class="send" id="qsend">לשליחת השאלה</button></div>'+
+  communitySec+
 
   '<footer><p><b>גל הרוש</b> · דיוק דיגיטלי<br>DG-GAL.ONLINE</p>'+
     '<p class="soc">'+
