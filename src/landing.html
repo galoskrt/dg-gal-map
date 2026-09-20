@@ -165,10 +165,12 @@
 .fcard.n .seal{background:#2b2732}
 .fcard .seal svg{width:19px;height:19px;stroke:#fff;stroke-width:3.4;fill:none;stroke-linecap:round;stroke-linejoin:round}
 @media(max-width:560px){.fcards{grid-template-columns:1fr;gap:30px}.fcards::before{display:none}.fcard,.fcard:nth-child(even){--rot:0deg;margin-top:0}}
-.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:2px 0 20px}
-.chip{font-size:13px;font-weight:800;color:#fff;border-radius:7px;padding:8px 14px;white-space:nowrap}
+.chips{display:flex;flex-wrap:nowrap;gap:6px;justify-content:center;margin:2px 0 20px;padding:0 4px}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:800;color:#fff;border-radius:7px;padding:6px 9px;white-space:nowrap}
+.chip svg{width:12px;height:12px;stroke:currentColor;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
 .chip.g{background:var(--greenS)}
 .chip.p{background:var(--pinkS)}
+@media(max-width:390px){.chip{font-size:10px;padding:5px 7px;gap:4px}.chip svg{width:11px;height:11px}}
 </style>
 <link rel="prefetch" href="/q/" as="document">
 </head>
@@ -188,7 +190,7 @@
     <span class="qualify">לעסקי שירות שיודעים שהם מומחים בתחום שלהם, וסוגרים עסקאות בשיחה או פגישה</span>
     <h1 class="h1">כולם מבטיחים לך <span class="box">לידים</span>, אבל <span class="boxg">הבנק</span> לא מקבל לידים.</h1>
     <p class="sub"><b>איך להכניס יותר כסף מאותו תקציב פרסום, בלי להגדיל אותו.</b> אני מאבחן ובונה לך מסע לקוח מדויק מבוסס טכנולוגיה שיווקית ומדידה שוטפת, עד שאין יותר עסקאות שדולפות בדרך.</p>
-    <div class="chips"><span class="chip g">באותו תקציב</span><span class="chip p">בלי אלפי עוקבים</span><span class="chip g">בלי להמר על החודש הבא</span></div>
+    <div class="chips"><span class="chip g"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>באותו תקציב</span><span class="chip p"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>בלי אלפי עוקבים</span><span class="chip g"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>בלי להמר על החודש הבא</span></div>
     <button class="cta" onclick="go()">להתחיל את האבחון</button>
     <div class="proof"><div class="faces"><img src="/*CLIENT01*/" alt=""><img src="/*CLIENT02*/" alt=""><img src="/*CLIENT03*/" alt=""><img src="/*CLIENT04*/" alt=""><img src="/*CLIENT05*/" alt=""><img src="/*CLIENT06*/" alt=""><img src="/*CLIENT07*/" alt=""><img src="/*CLIENT08*/" alt=""><img src="/*CLIENT09*/" alt=""><img src="/*CLIENT10*/" alt=""><img src="/*CLIENT11*/" alt=""><img src="/*CLIENT12*/" alt=""></div><span>עסקים שכבר <b>עברו את התהליך</b></span></div>
   </div>
