@@ -165,6 +165,8 @@
 .fcard.n .seal{background:#2b2732}
 .fcard .seal svg{width:19px;height:19px;stroke:#fff;stroke-width:3.4;fill:none;stroke-linecap:round;stroke-linejoin:round}
 @media(max-width:560px){.fcards{grid-template-columns:1fr;gap:30px}.fcards::before{display:none}.fcard,.fcard:nth-child(even){--rot:0deg;margin-top:0}}
+.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:2px 0 20px}
+.chip{font-size:13px;font-weight:800;color:var(--greenS);background:var(--greenT);border:1px solid var(--greenL);border-radius:999px;padding:7px 14px;white-space:nowrap}
 </style>
 <link rel="prefetch" href="/q/" as="document">
 </head>
@@ -182,9 +184,9 @@
 
   <div class="hero">
     <span class="qualify">לעסקי שירות שיודעים שהם מומחים בתחום שלהם, וסוגרים עסקאות בשיחה או פגישה</span>
-    <h1 class="h1">כולם מבטיחים לך לידים, אבל <span style="color:var(--pinkS)">הבנק לא מקבל לידים.</span></h1>
+    <h1 class="h1">כולם מבטיחים לך <span class="box">לידים</span>, אבל <span class="boxg">הבנק</span> לא מקבל לידים.</h1>
     <p class="sub"><b>איך להכניס יותר כסף מאותו תקציב פרסום, בלי להגדיל אותו.</b> אני מאבחן ובונה לך מסע לקוח מדויק מבוסס טכנולוגיה שיווקית ומדידה שוטפת, עד שאין יותר עסקאות שדולפות בדרך.</p>
-    <p class="rel">באותו תקציב · בלי אלפי עוקבים · בלי להמר על החודש הבא</p>
+    <div class="chips"><span class="chip">באותו תקציב</span><span class="chip">בלי אלפי עוקבים</span><span class="chip">בלי להמר על החודש הבא</span></div>
     <button class="cta" onclick="go()">להתחיל את האבחון</button>
     <div class="proof"><div class="faces"><img src="/*CLIENT01*/" alt=""><img src="/*CLIENT02*/" alt=""><img src="/*CLIENT03*/" alt=""><img src="/*CLIENT04*/" alt=""><img src="/*CLIENT05*/" alt=""><img src="/*CLIENT06*/" alt=""><img src="/*CLIENT07*/" alt=""><img src="/*CLIENT08*/" alt=""><img src="/*CLIENT09*/" alt=""><img src="/*CLIENT10*/" alt=""><img src="/*CLIENT11*/" alt=""><img src="/*CLIENT12*/" alt=""></div><span>עסקים שכבר <b>עברו את התהליך</b></span></div>
   </div>
@@ -251,7 +253,7 @@
     <h2 class="sh">נמאס לך <span class="box">מקמפיינרים וסוכנויות</span>?</h2>
     <div class="card lift"><div class="in">
       <p>בצדק. אני מבין אותך. הם בונים על תקציב הפרסום שלך ולא על ההכנסות שלך, מייצרים הכל על בסיס ניחושים, וכובלים אותך בריטיינר. <b>ומה שנשאר לך מהם בסוף זה חור בכיס ושק ניחושים.</b></p>
-      <p style="margin-bottom:0">אני מאבחן ומאפיין את כל מסע הלקוח שלך, בונה אותו בריא וחזק, מייצר לך מסמכים שיווקיים שילוו אותך לכל אפיק שיווקי, מודד כל פרמטר עד סגירת העסקה. <span class="boxg">הכל נשאר שלך ובבעלותך, בלי שום התחייבות.</span></p>
+      <p style="margin-bottom:0">אני מאבחן ומאפיין את כל מסע הלקוח שלך, בונה אותו בריא וחזק, מייצר לך מסמכים שיווקיים שילוו אותך לכל אפיק שיווקי, מודד כל פרמטר עד סגירת העסקה. <b style="color:var(--greenS)">הכל נשאר שלך ובבעלותך, בלי שום התחייבות.</b></p>
     </div></div>
   </div>
 
