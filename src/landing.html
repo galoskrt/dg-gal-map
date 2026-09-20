@@ -149,6 +149,22 @@
 .float .in{max-width:520px;margin:0 auto}
 .float button{width:100%;border:0;cursor:pointer;color:#fff;font-size:16px;font-weight:800;padding:15px;
   border-radius:999px;background:linear-gradient(96deg,var(--pink),var(--orange));box-shadow:var(--shC)}
+.fitgrid{position:relative}
+.fitlabel{font-size:15px;font-weight:800;text-align:center;margin:2px 0 26px}
+.fitlabel.y{color:var(--greenS)}.fitlabel.n{color:var(--pinkS)}
+.fcards{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:38px 24px;margin:0 0 6px}
+.fcards::before{content:"";position:absolute;top:6%;bottom:6%;left:calc(50% - 1px);width:2px;background-image:linear-gradient(var(--line2) 55%,transparent 0);background-size:2px 13px;transform:scaleY(0);transform-origin:top;transition:transform .9s ease .15s}
+.fcards.in::before{transform:scaleY(1)}
+.fcard{position:relative;background:#fff;border:1px solid var(--line2);border-radius:20px 20px 20px 6px;padding:24px 18px 18px;box-shadow:var(--sh2);font-size:14.5px;line-height:1.55;color:var(--mut);opacity:0;transform:translateY(24px) rotate(var(--rot,0deg));transition:opacity .55s ease,transform .55s ease}
+.fcard b{color:var(--txt);font-weight:800}
+.fcard:nth-child(odd){--rot:-1.5deg}
+.fcard:nth-child(even){--rot:1.5deg;margin-top:34px}
+.fcard.in{opacity:1;transform:translateY(0) rotate(var(--rot,0deg))}
+.fcard .seal{position:absolute;top:-19px;right:50%;transform:translateX(50%);width:38px;height:38px;border-radius:50%;display:grid;place-items:center;border:3px solid #fff;box-shadow:0 4px 12px rgba(20,18,28,.16)}
+.fcard.y .seal{background:var(--greenS)}
+.fcard.n .seal{background:#2b2732}
+.fcard .seal svg{width:19px;height:19px;stroke:#fff;stroke-width:3.4;fill:none;stroke-linecap:round;stroke-linejoin:round}
+@media(max-width:560px){.fcards{grid-template-columns:1fr;gap:30px}.fcards::before{display:none}.fcard,.fcard:nth-child(even){--rot:0deg;margin-top:0}}
 </style>
 <link rel="prefetch" href="/q/" as="document">
 </head>
@@ -166,24 +182,24 @@
 
   <div class="hero">
     <span class="qualify">לעסקי שירות שיודעים שהם מומחים בתחום שלהם, וסוגרים עסקאות בשיחה או פגישה</span>
-    <h1 class="h1">לדעת מראש אם <span class="boxg">שיווק מדויק</span> בכלל <span class="box">שווה את הכסף</span>,<br>לפני ש<span class="nb">שורפים כסף</span> על ניחושים.</h1>
-    <p class="rel">גם אם שיווקת בעבר ולא קיבלת החזר השקעה ראוי, גם אם כבר נכווית מקמפיינר או סוכנות, <span class="nb">וגם אם אין לך אלפי עוקבים.</span></p>
-    <p class="sub">עשר שאלות, ארבע דקות, ובסוף מפה אישית שמראה <b>איפה הכסף שלך דולף בדרך שבין פניות לעסקאות, ומה אפשר להדק כדי למשוך אליך <span class="nb">לקוחות מדויקים.</span></b></p>
+    <h1 class="h1">כולם מבטיחים לך לידים, אבל <span style="color:var(--pinkS)">הבנק לא מקבל לידים.</span></h1>
+    <p class="sub"><b>איך להכניס יותר כסף מאותו תקציב פרסום, בלי להגדיל אותו.</b> אני מאבחן ובונה לך מסע לקוח מדויק מבוסס טכנולוגיה שיווקית ומדידה שוטפת, עד שאין יותר עסקאות שדולפות בדרך.</p>
+    <p class="rel">באותו תקציב · בלי אלפי עוקבים · בלי להמר על החודש הבא</p>
     <button class="cta" onclick="go()">להתחיל את האבחון</button>
     <div class="proof"><div class="faces"><img src="/*CLIENT01*/" alt=""><img src="/*CLIENT02*/" alt=""><img src="/*CLIENT03*/" alt=""><img src="/*CLIENT04*/" alt=""><img src="/*CLIENT05*/" alt=""><img src="/*CLIENT06*/" alt=""><img src="/*CLIENT07*/" alt=""><img src="/*CLIENT08*/" alt=""><img src="/*CLIENT09*/" alt=""><img src="/*CLIENT10*/" alt=""><img src="/*CLIENT11*/" alt=""><img src="/*CLIENT12*/" alt=""></div><span>עסקים שכבר <b>עברו את התהליך</b></span></div>
   </div>
 
   <div class="sec">
-    <h2 class="sh">אחד <span class="nb">מהמשפטים האלה</span> <span class="nb"><span class="box">נשמע מוכר</span>?</span></h2>
+    <h2 class="sh">אני יודע בדיוק <span class="box">מה עובר עליך</span></h2>
     <div class="mirror"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" x2="22" y1="2" y2="22"/></svg></i>
-      <span>"אני מקבל פניות, ואני לא באמת יודע <b>מה קרה להן אחר כך.</b>"</span></div>
+      <span>"אתה מקבל פניות, ולא באמת יודע <b>מה קרה להן אחר כך.</b>"</span></div>
     <div class="mirror"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></i>
-      <span>"הדוח החודשי מראה עלייה. <b>התזרים של החודש הבא לא מרגיש את זה.</b>"</span></div>
+      <span>"נכנסים לידים, <b>אבל לא נכנס כסף לבנק.</b>"</span></div>
     <div class="mirror"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 13V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h9"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/><path d="m17 22 5-5"/><path d="m17 17 5 5"/></svg></i>
-      <span>"אני סוגר מצוין מול לקוח. אז <b>למה כל כך קשה להביא אותו לשולחן?</b>"</span></div>
+      <span>"אתה סוגר מצוין מול לקוח רלוונטי, <b>ועדיין נלחם להביא אותו לשולחן.</b>"</span></div>
     <div class="mirror"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg></i>
-      <span>"אני מומחה בתחום שלי. <b>למה אני צריך להיות מומחה גם בזה?</b>"</span></div>
-    <p style="margin-top:14px">אם כן, הבעיה כמעט בטוח לא נמצאת בכמות הפניות. <b>היא נמצאת במי נכנס, ובמה שקורה לו אחר כך.</b></p>
+      <span>"כל פעם שאתה מדליק קמפיין, <b>זה מרגיש לך כמו הימור.</b>"</span></div>
+    <p style="margin-top:14px">הבעיה כמעט אף פעם לא בכמות הפניות. <b>היא במי שנכנס, ובמה שקורה לו אחר כך.</b></p>
   </div>
 
   <div class="sec">
@@ -209,26 +225,43 @@
 <!--CASES-->  </div>
   </div>
 
-<div class="sec card lift">
-    <h2 class="sh">למי זה <span class="boxg">מתאים</span>, ולמי <span class="box">פחות</span></h2>
-    <div class="fit y"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></i>
-      <span>עסק מבוסס שכבר מביא לקוחות, ורוצה לדעת איפה הכסף נעצר בדרך.</span></div>
-    <div class="fit y"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></i>
-      <span>לקוח ששווה יותר מעשרת אלפים שקל בשנה הראשונה.</span></div>
-    <div class="fit y"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></i>
-      <span>מומחה בתחום שלו, שאין לו זמן להיות מומחה גם בשיווק.</span></div>
-    <div class="fit n"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></i>
-      <span>עסק שרק נפתח ועדיין אין לו לקוחות ראשונים למדוד.</span></div>
-    <div class="fit n"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></i>
-      <span>מי שמחפש הבטחות מנופחות לאחוזי סגירה או להמרה של פניות לעסקאות. <b>לא באתי למכור, באתי לאבחן. אני לא מחלק הבטחות.</b></span></div>
+<div class="sec fitgrid card lift">
+    <h2 class="sh">לא לכולם זה <span class="box">מתאים</span>.</h2>
+
+    <p class="fitlabel y">זה מתאים לך אם</p>
+    <div class="fcards" data-fit>
+      <div class="fcard y"><span class="seal"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><p>יש לך לידים, <b>אבל לא מספיק מהם הופכים ללקוחות.</b></p></div>
+      <div class="fcard y"><span class="seal"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><p>אתה כבר מוציא כסף על פרסום, <b>ורוצה להוציא יותר מאותו תקציב.</b></p></div>
+      <div class="fcard y"><span class="seal"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><p>יש לך מוצר או שירות טוב, אבל המסר, המשפך או המסע <b>עדיין לא מספיק מדויקים.</b></p></div>
+      <div class="fcard y"><span class="seal"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><p>אתה מרגיש שהשיווק שלך <b>מורכב מהרבה חלקים שלא באמת עובדים יחד.</b></p></div>
+      <div class="fcard y"><span class="seal"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><p>אתה רוצה להבין <b>איפה בדיוק נופלים אנשים בדרך,</b> ולתקן את זה.</p></div>
+      <div class="fcard y"><span class="seal"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><p>אתה מוכן לקבל <b>החלטות לפי נתונים,</b> ולא רק לפי תחושת בטן.</p></div>
+    </div>
+
+    <p class="fitlabel n" style="margin-top:22px">זה פחות בשבילך אם</p>
+    <div class="fcards" data-fit>
+      <div class="fcard n"><span class="seal"><svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></span><p>אתה מחפש רק <b>"תביא לי כמה שיותר לידים".</b></p></div>
+      <div class="fcard n"><span class="seal"><svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></span><p>אתה מחפש <b>פתרון קסם</b> בלי לשנות כלום בתהליך.</p></div>
+      <div class="fcard n"><span class="seal"><svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></span><p>אתה <b>לא מוכן למדוד,</b> לבדוק ולשפר לאורך הדרך.</p></div>
+      <div class="fcard n"><span class="seal"><svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></span><p>אתה מחפש את <b>המחיר הכי זול,</b> ולא את המערכת הכי מדויקת.</p></div>
+    </div>
   </div>
 
   <div class="sec">
-    <h2 class="sh">ומי <span class="box">כותב את זה</span></h2>
+    <h2 class="sh">נמאס לך <span class="box">מקמפיינרים וסוכנויות</span>?</h2>
+    <div class="card lift"><div class="in">
+      <p>בצדק. אני מבין אותך. הם בונים על תקציב הפרסום שלך ולא על ההכנסות שלך, מייצרים הכל על בסיס ניחושים, וכובלים אותך בריטיינר. <b>ומה שנשאר לך מהם בסוף זה חור בכיס ושק ניחושים.</b></p>
+      <p style="margin-bottom:0">אני מאבחן ומאפיין את כל מסע הלקוח שלך, בונה אותו בריא וחזק, מייצר לך מסמכים שיווקיים שילוו אותך לכל אפיק שיווקי, מודד כל פרמטר עד סגירת העסקה. <span class="boxg">הכל נשאר שלך ובבעלותך, בלי שום התחייבות.</span></p>
+    </div></div>
+  </div>
+
+  <div class="sec">
+    <h2 class="sh">פחות ניחושים. <span class="boxo">יותר דיוק.</span> יותר תוצאה.</h2>
     <div class="card lift me"><div class="in">
-      <p>אני גל הרוש. <b>אני לא קמפיינר ואני לא סוכנות.</b> אני מאבחן מסלול לקוח ובונה את המערכת שסוגרת את הפערים בו.</p>
-      <p>רוב מי שמגיע אליי כבר עשה הכל: אתר, אוטומציות, מערכת ניהול לקוחות, לפעמים גם קמפיין שרץ. <b>ובכל זאת, בכל פעם שהוא צריך להדליק תקציב, הוא אומר לעצמו שהוא שוב מהמר.</b></p>
-      <p style="margin-bottom:0">אני מתחיל מהשאלה שאף אחד לא שואל, <b>למי בדיוק אנחנו מפרסמים</b>, וממנה בונה אחורה. <span class="boxg">ובסוף התהליך הם כבר לא מהמרים.</span> <span class="boxg">הם יודעים.</span></p>
+      <p>אני גל הרוש, והקמתי את דיוק דיגיטלי מתוך הבנה ש<b>שיווק טוב לא מתחיל ממודעה, ולא נגמר בלידים.</b></p>
+      <p>עם הזמן גיליתי שהתוצאות האמיתיות נמצאות דווקא בחיבורים שבין כל הדברים, במסרים, במסע שהלקוח עובר, בטכנולוגיה, במדידה, ובמה שקורה אחרי שהליד נכנס. במקום לנחש מה יעבוד, אני מפרק את המערכת, מבין איפה הכסף נופל בדרך, ומדייק כל שלב.</p>
+      <p>אני משלב חשיבה שיווקית, אסטרטגיה וטכנולוגיה כדי לבנות לך מערכת שעובדת כמכלול, ולא כאוסף של ספקים וכלים. <b>המטרה שלי היא לא לגרום לך לעשות יותר שיווק, אלא לגרום לשיווק שאתה כבר עושה לעבוד הרבה יותר טוב.</b></p>
+      <p style="margin-bottom:0">כי מבחינתי, <b>דיוק הוא לא רק השם של העסק.</b> <span class="boxg">זאת הדרך שבה אני עובד.</span></p>
     </div><i class="glowme"></i><img class="av" src="/*GAL*/" alt="גל הרוש"></div>
   </div>
 
@@ -297,6 +330,18 @@ function go(){
   if(g) g.classList.add('on');
   setTimeout(function(){ location.href = '/q/' + location.search; }, 120);
 }
+
+/* למי מתאים: הכרטיסים נכנסים בהדרגה והקו המקווקו נמתח כשהסקשן מגיע */
+(function(){
+  var groups = [].slice.call(document.querySelectorAll('[data-fit]'));
+  if(!groups.length) return;
+  function reveal(g){ g.classList.add('in'); [].forEach.call(g.children, function(c,i){ setTimeout(function(){ c.classList.add('in'); }, 90*i); }); }
+  if(!window.IntersectionObserver){ groups.forEach(reveal); return; }
+  var io = new IntersectionObserver(function(ents){
+    ents.forEach(function(e){ if(e.isIntersecting){ reveal(e.target); io.unobserve(e.target); } });
+  }, { threshold:0.18 });
+  groups.forEach(function(g){ io.observe(g); });
+})();
 
 /* הפס מתמלא לפי הגלילה, והמספרים נדלקים כשהוא עובר אותם */
 (function(){
