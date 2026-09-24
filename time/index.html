@@ -314,7 +314,11 @@ src="https://www.facebook.com/tr?id=3520763671432860&ev=PageView&noscript=1" alt
 var WORKER_URL = 'https://dg-gal-funnel.tom-harush.workers.dev';
 var lead = null, leadId = '';
 try { lead = JSON.parse(sessionStorage.getItem('dg_map') || 'null'); } catch(e){}
-try { leadId = sessionStorage.getItem('dg_lead_id') || ''; } catch(e){}
+/* המזהה מגיע קודם מהכתובת (קישור וואטסאפ אישי, /time/?id=..., שנפתח בכל
+   סשן ומכשיר), ורק אם אין, מהלשונית הנוכחית. ככה בקשת מועד לעולם לא
+   מאבדת מי סימן מה, בלי לבקש פרטים שוב. */
+function urlLeadId(){ var m = location.search.match(/[?&]id=([\w-]{8,64})/); return m ? m[1] : ''; }
+try { leadId = urlLeadId() || sessionStorage.getItem('dg_lead_id') || ''; } catch(e){}
 
 var chosen = '';
 var prefs = document.getElementById('prefs');
