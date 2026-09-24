@@ -309,7 +309,7 @@ footer a{color:var(--mut2)}
   100%{box-shadow:0 6px 18px rgba(20,18,28,.22),0 0 0 0 rgba(37,211,102,0)}}
 @media (prefers-reduced-motion:reduce){.wafab{animation:none}}
 </style>
-<link rel="prefetch" href="/call/" as="document">
+<link rel="prefetch" href="/time/" as="document">
 <script>
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
 n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
@@ -617,7 +617,7 @@ function render(){
     '<div class="sec invite" id="s-inv"><h2>'+invH+'</h2>'+
       '<p>'+invP+'</p>'+
       '<p class="fine">יש חלק בך שרוצה לדעת, וחלק שמהסס. שיחה אחת לא מחייבת אותך לכלום, וגם אם נחליט שלא להמשיך, יצאת עם עוד בהירות על השיווק שלך.</p>'+
-      '<button class="cta" onclick="location.href=\'/call/\'">'+V.cta+'</button>'+
+      '<button class="cta" onclick="location.href=\'/time/\'">'+V.cta+'</button>'+
       '<p class="fine">שלחתי לך את המפה לוואטסאפ. היא נשארת שלך גם אם לא נעבוד יחד.</p></div>';
 
   document.getElementById('wrap').innerHTML =
@@ -730,7 +730,7 @@ function goCall(){
   if(window.fbq) fbq('trackCustom','ClickBooking');
   var g = document.getElementById('gate');
   if(g) g.classList.add('on');
-  setTimeout(function(){ location.href = '/call/' + location.search; }, 120);
+  setTimeout(function(){ location.href = '/time/' + location.search; }, 120);
 }
 
 /* ניסיון חוזר לליד שלא הצליח להישלח בהגשה. רץ בשקט, ולא מציג כלום לאדם

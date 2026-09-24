@@ -134,7 +134,7 @@ def shot(path, out, width=390, height=900, budget=6000):
 if __name__ == "__main__":
     pages = [("survey.html", "q"), ("result.html", "map"),
              ("landing.html", ""), ("booking.html", "call"),
-             ("privacy.html", "privacy")]
+             ("time.html", "time"), ("privacy.html", "privacy")]
     want = sys.argv[1:] or [p[0] for p in pages]
     for src, dest in pages:
         if src in want and os.path.exists(os.path.join(SP, src)):
