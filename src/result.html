@@ -325,30 +325,28 @@ var SEG = {
 
 /* התיוג של גל, אחד לכל תשובה. מקור האמת: dg-gal-worker/segments.js.
    שינוי כאן חייב להשתקף שם, כי שני המקומות מחשבים את אותו פלח. */
+/* ★ הסימון הסופי של גל (ארטיפקט "סימון הפלחים", 28/09/2026), מסונכרן
+   מילה במילה ל-dg-gal-worker/segments.js. 1=משמעותית, 2=בינונית, 3=זניח. */
 var SEG_TAGS = {
-  src:{source:[1,1,2,2]},
-  a:{budget:[3,2,1,1],leads:[3,2,2,2],reach:[3,3,2,2],close:[3,3,2,2],value:[3,2,1,1],speed:[3,3,2,2],followup:[3,2,1],cac:[3,3,2,1]},
-  b:{clients:[3,2,2,2],refer:[1,2,3,3],value:[3,2,1,1],capacity:[3,2,1,1],dry:[3,2,1],tried:[2,2,1,3],offer:[3,2,1],cac:[3,2,1]},
-  c:{leads:[3,2,2,2],reach:[1,2,3,3],close:[1,2,3,3],value:[3,2,1,1],page:[3,2,1],offer:[3,2,1],dry:[3,2,1],tried:[3,1,1,2],cac:[3,2,2]}
+  src:{source:[1,1,1,1]},
+  a:{budget:[2,2,1,1],leads:[1,2,1,1],reach:[2,1,1,1],close:[2,2,1,1],value:[2,1,1,1],speed:[3,2,1,1],followup:[2,1,1],cac:[3,2,1,1]},
+  b:{clients:[1,1,2,2],refer:[1,1,2,2],value:[2,1,1,1],capacity:[2,1,1,1],dry:[3,1,1],tried:[1,2,1,2],offer:[3,1,1],cac:[3,1,1]},
+  c:{leads:[1,1,1,1],reach:[1,1,2,2],close:[1,1,2,2],value:[3,1,1,1],page:[3,1,1],offer:[3,1,1],dry:[3,1,1],tried:[1,1,1,2],cac:[2,1,1]}
 };
 function segOf(d){
   if(d && (d.segment === 1 || d.segment === 2 || d.segment === 3)) return d.segment;
   var a = (d && d.answers) || {}, tab = SEG_TAGS[d && d.track];
-  if(!tab) return 2;
-  var n1=0,n2=0,n3=0,tot=0;
+  if(!tab) return 3;
+  var n1=0;
   for(var k in a){
+    if(k === 'source') continue;   // המקור קובע מסלול, לא נספר כדליפה
     var idx = a[k] && a[k].i; if(idx == null) continue;
-    var s = (k === 'source') ? SEG_TAGS.src.source[idx] : (tab[k] || [])[idx];
-    if(s===1)n1++; else if(s===2)n2++; else if(s===3)n3++; else continue;
-    tot++;
+    var s = (tab[k] || [])[idx];
+    if(s===1) n1++;
   }
-  if(!tot) return 2;
-  /* ★ תוקן 28/09/2026, מסונכרן ל-dg-gal-worker/segments.js: פלח 3 רק כשאין
-     אף תשובה דחופה ורוב מי שיש להם כיוון הוא רגוע. אחרת ברירת המחדל פלח 2,
-     לא פלח 3. הסף לפלח 1 הוחמר ל-40%. ראה ההערה שם למה. */
-  if(n1/tot >= 0.4) return 1;
-  if(n1 === 0 && n3 > n2) return 3;
-  return 2;
+  /* ★ הכלל הסופי, גל 28/09/2026: ספירת דליפות משמעותיות (tag 1) מ-8 שאלות
+     העומק: 3+ → פלח 1, בדיוק 2 → פלח 2, 0-1 → פלח 3. */
+  return (n1 >= 3) ? 1 : (n1 === 2) ? 2 : 3;
 }
 
 /* אותן כרטיסיות הוכחה כמו בדף הבית, מאותו מקור. */
