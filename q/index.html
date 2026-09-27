@@ -1028,21 +1028,26 @@ window.DG_TRACK='survey';
   function detectSrc(){
     try {
       var q = new URLSearchParams(location.search);
-      /* ממומן רק לפי סימן קמפיין אמיתי: utm_term (מזהה המודעה), utm_campaign,
-         או utm_medium ממומן. fbclid ו-utm_source לבדם אינם ממומן, כי
-         אינסטגרם מדביקה fbclid ו-utm_source=ig גם על קישור אורגני בביו,
-         וזה זייף כל כניסה אורגנית כממומנת. גל, 27/09/2026. */
+      /* ארבעה מקורות. ממומן ישיר = קליק ממודעה (utm_term/campaign/medium ממומן).
+         ביו = קישור הביו (utm_content=link_in_bio, medium=social, או utm_source=ig).
+         דביקות: חשיפה לפרסום נשמרת 30 יום, אז ביו של מי שכבר נחשף לפרסום הוא
+         "ביו מושפע מפרסום", ואחרת "ביו אורגני". fbclid ו-utm_source לבדם אינם
+         ממומן, כי אינסטגרם מדביקה אותם גם על קישור אורגני בביו. גל, 27/09/2026. */
       var med = (q.get('utm_medium') || '').toLowerCase();
       var content = (q.get('utm_content') || '').toLowerCase();
+      var usrc = (q.get('utm_source') || '').toLowerCase();
       var paidMed = /(cpc|ppc|paid)/.test(med);
-      var organic = /(social|organic|bio|referral|email|whatsapp|linktree|profile)/.test(med)
-                    || /link[_-]?in[_-]?bio|^bio$|profile/.test(content);
-      if(!organic && (q.get('utm_term') || q.get('utm_campaign') || paidMed)){
-        localStorage.setItem(SRC_KEY, JSON.stringify({ v:'paid', at:Date.now() }));
+      var directPaid = !!(q.get('utm_term') || q.get('utm_campaign') || paidMed);
+      var bio = /link[_-]?in[_-]?bio|^bio$/.test(content) || med === 'social' || med === 'bio'
+                || (usrc === 'ig' && (med === '' || med === 'social'));
+      var s = null; try { s = JSON.parse(localStorage.getItem(SRC_KEY) || 'null'); } catch(e){}
+      var hadPaid = !!(s && s.v === 'paid' && Date.now() - (s.at || 0) < 30*86400000);
+      if(directPaid && !bio){
+        try { localStorage.setItem(SRC_KEY, JSON.stringify({ v:'paid', at:Date.now() })); } catch(e){}
         return 'paid';
       }
-      var s = JSON.parse(localStorage.getItem(SRC_KEY) || 'null');
-      if(s && s.v === 'paid' && Date.now() - s.at < 30*86400000) return 'paid';
+      if(bio){ return hadPaid ? 'bio_paid' : 'bio_org'; }
+      return hadPaid ? 'paid' : 'org';
     } catch(e){}
     return 'org';
   }
