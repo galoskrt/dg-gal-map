@@ -543,6 +543,14 @@ document.addEventListener('click', function(e){
 
 /* מנסים קודם את הלשונית, ואם אין, מושכים את המפה לפי המזהה שבקישור */
 (function start(){
+  /* מצב תצוגה לגל: ?seg=1/2/3 כופה פלח על מפת הדמו כדי לראות את הקופי
+     ואת סדר הסקשנים לכל פלח, בלי תלות בליד אמיתי או בסשן ישן. */
+  var segM = location.search.match(/[?&]seg=([123])/);
+  if(segM){
+    D = JSON.parse(JSON.stringify(DEMO_MAP));
+    D.segment = +segM[1];
+    boot(); return;
+  }
   if(D){ boot(); return; }
   var id = mapId();
   if(!id){ D = DEMO_MAP; boot(); return; }
