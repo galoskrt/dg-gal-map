@@ -311,12 +311,16 @@ footer a{color:var(--mut2)}
 </style>
 <link rel="prefetch" href="/time/" as="document">
 <script>
+/* זיהוי הטמעה: survey.html חי גם עצמאי וגם בתוך iframe בדף הבית (הביקוע
+   החי מ-28/09/2026). הדגל קובע מה מדלגים עליו כשהוא ממוסגר (PageView כפול,
+   כרום, ניווט). שאר הדפים אף פעם לא ממוסגרים, אז זה תמיד false אצלם. */
+try{if(window.top!==window.self)document.documentElement.classList.add('framed');}catch(e){document.documentElement.classList.add('framed');}
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
 n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
 n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
 t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
 document,'script','https://connect.facebook.net/en_US/fbevents.js');
-fbq('init','3520763671432860');fbq('track','PageView');
+fbq('init','3520763671432860');if(window.self===window.top)fbq('track','PageView');
 </script>
 <noscript><img height="1" width="1" style="display:none"
 src="https://www.facebook.com/tr?id=3520763671432860&ev=PageView&noscript=1" alt=""></noscript>
@@ -573,9 +577,12 @@ function segOf(d){
     tot++;
   }
   if(!tot) return 2;
-  if(n1/tot >= 0.31) return 1;
-  if((n1+n2)/tot >= 0.67) return 2;
-  return 3;
+  /* ★ תוקן 28/09/2026, מסונכרן ל-dg-gal-worker/segments.js: פלח 3 רק כשאין
+     אף תשובה דחופה ורוב מי שיש להם כיוון הוא רגוע. אחרת ברירת המחדל פלח 2,
+     לא פלח 3. הסף לפלח 1 הוחמר ל-40%. ראה ההערה שם למה. */
+  if(n1/tot >= 0.4) return 1;
+  if(n1 === 0 && n3 > n2) return 3;
+  return 2;
 }
 
 /* אותן כרטיסיות הוכחה כמו בדף הבית, מאותו מקור. */
@@ -829,18 +836,30 @@ document.addEventListener('click', function(e){
      ובסטוריז. בלי הפרדה, אחוזי המשפך מערבבים תנועה חמה של מודעה עם
      תנועה קרה אורגנית, וכל מסקנה מהם שגויה.
 
-     מסומן paid רק אם הכתובת נשאה fbclid או utm של קמפיין. הסימון נשמר
-     לשלושים יום, כי המסע נמשך על פני כמה דפים ולפעמים כמה ימים.     */
+     ארבעה מקורות. ממומן ישיר = קליק ממודעה (utm_term/campaign/medium ממומן).
+     ביו = קישור הביו (utm_content=link_in_bio, medium=social, או utm_source=ig).
+     דביקות: חשיפה לפרסום נשמרת 30 יום, אז ביו של מי שכבר נחשף לפרסום הוא
+     "ביו מושפע מפרסום", ואחרת "ביו אורגני". fbclid ו-utm_source לבדם אינם
+     ממומן, כי אינסטגרם מדביקה אותם גם על קישור אורגני בביו. גל, 27/09/2026. */
   var SRC_KEY = 'dg_src';
   function detectSrc(){
     try {
       var q = new URLSearchParams(location.search);
-      if(q.get('fbclid') || q.get('utm_campaign') || q.get('utm_source')){
-        localStorage.setItem(SRC_KEY, JSON.stringify({ v:'paid', at:Date.now() }));
+      var med = (q.get('utm_medium') || '').toLowerCase();
+      var content = (q.get('utm_content') || '').toLowerCase();
+      var usrc = (q.get('utm_source') || '').toLowerCase();
+      var paidMed = /(cpc|ppc|paid)/.test(med);
+      var directPaid = !!(q.get('utm_term') || q.get('utm_campaign') || paidMed);
+      var bio = /link[_-]?in[_-]?bio|^bio$/.test(content) || med === 'social' || med === 'bio'
+                || (usrc === 'ig' && (med === '' || med === 'social'));
+      var s = null; try { s = JSON.parse(localStorage.getItem(SRC_KEY) || 'null'); } catch(e){}
+      var hadPaid = !!(s && s.v === 'paid' && Date.now() - (s.at || 0) < 30*86400000);
+      if(directPaid && !bio){
+        try { localStorage.setItem(SRC_KEY, JSON.stringify({ v:'paid', at:Date.now() })); } catch(e){}
         return 'paid';
       }
-      var s = JSON.parse(localStorage.getItem(SRC_KEY) || 'null');
-      if(s && s.v === 'paid' && Date.now() - s.at < 30*86400000) return 'paid';
+      if(bio){ return hadPaid ? 'bio_paid' : 'bio_org'; }
+      return hadPaid ? 'paid' : 'org';
     } catch(e){}
     return 'org';
   }

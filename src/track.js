@@ -23,18 +23,30 @@
      ובסטוריז. בלי הפרדה, אחוזי המשפך מערבבים תנועה חמה של מודעה עם
      תנועה קרה אורגנית, וכל מסקנה מהם שגויה.
 
-     מסומן paid רק אם הכתובת נשאה fbclid או utm של קמפיין. הסימון נשמר
-     לשלושים יום, כי המסע נמשך על פני כמה דפים ולפעמים כמה ימים.     */
+     ארבעה מקורות. ממומן ישיר = קליק ממודעה (utm_term/campaign/medium ממומן).
+     ביו = קישור הביו (utm_content=link_in_bio, medium=social, או utm_source=ig).
+     דביקות: חשיפה לפרסום נשמרת 30 יום, אז ביו של מי שכבר נחשף לפרסום הוא
+     "ביו מושפע מפרסום", ואחרת "ביו אורגני". fbclid ו-utm_source לבדם אינם
+     ממומן, כי אינסטגרם מדביקה אותם גם על קישור אורגני בביו. גל, 27/09/2026. */
   var SRC_KEY = 'dg_src';
   function detectSrc(){
     try {
       var q = new URLSearchParams(location.search);
-      if(q.get('fbclid') || q.get('utm_campaign') || q.get('utm_source')){
-        localStorage.setItem(SRC_KEY, JSON.stringify({ v:'paid', at:Date.now() }));
+      var med = (q.get('utm_medium') || '').toLowerCase();
+      var content = (q.get('utm_content') || '').toLowerCase();
+      var usrc = (q.get('utm_source') || '').toLowerCase();
+      var paidMed = /(cpc|ppc|paid)/.test(med);
+      var directPaid = !!(q.get('utm_term') || q.get('utm_campaign') || paidMed);
+      var bio = /link[_-]?in[_-]?bio|^bio$/.test(content) || med === 'social' || med === 'bio'
+                || (usrc === 'ig' && (med === '' || med === 'social'));
+      var s = null; try { s = JSON.parse(localStorage.getItem(SRC_KEY) || 'null'); } catch(e){}
+      var hadPaid = !!(s && s.v === 'paid' && Date.now() - (s.at || 0) < 30*86400000);
+      if(directPaid && !bio){
+        try { localStorage.setItem(SRC_KEY, JSON.stringify({ v:'paid', at:Date.now() })); } catch(e){}
         return 'paid';
       }
-      var s = JSON.parse(localStorage.getItem(SRC_KEY) || 'null');
-      if(s && s.v === 'paid' && Date.now() - s.at < 30*86400000) return 'paid';
+      if(bio){ return hadPaid ? 'bio_paid' : 'bio_org'; }
+      return hadPaid ? 'paid' : 'org';
     } catch(e){}
     return 'org';
   }

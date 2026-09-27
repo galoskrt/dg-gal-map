@@ -283,8 +283,9 @@ html.framed,html.framed body{background:transparent!important}
 .framed .wrap{padding-top:6px!important;padding-bottom:14px!important}
 </style>
 <script>
-/* זיהוי הטמעה: הדף הזה חי גם עצמאי וגם בתוך iframe בדף הבית. הדגל קובע
-   מה מדלגים עליו כשהוא ממוסגר (PageView כפול, כרום, ניווט). */
+/* זיהוי הטמעה: survey.html חי גם עצמאי וגם בתוך iframe בדף הבית (הביקוע
+   החי מ-28/09/2026). הדגל קובע מה מדלגים עליו כשהוא ממוסגר (PageView כפול,
+   כרום, ניווט). שאר הדפים אף פעם לא ממוסגרים, אז זה תמיד false אצלם. */
 try{if(window.top!==window.self)document.documentElement.classList.add('framed');}catch(e){document.documentElement.classList.add('framed');}
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
 n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
@@ -984,19 +985,6 @@ function submit(){
 restoreState();
 render();
 window.DG_TRACK='survey';
-
-/* גובה אוטומטי: כשממוסגר, מדווח לדף-העל את גובה התוכן בכל שינוי (מעבר
-   שאלה, מסך טעינה), והדף-העל מתאים את גובה ה-iframe. אותו מקור בלבד. */
-(function(){
-  if(window.top === window.self) return;
-  function ph(){
-    try { parent.postMessage({ dgH: Math.ceil(document.body.getBoundingClientRect().height) }, location.origin); }
-    catch(e){}
-  }
-  if(window.ResizeObserver){ try { new ResizeObserver(ph).observe(document.body); } catch(e){} }
-  addEventListener('load', ph); addEventListener('resize', ph);
-  setTimeout(ph, 120); setTimeout(ph, 600);
-})();
 /* ── דיוק דיגיטלי · מדידת התנהגות בדף ────────────────────────────────────
    מודול אחד לשני הדפים, כי שתי מערכות מדידה נפרדות תמיד נפרדות גם באמת.
 
@@ -1022,17 +1010,15 @@ window.DG_TRACK='survey';
      ובסטוריז. בלי הפרדה, אחוזי המשפך מערבבים תנועה חמה של מודעה עם
      תנועה קרה אורגנית, וכל מסקנה מהם שגויה.
 
-     מסומן paid רק אם הכתובת נשאה fbclid או utm של קמפיין. הסימון נשמר
-     לשלושים יום, כי המסע נמשך על פני כמה דפים ולפעמים כמה ימים.     */
+     ארבעה מקורות. ממומן ישיר = קליק ממודעה (utm_term/campaign/medium ממומן).
+     ביו = קישור הביו (utm_content=link_in_bio, medium=social, או utm_source=ig).
+     דביקות: חשיפה לפרסום נשמרת 30 יום, אז ביו של מי שכבר נחשף לפרסום הוא
+     "ביו מושפע מפרסום", ואחרת "ביו אורגני". fbclid ו-utm_source לבדם אינם
+     ממומן, כי אינסטגרם מדביקה אותם גם על קישור אורגני בביו. גל, 27/09/2026. */
   var SRC_KEY = 'dg_src';
   function detectSrc(){
     try {
       var q = new URLSearchParams(location.search);
-      /* ארבעה מקורות. ממומן ישיר = קליק ממודעה (utm_term/campaign/medium ממומן).
-         ביו = קישור הביו (utm_content=link_in_bio, medium=social, או utm_source=ig).
-         דביקות: חשיפה לפרסום נשמרת 30 יום, אז ביו של מי שכבר נחשף לפרסום הוא
-         "ביו מושפע מפרסום", ואחרת "ביו אורגני". fbclid ו-utm_source לבדם אינם
-         ממומן, כי אינסטגרם מדביקה אותם גם על קישור אורגני בביו. גל, 27/09/2026. */
       var med = (q.get('utm_medium') || '').toLowerCase();
       var content = (q.get('utm_content') || '').toLowerCase();
       var usrc = (q.get('utm_source') || '').toLowerCase();
@@ -1178,6 +1164,19 @@ window.DG_TRACK='survey';
   });
 })();
 
+
+/* גובה אוטומטי: כשממוסגר, מדווח לדף-העל את גובה התוכן בכל שינוי (מעבר
+   שאלה, מסך טעינה), והדף-העל מתאים את גובה ה-iframe. אותו מקור בלבד. */
+(function(){
+  if(window.top === window.self) return;
+  function ph(){
+    try { parent.postMessage({ dgH: Math.ceil(document.body.getBoundingClientRect().height) }, location.origin); }
+    catch(e){}
+  }
+  if(window.ResizeObserver){ try { new ResizeObserver(ph).observe(document.body); } catch(e){} }
+  addEventListener('load', ph); addEventListener('resize', ph);
+  setTimeout(ph, 120); setTimeout(ph, 600);
+})();
 </script>
 </body>
 </html>

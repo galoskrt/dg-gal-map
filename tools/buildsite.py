@@ -71,12 +71,16 @@ def inline_cases(html):
 # הקמפיין מיועל ל"התחיל אבחון", ולכן StartDiagnostic חייב להגיע לכאן.
 PIXEL_ID = "3520763671432860"
 PIXEL = """<script>
+/* זיהוי הטמעה: survey.html חי גם עצמאי וגם בתוך iframe בדף הבית (הביקוע
+   החי מ-28/09/2026). הדגל קובע מה מדלגים עליו כשהוא ממוסגר (PageView כפול,
+   כרום, ניווט). שאר הדפים אף פעם לא ממוסגרים, אז זה תמיד false אצלם. */
+try{if(window.top!==window.self)document.documentElement.classList.add('framed');}catch(e){document.documentElement.classList.add('framed');}
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
 n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
 n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
 t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
 document,'script','https://connect.facebook.net/en_US/fbevents.js');
-fbq('init','%s');fbq('track','PageView');
+fbq('init','%s');if(window.self===window.top)fbq('track','PageView');
 </script>
 <noscript><img height="1" width="1" style="display:none"
 src="https://www.facebook.com/tr?id=%s&ev=PageView&noscript=1" alt=""></noscript>

@@ -361,12 +361,16 @@ footer a{color:var(--mut2)}
 </style>
 <link rel="prefetch" href="/q/" as="document">
 <script>
+/* זיהוי הטמעה: survey.html חי גם עצמאי וגם בתוך iframe בדף הבית (הביקוע
+   החי מ-28/09/2026). הדגל קובע מה מדלגים עליו כשהוא ממוסגר (PageView כפול,
+   כרום, ניווט). שאר הדפים אף פעם לא ממוסגרים, אז זה תמיד false אצלם. */
+try{if(window.top!==window.self)document.documentElement.classList.add('framed');}catch(e){document.documentElement.classList.add('framed');}
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
 n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
 n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
 t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
 document,'script','https://connect.facebook.net/en_US/fbevents.js');
-fbq('init','3520763671432860');fbq('track','PageView');
+fbq('init','3520763671432860');if(window.self===window.top)fbq('track','PageView');
 </script>
 <noscript><img height="1" width="1" style="display:none"
 src="https://www.facebook.com/tr?id=3520763671432860&ev=PageView&noscript=1" alt=""></noscript>
@@ -663,17 +667,15 @@ window.DG_TRACK='pre';
      ובסטוריז. בלי הפרדה, אחוזי המשפך מערבבים תנועה חמה של מודעה עם
      תנועה קרה אורגנית, וכל מסקנה מהם שגויה.
 
-     מסומן paid רק אם הכתובת נשאה fbclid או utm של קמפיין. הסימון נשמר
-     לשלושים יום, כי המסע נמשך על פני כמה דפים ולפעמים כמה ימים.     */
+     ארבעה מקורות. ממומן ישיר = קליק ממודעה (utm_term/campaign/medium ממומן).
+     ביו = קישור הביו (utm_content=link_in_bio, medium=social, או utm_source=ig).
+     דביקות: חשיפה לפרסום נשמרת 30 יום, אז ביו של מי שכבר נחשף לפרסום הוא
+     "ביו מושפע מפרסום", ואחרת "ביו אורגני". fbclid ו-utm_source לבדם אינם
+     ממומן, כי אינסטגרם מדביקה אותם גם על קישור אורגני בביו. גל, 27/09/2026. */
   var SRC_KEY = 'dg_src';
   function detectSrc(){
     try {
       var q = new URLSearchParams(location.search);
-      /* ארבעה מקורות. ממומן ישיר = קליק ממודעה (utm_term/campaign/medium ממומן).
-         ביו = קישור הביו (utm_content=link_in_bio, medium=social, או utm_source=ig).
-         דביקות: חשיפה לפרסום נשמרת 30 יום, אז ביו של מי שכבר נחשף לפרסום הוא
-         "ביו מושפע מפרסום", ואחרת "ביו אורגני". fbclid ו-utm_source לבדם אינם
-         ממומן, כי אינסטגרם מדביקה אותם גם על קישור אורגני בביו. גל, 27/09/2026. */
       var med = (q.get('utm_medium') || '').toLowerCase();
       var content = (q.get('utm_content') || '').toLowerCase();
       var usrc = (q.get('utm_source') || '').toLowerCase();

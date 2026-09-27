@@ -100,6 +100,11 @@
 .load li.ok .mk svg{opacity:1}
 .hint{margin-top:5px;font-size:12.5px;color:var(--mut2);line-height:1.55}
 .fld.bad .hint{display:none}
+/* כשהשאלון מוטמע ב-iframe בתוך דף הבית, מסתירים את הכרום הכפול (לוגו,
+   רקעים, פוטר) ומשאירים רק את אפליקציית השאלון עצמה בתוך המסגרת שבדף. */
+html.framed,html.framed body{background:transparent!important}
+.framed .grid,.framed .glow,.framed header,.framed footer{display:none!important}
+.framed .wrap{padding-top:6px!important;padding-bottom:14px!important}
 </style>
 </head>
 <body>
@@ -436,7 +441,9 @@ el('body').addEventListener('click', function(e){
   /* אירוע ההתחלה שהקמפיין מיועל אליו. יורה פעם אחת, ורק כשבאמת נענתה שאלה.
      קודם הוא ירה על כל נגיעה במסך, וגם דף הנחיתה ירה אותו, אז כל אדם נספר
      פעמיים ופייסבוק היה לומד לחפש אנשים שנוגעים ובורחים. */
-  if(!S.started){ S.started = true; if(window.fbq) fbq('trackCustom','StartDiagnostic');
+  /* "התחיל שאלון" נחשב רק אחרי שנענתה גם השאלה השנייה (S.i>=1 ברגע
+     המענה), לא על נגיעה בשאלה הראשונה בלבד, כדי שלחיצה מקרית לא תיספר. */
+  if(!S.started && S.i >= 1){ S.started = true; if(window.fbq) fbq('trackCustom','StartDiagnostic');
     if(window.__fx) window.__fx('start'); }
   this.querySelectorAll('.opt').forEach(function(x){ x.classList.remove('sel'); });
   o.classList.add('sel');
@@ -730,7 +737,14 @@ function submit(){
 
   /* מסך הטעינה רץ כמה שניות טובות, מספיק זמן לתשובת השרת להגיע.
      אם היא לא הגיעה בזמן, חוזרים בדיוק להתנהגות הישנה. */
-  runLoad(function(){ location.href = '/map/' + (leadId ? ('?id=' + leadId) : ''); });
+  /* בסיום מנווטים את חלון-העל (הדף הבית), לא את ה-iframe, כדי שדף המפה
+     ייפתח במלואו ולא בתוך המסגרת. עצמאי: מנווט את עצמו כרגיל. אותו מקור,
+     ולכן top.location נגיש. */
+  runLoad(function(){
+    var nav = (window.top !== window.self) ? window.top : window;
+    try { nav.location.href = '/map/' + (leadId ? ('?id=' + leadId) : ''); }
+    catch(e){ location.href = '/map/' + (leadId ? ('?id=' + leadId) : ''); }
+  });
 }
 
 
@@ -738,6 +752,19 @@ restoreState();
 render();
 window.DG_TRACK='survey';
 /*__TRACK__*/
+
+/* גובה אוטומטי: כשממוסגר, מדווח לדף-העל את גובה התוכן בכל שינוי (מעבר
+   שאלה, מסך טעינה), והדף-העל מתאים את גובה ה-iframe. אותו מקור בלבד. */
+(function(){
+  if(window.top === window.self) return;
+  function ph(){
+    try { parent.postMessage({ dgH: Math.ceil(document.body.getBoundingClientRect().height) }, location.origin); }
+    catch(e){}
+  }
+  if(window.ResizeObserver){ try { new ResizeObserver(ph).observe(document.body); } catch(e){} }
+  addEventListener('load', ph); addEventListener('resize', ph);
+  setTimeout(ph, 120); setTimeout(ph, 600);
+})();
 </script>
 </body>
 </html>

@@ -171,6 +171,17 @@
 .chip.g{background:var(--greenS)}
 .chip.p{background:var(--pinkS)}
 @media(max-width:390px){.chip{font-size:10px;padding:5px 7px;gap:4px}.chip svg{width:11px;height:11px}}
+/* באדג' זיהוי קהל, הכי עליון בדף, מעל הכותרת, כדי לדייק את קהל היעד */
+.topqual{display:block;max-width:520px;margin:12px auto 4px;padding:9px 14px;
+  background:var(--pinkT);border:1px solid var(--pinkL);color:var(--pinkS);
+  border-radius:12px;font-size:12.5px;font-weight:800;line-height:1.45;
+  text-align:center;letter-spacing:.01em;text-wrap:balance}
+/* מסגרת השאלון: נותנת לשאלון גבולות ברורים בראש הדף. השאלון עצמו
+   נטען זהה מ-/q/ בתוך iframe, וגובהו מתעדכן אוטומטית לפי התוכן. */
+.surveyframe{position:relative;margin:16px 0 8px;border:1px solid var(--line2);
+  border-radius:var(--rC);background:var(--bg3);box-shadow:var(--sh2);overflow:hidden}
+.surveyframe iframe{display:block;width:100%;border:0;height:600px;transition:height .18s ease}
+@media(max-width:400px){.topqual{font-size:11.5px;margin-top:10px}}
 </style>
 <link rel="prefetch" href="/q/" as="document">
 </head>
@@ -186,12 +197,14 @@
 
 <div class="wrap">
 
+  <div class="topqual">לעסקי שירות שיודעים שהם מומחים בתחום שלהם וסוגרים עסקאות בשיחה או פגישה</div>
   <div class="hero">
-    <span class="qualify">לעסקי שירות שיודעים שהם מומחים בתחום שלהם, וסוגרים עסקאות בשיחה או פגישה</span>
-    <h1 class="h1">כולם מבטיחים לך <span class="box">לידים</span>, אבל <span class="boxg">הבנק</span> לא מקבל לידים.</h1>
-    <p class="sub"><b>איך להכניס יותר כסף מאותו תקציב פרסום, בלי להגדיל אותו.</b> אני מאבחן ובונה לך מסע לקוח מדויק מבוסס טכנולוגיה שיווקית ומדידה שוטפת, עד שאין יותר עסקאות שדולפות בדרך.</p>
+    <h1 class="h1">כבר לא צריך <span class="box">להמר</span> על הקמפיין הבא</h1>
+    <p class="sub">המפה בונה לך תמונה על סמך הנתונים שלך עצמך, ומראה בדיוק מה גורם ללקוחות להיעלם בדרך לעסקה. <b>ארבע דקות, והתמונה על המסך.</b></p>
     <div class="chips"><span class="chip g"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>באותו תקציב</span><span class="chip p"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>בלי אלפי עוקבים</span><span class="chip g"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>בלי להמר על החודש הבא</span></div>
-    <button class="cta" onclick="go()">להתחיל את האבחון</button>
+    <div class="surveyframe" id="survey">
+      <iframe id="qf" title="אבחון מפת הדליפה, ארבע דקות" data-base="/q/" loading="eager" scrolling="no"></iframe>
+    </div>
     <div class="proof"><div class="faces"><img src="/*CLIENT01*/" alt=""><img src="/*CLIENT02*/" alt=""><img src="/*CLIENT03*/" alt=""><img src="/*CLIENT04*/" alt=""><img src="/*CLIENT05*/" alt=""><img src="/*CLIENT06*/" alt=""><img src="/*CLIENT07*/" alt=""><img src="/*CLIENT08*/" alt=""><img src="/*CLIENT09*/" alt=""><img src="/*CLIENT10*/" alt=""><img src="/*CLIENT11*/" alt=""><img src="/*CLIENT12*/" alt=""></div><span>עסקים שכבר <b>עברו את התהליך</b></span></div>
   </div>
 
@@ -326,16 +339,22 @@ document.addEventListener('keydown', function(e){
 });
 
 function go(){
-  /* לא StartDiagnostic. לחיצה כאן היא כוונה, לא התחלה, והאירוע שהקמפיין
-     מיועל אליו נשמר לרגע שבו באמת נענתה השאלה הראשונה. */
-  if(window.fbq) fbq('trackCustom','ClickDiagnostic');
-  funnelPing('click');
-  /* המסך הזה נשאר על הדף הישן עד שהחדש מצייר, ולכן הוא מכסה בדיוק את
-     השניות שבהן קודם לא קרה כלום. */
-  var g = document.getElementById('gate');
-  if(g) g.classList.add('on');
-  setTimeout(function(){ location.href = '/q/' + location.search; }, 120);
+  /* אין עוד מעבר דף. השאלון מוטמע בראש הדף, והכפתורים רק גוללים חזרה אליו. */
+  var s = document.getElementById('survey');
+  if(s) s.scrollIntoView({ behavior:'smooth', block:'start' });
 }
+
+/* טעינת השאלון הממוסגר עם מחרוזת השאילתה (utm/fbclid/id), כדי שזיהוי
+   המקור, ה-utm וייחוס ההמרות יעבדו בדיוק כמו בשאלון העצמאי, והתאמת
+   גובה המסגרת לגובה שהשאלון מדווח בכל מעבר שאלה. אותו מקור בלבד. */
+(function(){
+  var qf = document.getElementById('qf');
+  if(qf && qf.getAttribute('data-base')){ qf.src = qf.getAttribute('data-base') + location.search; }
+  window.addEventListener('message', function(e){
+    if(e.origin !== location.origin) return;
+    if(e.data && e.data.dgH && qf){ qf.style.height = e.data.dgH + 'px'; }
+  });
+})();
 
 /* למי מתאים: הכרטיסים נכנסים בהדרגה והקו המקווקו נמתח כשהסקשן מגיע */
 (function(){
