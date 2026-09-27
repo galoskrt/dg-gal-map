@@ -1028,7 +1028,16 @@ window.DG_TRACK='survey';
   function detectSrc(){
     try {
       var q = new URLSearchParams(location.search);
-      if(q.get('fbclid') || q.get('utm_campaign') || q.get('utm_source')){
+      /* ממומן רק לפי סימן קמפיין אמיתי: utm_term (מזהה המודעה), utm_campaign,
+         או utm_medium ממומן. fbclid ו-utm_source לבדם אינם ממומן, כי
+         אינסטגרם מדביקה fbclid ו-utm_source=ig גם על קישור אורגני בביו,
+         וזה זייף כל כניסה אורגנית כממומנת. גל, 27/09/2026. */
+      var med = (q.get('utm_medium') || '').toLowerCase();
+      var content = (q.get('utm_content') || '').toLowerCase();
+      var paidMed = /(cpc|ppc|paid)/.test(med);
+      var organic = /(social|organic|bio|referral|email|whatsapp|linktree|profile)/.test(med)
+                    || /link[_-]?in[_-]?bio|^bio$|profile/.test(content);
+      if(!organic && (q.get('utm_term') || q.get('utm_campaign') || paidMed)){
         localStorage.setItem(SRC_KEY, JSON.stringify({ v:'paid', at:Date.now() }));
         return 'paid';
       }
